@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>600683.SH 量化分析与技术诊断看板</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'PingFang SC', 'Heiti SC', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-[#0d1117] text-gray-200 font-sans min-h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#161b22] border-r border-[#30363d] hidden md:flex flex-col fixed h-screen z-10">
+        <div class="p-5 border-b border-[#30363d] flex items-center space-x-3">
+            <div class="bg-blue-600 p-2 rounded-lg text-white">
+                <i class="fa-solid fa-chart-line fa-lg"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-sm leading-tight text-white">HoloCyf Quant</h1>
+                <span class="text-xs text-gray-400">600683.SH 看板</span>
+            </div>
+        </div>
+        
+        <nav class="flex-1 p-4 space-y-1">
+            <a href="#overview" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
+                <i class="fa-solid fa-house text-gray-400 group-hover:text-blue-500 w-5"></i>
+                <span class="text-sm font-medium">概览 Dashboard</span>
+            </a>
+            <a href="#quality" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
+                <i class="fa-solid fa-shield-halved text-gray-400 group-hover:text-blue-500 w-5"></i>
+                <span class="text-sm font-medium">数据诊断 Quality</span>
+            </a>
+            <a href="#statistics" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
+                <i class="fa-solid fa-calculator text-gray-400 group-hover:text-blue-500 w-5"></i>
+                <span class="text-sm font-medium">描述统计 Stats</span>
+            </a>
+            <a href="#analysis" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
+                <i class="fa-solid fa-brain text-gray-400 group-hover:text-blue-500 w-5"></i>
+                <span class="text-sm font-medium">深度量化分析</span>
+            </a>
+            <a href="#indicators" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
+                <i class="fa-solid fa-compass text-gray-400 group-hover:text-blue-500 w-5"></i>
+                <span class="text-sm font-medium">技术指标 Indicators</span>
+            </a>
+            <a href="#visualization" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
+                <i class="fa-solid fa-images text-gray-400 group-hover:text-blue-500 w-5"></i>
+                <span class="text-sm font-medium">可视化看板 Board</span>
+            </a>
+            <a href="#verification" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
+                <i class="fa-solid fa-circle-check text-gray-400 group-hover:text-blue-500 w-5"></i>
+                <span class="text-sm font-medium">双源校验 Align</span>
+            </a>
+        </nav>
+        
+        <div class="p-4 border-t border-[#30363d] text-xs text-gray-500">
+            <p>北大量化交易课 Task 1</p>
+            <p class="mt-1">Generated: 2026-07-04</p>
+        </div>
+    </aside>
+
+    <!-- Main Content Container -->
+    <div class="flex-1 md:ml-64 flex flex-col min-h-screen">
+        
+        <!-- Header -->
+        <header class="bg-[#161b22] border-b border-[#30363d] p-4 flex items-center justify-between sticky top-0 z-20">
+            <div class="flex items-center space-x-3">
+                <div class="md:hidden bg-blue-600 p-1.5 rounded text-white mr-2" id="mobile-menu-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <i class="fa-brands fa-github text-white text-2xl"></i>
+                <span class="font-semibold text-white text-md">HoloCyf_Quant / <span class="text-blue-400 font-bold">600683_technical_diagnostic</span></span>
+                <span class="bg-[#21262d] text-gray-400 text-xs px-2.5 py-0.5 rounded-full border border-[#30363d]">Public</span>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+                <a href="https://github.com" target="_blank" class="bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] text-gray-300 px-3 py-1.5 rounded-md text-xs font-semibold flex items-center space-x-1.5 transition-all">
+                    <i class="fa-regular fa-star"></i>
+                    <span>Star</span>
+                    <span class="bg-[#30363d] text-gray-400 px-1.5 py-0.2 rounded-full text-[10px]">12</span>
+                </a>
+                <a href="https://github.com" target="_blank" class="bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] text-gray-300 px-3 py-1.5 rounded-md text-xs font-semibold flex items-center space-x-1.5 transition-all hidden sm:flex">
+                    <i class="fa-solid fa-code-fork"></i>
+                    <span>Fork</span>
+                    <span class="bg-[#30363d] text-gray-400 px-1.5 py-0.2 rounded-full text-[10px]">3</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-6 max-w-6xl mx-auto w-full space-y-8">
+            
+            <!-- Repo Info / Overview -->
+            <section id="overview" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center space-x-2">
+                            <span>京投发展 (600683.SH) 历史行情数据与技术指标诊断</span>
+                        </h2>
+                        <p class="text-sm text-gray-400 mt-1">数据区间：2025年1月2日 至 2026年7月3日（共 362 个交易日）</p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xs">
+                        <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 px-3 py-1 rounded-full font-semibold">Tushare 已校验</span>
+                        <span class="bg-blue-950 text-blue-400 border border-blue-800 px-3 py-1 rounded-full font-semibold">Yahoo 对齐</span>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-4 flex flex-col justify-between">
+                        <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">样本周期 (Trading Days)</span>
+                        <div class="flex items-baseline space-x-2 mt-2">
+                            <span class="text-3xl font-bold text-white font-mono">362</span>
+                            <span class="text-xs text-emerald-400"><i class="fa-solid fa-check"></i> 100% 连续</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-4 flex flex-col justify-between">
+                        <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">区间波段极值 (Price Range)</span>
+                        <div class="flex items-baseline space-x-1 mt-2">
+                            <span class="text-2xl font-bold text-rose-400 font-mono">3.87</span>
+                            <span class="text-gray-500 mx-1">→</span>
+                            <span class="text-2xl font-bold text-emerald-400 font-mono">20.85</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-4 flex flex-col justify-between">
+                        <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">日涨跌幅波动率 (Daily Std)</span>
+                        <div class="flex items-baseline space-x-2 mt-2">
+                            <span class="text-3xl font-bold text-white font-mono">3.55%</span>
+                            <span class="text-xs text-amber-500"><i class="fa-solid fa-triangle-exclamation"></i> 高振幅</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-4 flex flex-col justify-between">
+                        <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">峰值资金交易能级 (Max Vol)</span>
+                        <div class="flex items-baseline space-x-2 mt-2">
+                            <span class="text-2xl font-bold text-white font-mono">121.5万</span>
+                            <span class="text-xs text-gray-400">手</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 1: Data Quality -->
+            <section id="quality" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
+                    <i class="fa-solid fa-shield-halved text-blue-500"></i>
+                    <span>一、 数据基础与质量诊断 (Data Quality & Missing Values)</span>
+                </h3>
+                <p class="text-sm leading-relaxed text-gray-300">
+                    本看板对储存在 <code class="bg-[#21262d] px-1.5 py-0.5 rounded text-gray-300 text-xs font-mono">600683_SH_daily.csv</code> 中的历史行情数据进行了全面的质量诊断。数据涵盖了 <b>362 个交易日</b> 的日线级别行情，共包含 14 个特征字段。诊断结论一览：
+                </p>
+                
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-[#21262d] text-gray-300 uppercase tracking-wider border-b border-[#30363d]">
+                                <th class="p-3 font-semibold">字段名称</th>
+                                <th class="p-3 font-semibold">数据类型</th>
+                                <th class="p-3 font-semibold">有效行数</th>
+                                <th class="p-3 font-semibold">缺失数</th>
+                                <th class="p-3 font-semibold">缺失比</th>
+                                <th class="p-3 font-semibold">诊断结论与量化成因</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#30363d]">
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 font-mono text-blue-400">ts_code</td>
+                                <td class="p-3 text-gray-400">string</td>
+                                <td class="p-3 font-mono">362</td>
+                                <td class="p-3 font-mono text-emerald-500">0</td>
+                                <td class="p-3 font-mono">0.00%</td>
+                                <td class="p-3 text-gray-300">正常，代码标记完整无错漏。</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 font-mono text-blue-400">trade_date</td>
+                                <td class="p-3 text-gray-400">int64</td>
+                                <td class="p-3 font-mono">362</td>
+                                <td class="p-3 font-mono text-emerald-500">0</td>
+                                <td class="p-3 font-mono">0.00%</td>
+                                <td class="p-3 text-gray-300">正常，交易时间序列完整无断档。</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 font-mono text-blue-400">open/.../close</td>
+                                <td class="p-3 text-gray-400">float64</td>
+                                <td class="p-3 font-mono">362</td>
+                                <td class="p-3 font-mono text-emerald-500">0</td>
+                                <td class="p-3 font-mono">0.00%</td>
+                                <td class="p-3 text-gray-300">正常，开高低收基础 K 线报价 100% 完整。</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 font-mono text-blue-400">open_qfq/..._qfq</td>
+                                <td class="p-3 text-gray-400">float64</td>
+                                <td class="p-3 font-mono">362</td>
+                                <td class="p-3 font-mono text-emerald-500">0</td>
+                                <td class="p-3 font-mono">0.00%</td>
+                                <td class="p-3 text-gray-300">正常，前复权价格序列已计算完整并闭合。</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors bg-[#1f191b]">
+                                <td class="p-3 font-mono text-amber-400">pre_close</td>
+                                <td class="p-3 text-gray-400">float64</td>
+                                <td class="p-3 font-mono text-amber-400">361</td>
+                                <td class="p-3 font-mono text-amber-400">1</td>
+                                <td class="p-3 font-mono text-amber-400">0.28%</td>
+                                <td class="p-3 text-amber-300">首个交易日（2025-01-02）缺失昨收，属统计边界合规缺失。</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors bg-[#1f191b]">
+                                <td class="p-3 font-mono text-amber-400">change / pct_chg</td>
+                                <td class="p-3 text-gray-400">float64</td>
+                                <td class="p-3 font-mono text-amber-400">361</td>
+                                <td class="p-3 font-mono text-amber-400">1</td>
+                                <td class="p-3 font-mono text-amber-400">0.28%</td>
+                                <td class="p-3 text-amber-300">同上。由于首日昨收缺失导致衍生变量首日无法计算。</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 font-mono text-blue-400">vol</td>
+                                <td class="p-3 text-gray-400">float64</td>
+                                <td class="p-3 font-mono">362</td>
+                                <td class="p-3 font-mono text-emerald-500">0</td>
+                                <td class="p-3 font-mono">0.00%</td>
+                                <td class="p-3 text-gray-300">正常，成交量数据完整。</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Part 2: Descriptive Stats -->
+            <section id="statistics" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
+                    <i class="fa-solid fa-calculator text-blue-500"></i>
+                    <span>二、 核心特征描述性统计量 (Descriptive Statistics)</span>
+                </h3>
+                <p class="text-sm leading-relaxed text-gray-300">
+                    针对该股在过去一年半内的交易表现，对其基础价格特征、涨跌变化及资金流量指标进行了算术均值、离散程度及极值统计。描述性统计指标如下表所示：
+                </p>
+                
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-right text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-[#21262d] text-gray-300 uppercase tracking-wider border-b border-[#30363d]">
+                                <th class="p-3 text-left font-semibold">统计指标</th>
+                                <th class="p-3 font-semibold">open (开盘)</th>
+                                <th class="p-3 font-semibold">high (最高)</th>
+                                <th class="p-3 font-semibold">low (最低)</th>
+                                <th class="p-3 font-semibold">close (收盘)</th>
+                                <th class="p-3 font-semibold">change (涨跌)</th>
+                                <th class="p-3 font-semibold">pct_chg (%)</th>
+                                <th class="p-3 font-semibold">vol (手)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#30363d] font-mono text-gray-300">
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 text-left font-sans text-gray-400">样本量 (Count)</td>
+                                <td class="p-3">362</td>
+                                <td class="p-3">362</td>
+                                <td class="p-3">362</td>
+                                <td class="p-3">362</td>
+                                <td class="p-3 text-amber-400">361</td>
+                                <td class="p-3 text-amber-400">361</td>
+                                <td class="p-3">362</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors font-semibold text-white">
+                                <td class="p-3 text-left font-sans text-gray-400">均值 (Mean)</td>
+                                <td class="p-3">6.15</td>
+                                <td class="p-3">6.32</td>
+                                <td class="p-3">5.97</td>
+                                <td class="p-3 text-blue-400">6.15</td>
+                                <td class="p-3">0.02</td>
+                                <td class="p-3 text-emerald-400">+0.34%</td>
+                                <td class="p-3">216,553.11</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 text-left font-sans text-gray-400">标准差 (Std)</td>
+                                <td class="p-3">3.84</td>
+                                <td class="p-3">3.99</td>
+                                <td class="p-3">3.62</td>
+                                <td class="p-3">3.80</td>
+                                <td class="p-3">0.36</td>
+                                <td class="p-3 text-amber-400">3.55%</td>
+                                <td class="p-3">191,706.13</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 text-left font-sans text-gray-400">最小值 (Min)</td>
+                                <td class="p-3">3.38</td>
+                                <td class="p-3">3.51</td>
+                                <td class="p-3">3.37</td>
+                                <td class="p-3 text-rose-500">3.43</td>
+                                <td class="p-3">-1.59</td>
+                                <td class="p-3 text-rose-500">-9.97%</td>
+                                <td class="p-3">52,551.00</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 text-left font-sans text-gray-400">25% 分位数 (Q1)</td>
+                                <td class="p-3">3.90</td>
+                                <td class="p-3">3.95</td>
+                                <td class="p-3">3.85</td>
+                                <td class="p-3">3.90</td>
+                                <td class="p-3">-0.06</td>
+                                <td class="p-3">-1.29%</td>
+                                <td class="p-3">92,023.50</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors bg-[#111827]">
+                                <td class="p-3 text-left font-sans text-gray-400">中位数 (50%)</td>
+                                <td class="p-3 text-yellow-500">4.25</td>
+                                <td class="p-3 text-yellow-500">4.31</td>
+                                <td class="p-3 text-yellow-500">4.19</td>
+                                <td class="p-3 text-yellow-500">4.26</td>
+                                <td class="p-3 text-yellow-500">0.01</td>
+                                <td class="p-3 text-yellow-500">+0.26%</td>
+                                <td class="p-3 text-yellow-500">136,460.00</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 text-left font-sans text-gray-400">75% 分位数 (Q3)</td>
+                                <td class="p-3">6.60</td>
+                                <td class="p-3">7.05</td>
+                                <td class="p-3">6.40</td>
+                                <td class="p-3">6.73</td>
+                                <td class="p-3">0.07</td>
+                                <td class="p-3">+1.63%</td>
+                                <td class="p-3">260,125.50</td>
+                            </tr>
+                            <tr class="hover:bg-[#1f242c] transition-colors">
+                                <td class="p-3 text-left font-sans text-gray-400">最大值 (Max)</td>
+                                <td class="p-3">20.80</td>
+                                <td class="p-3">21.83</td>
+                                <td class="p-3">18.78</td>
+                                <td class="p-3 text-emerald-400">20.85</td>
+                                <td class="p-3">1.90</td>
+                                <td class="p-3 text-emerald-400">+10.10%</td>
+                                <td class="p-3">1,215,281.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Part 3: Deep Analysis -->
+            <section id="analysis" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-6">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
+                    <i class="fa-solid fa-brain text-blue-500"></i>
+                    <span>三、 深度量化诊断与统计学特征分析</span>
+                </h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-3">
+                        <div class="flex items-center space-x-2.5">
+                            <span class="bg-blue-950 text-blue-400 p-2 rounded-lg text-sm"><i class="fa-solid fa-chart-bar"></i></span>
+                            <h4 class="font-bold text-white text-sm">1. 显著的右偏分布 (Positive Skewness)</h4>
+                        </div>
+                        <p class="text-xs leading-relaxed text-gray-400">
+                            股价均值（6.15元）远高于中位数（4.26元），表明该股票在统计周期内有超过 <b>60% 的交易日处于 5 元以下的低价震荡区</b>。随后的行情爆发迅速拉升至 20.85 元，导致算术均值受极值拉扯而大幅抬升，呈现长期筑底、短期爆发的右偏分布结构。<br/>
+                            <span class="text-blue-400 font-semibold mt-1 block"><i class="fa-solid fa-lightbulb"></i> 策略：</span>在开发策略时，传统的均值回归或网格策略容易在高位面临巨大的趋势爆仓风险，应考虑配置自适应动态止损或趋势突破通道来过滤单边动能。
+                        </p>
+                    </div>
+                    
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-3">
+                        <div class="flex items-center space-x-2.5">
+                            <span class="bg-rose-950 text-rose-400 p-2 rounded-lg text-sm"><i class="fa-solid fa-arrow-trend-up"></i></span>
+                            <h4 class="font-bold text-white text-sm">2. 极高波动性与封板倾向 (High Volatility)</h4>
+                        </div>
+                        <p class="text-xs leading-relaxed text-gray-400">
+                            股价日涨跌幅标准差高达 <b>3.55%</b>。在统计期内，单日最大跌幅达 -9.97%（逼近跌停），单日最大涨幅达 +10.10%（封涨停板）。这种极高波动代表股价在趋势启动时弹性极大，而在退潮时存在极强的踩踏风险。<br/>
+                            <span class="text-rose-400 font-semibold mt-1 block"><i class="fa-solid fa-lightbulb"></i> 策略：</span>在策略执行端，必须引入硬滑点限制（Slippage Limit Protection）与封板撤单控制，防范挂单追高和流动性枯竭导致的无法及时止损风险。
+                        </p>
+                    </div>
+
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-3">
+                        <div class="flex items-center space-x-2.5">
+                            <span class="bg-emerald-950 text-emerald-400 p-2 rounded-lg text-sm"><i class="fa-solid fa-water"></i></span>
+                            <h4 class="font-bold text-white text-sm">3. 极度不均匀的流动性聚集 (Volume Clustering)</h4>
+                        </div>
+                        <p class="text-xs leading-relaxed text-gray-400">
+                            该股成交量的均值为 21.6 万手，中位数为 13.6 万手，而最大日成交量达到了惊人的 <b>121.5 万手</b>（为中位数的 8.9 倍）。说明该股属于典型的“情绪/资金驱动型”标的，在无行情时交投极清淡，一旦突破则伴随资金爆发式涌入。<br/>
+                            <span class="text-emerald-400 font-semibold mt-1 block"><i class="fa-solid fa-lightbulb"></i> 策略：</span>基于量价比值（Volume-Price Ratio）或 OBV 能量潮的突变信号，能够对趋势突破确立提供极高的过滤胜率。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 4: Technical Indicators -->
+            <section id="indicators" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-6">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
+                    <i class="fa-solid fa-compass text-blue-500"></i>
+                    <span>四、 核心技术指标计算逻辑与作用</span>
+                </h3>
+                
+                <div class="space-y-8">
+                    <!-- RSI -->
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#21262d] pb-2">
+                            <h4 class="font-bold text-white text-md flex items-center space-x-2">
+                                <span class="bg-[#21262d] text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+                                <span>相对强弱指标 (RSI)</span>
+                            </h4>
+                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-full font-bold">默认参数：N = 14</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-gray-400">
+                            RSI是衡量多空力量对比的经典动能指标。其通过计算14日内价格上涨和下跌幅度的指数平滑比例，将数值归一化在[0, 100]之间。在本报告中，采用更纯正的Wilder指数平滑移动平均。RSI > 70代表超买，RSI < 30代表超卖。其核心数学表达式为：
+                        </p>
+                        <!-- Math Block -->
+                        <div class="bg-[#161b22] border border-[#21262d] rounded-lg p-3 text-center text-xs font-mono text-blue-300 space-y-1">
+                            <div>ΔP<sub>t</sub> = Close<sub>t</sub> - Close<sub>t-1</sub></div>
+                            <div>U<sub>t</sub> = max(ΔP<sub>t</sub>, 0),   D<sub>t</sub> = max(-ΔP<sub>t</sub>, 0)</div>
+                            <div>EMA_U<sub>t</sub> = EMA<sub>t</sub>(U, α),   EMA_D<sub>t</sub> = EMA<sub>t</sub>(D, α),   α = 1 / 14</div>
+                            <div class="font-bold text-white">RSI<sub>t</sub> = 100 × [ EMA_U<sub>t</sub> / ( EMA_U<sub>t</sub> + EMA_D<sub>t</sub> ) ]</div>
+                        </div>
+                    </div>
+
+                    <!-- MACD -->
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#21262d] pb-2">
+                            <h4 class="font-bold text-white text-md flex items-center space-x-2">
+                                <span class="bg-[#21262d] text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+                                <span>平滑异同移动平均线 (MACD)</span>
+                            </h4>
+                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-full font-bold">默认参数：(12, 26, 9)</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-gray-400">
+                            MACD属于趋势跟踪型动能指标，通过对长短期均线的差值处理，消除了传统均线的滞后性。计算12日和26日EMA的差值作为离差快速线（DIF），再计算DIF的9日EMA作为慢速信号线（DEA）；两线之差的2倍即为红绿柱HIST。
+                        </p>
+                        <!-- Math Block -->
+                        <div class="bg-[#161b22] border border-[#21262d] rounded-lg p-3 text-center text-xs font-mono text-blue-300 space-y-1">
+                            <div>EMA<sub>t</sub>(Close, N) = α × Close<sub>t</sub> + (1 - α) × EMA<sub>t-1</sub>(Close, N),   α = 2 / (N + 1)</div>
+                            <div>DIF<sub>t</sub> = EMA<sub>t</sub>(Close, 12) - EMA<sub>t</sub>(Close, 26)</div>
+                            <div>DEA<sub>t</sub> = EMA<sub>t</sub>(DIF, 9)</div>
+                            <div class="font-bold text-white">MACD_Bar<sub>t</sub> = 2 × ( DIF<sub>t</sub> - DEA<sub>t</sub> )</div>
+                        </div>
+                    </div>
+
+                    <!-- Bollinger Bands -->
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#21262d] pb-2">
+                            <h4 class="font-bold text-white text-md flex items-center space-x-2">
+                                <span class="bg-[#21262d] text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
+                                <span>布林带 (Bollinger Bands)</span>
+                            </h4>
+                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-full font-bold">默认参数：(20, 2)</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-gray-400">
+                            布林带是一种根据价格标准差建立的动态价格信道。其以20日简单收盘均线为中轨（MB），均线正负2倍的20日滚动标准差作为上下限轨道（UP / DN）。在常态波动下，由于价格运行在通道内部的概率达95.44%，触轨常伴随着超买超卖的回吐反弹。
+                        </p>
+                        <!-- Math Block -->
+                        <div class="bg-[#161b22] border border-[#21262d] rounded-lg p-3 text-center text-xs font-mono text-blue-300 space-y-1">
+                            <div>MB<sub>t</sub> = SMA<sub>t</sub>(Close, 20) = (1 / 20) × Σ<sub>i=0</sub><sup>19</sup> Close<sub>t-i</sub></div>
+                            <div>σ<sub>t</sub> = √ [ (1 / 20) × Σ<sub>i=0</sub><sup>19</sup> ( Close<sub>t-i</sub> - MB<sub>t</sub> )<sup>2</sup> ]</div>
+                            <div class="font-bold text-white">UP<sub>t</sub> = MB<sub>t</sub> + 2 × σ<sub>t</sub>,   DN<sub>t</sub> = MB<sub>t</sub> - 2 × σ<sub>t</sub></div>
+                        </div>
+                    </div>
+
+                    <!-- DMI & ADX -->
+                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-4">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#21262d] pb-2">
+                            <h4 class="font-bold text-white text-md flex items-center space-x-2">
+                                <span class="bg-[#21262d] text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs">4</span>
+                                <span>趋向指标 (DMI & ADX)</span>
+                            </h4>
+                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-full font-bold">自适应核心参数：(14, 20, 26)</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-gray-400">
+                            针对本股高爆发、大波段横盘等特征，特引入DMI/ADX趋向指标。其通过真实波幅TR与正负趋向DM算取多空向导+DI和-DI，并计算综合趋势强度ADX。<b>ADX < 20 为横盘无趋势弱能区，关闭趋势策略；ADX > 26 为高能趋势确立区，全线激活动量，顺势而为！</b>
+                        </p>
+                        <!-- Math Block -->
+                        <div class="bg-[#161b22] border border-[#21262d] rounded-lg p-3 text-center text-xs font-mono text-blue-300 space-y-1">
+                            <div>TR<sub>t</sub> = max( High<sub>t</sub> - Low<sub>t</sub>,  |High<sub>t</sub> - Close<sub>t-1</sub>|,  |Low<sub>t</sub> - Close<sub>t-1</sub>| )</div>
+                            <div>+DM<sub>t</sub> = High<sub>t</sub> - High<sub>t-1</sub>   (if > (Low<sub>t-1</sub> - Low<sub>t</sub>) and > 0, else 0)</div>
+                            <div>-DM<sub>t</sub> = Low<sub>t-1</sub> - Low<sub>t</sub>   (if > (High<sub>t</sub> - High<sub>t-1</sub>) and > 0, else 0)</div>
+                            <div>+DI<sub>t</sub> = 100 × [ EMA(+DM<sub>t</sub>, α) / EMA(TR<sub>t</sub>, α) ],   -DI<sub>t</sub> = 100 × [ EMA(-DM<sub>t</sub>, α) / EMA(TR<sub>t</sub>, α) ],   α = 1/14</div>
+                            <div class="font-bold text-white">DX<sub>t</sub> = 100 × | +DI<sub>t</sub> - -DI<sub>t</sub> | / ( +DI<sub>t</sub> + -DI<sub>t</sub> )    and    ADX<sub>t</sub> = EMA(DX<sub>t</sub>, α)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Part 5: Visualization -->
+            <section id="visualization" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
+                    <i class="fa-solid fa-images text-blue-500"></i>
+                    <span>五、 技术指标可视化看板呈现效果与分析</span>
+                </h3>
+                <p class="text-sm leading-relaxed text-gray-300">
+                    4面板量化分析图（图 1）直观展示了各个技术指标的配合与变化：
+                </p>
+                
+                <!-- Chart Container -->
+                <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-4 flex flex-col items-center">
+                    <img src="600683_SH_indicators_chart.png" alt="600683.SH 核心技术指标可视化看板" class="max-w-full rounded-md shadow-2xl border border-[#30363d] hover:scale-[1.01] transition-all duration-300 cursor-pointer" style="max-height: 700px;">
+                    <span class="text-xs text-gray-400 mt-3 font-semibold">图 1: 京投发展 (600683.SH) 核心技术指标与 DMI/ADX 趋势强度可视化看板</span>
+                </div>
+
+                <div class="space-y-4 mt-6">
+                    <h4 class="font-bold text-sm text-white"><i class="fa-solid fa-list-check text-blue-500 mr-2"></i>看板细节量化解构：</h4>
+                    <ul class="space-y-3 text-xs text-gray-400">
+                        <li class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3">
+                            <strong class="text-white">● 第一面板 (价格与布林带)：</strong> 蓝色价格线在2025年底产生布林挤压（Squeeze），波动压缩至极限；随后价格强势上破并贴着布林上轨（UP）快速上摩擦行进，是主升浪启动的极佳信号。
+                        </li>
+                        <li class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3">
+                            <strong class="text-white">● 第二面板 (MACD 动能差)：</strong> 在2026年春节前后，DIF与DEA发生零轴下金叉，并以大倾角冲破零轴关口，柱状直方图伴随大体量放量（绿柱增长），趋势能量确立；5月中旬两线出现高位死叉破位，动量竭尽。
+                        </li>
+                        <li class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3">
+                            <strong class="text-white">● 第三面板 (RSI 强弱震荡器)：</strong> 14日RSI展现了2025年中的数个绝佳左侧抄底超卖位（RSI &lt; 30），并记录了2026年爆拉阶段超买区域（RSI &gt; 70）的严重价格钝化。
+                        </li>
+                        <li class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3">
+                            <strong class="text-white">● 第四面板 (DMI/ADX 强震趋向)：</strong> 在2025年，深褐色ADX趋势强度线几乎全年在 20 以下无趋势弱震带运行，完美过滤磨损；2026年初 +DI（绿）金叉 -DI（红），且ADX上穿20、冲破26，趋势极速成型。
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Part 6: Verification Results (Terminal View) -->
+            <section id="verification" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
+                    <i class="fa-solid fa-circle-check text-blue-500"></i>
+                    <span>六、 附录：数据源双源校验核对结果 (Tushare vs Yahoo Finance)</span>
+                </h3>
+                <p class="text-sm leading-relaxed text-gray-300">
+                    为保障历史数据精度，我们编写脚本对 **Tushare 原始数据** 与全球权威金融数据库 **Yahoo Finance (600683.SS)** 进行高精度数值稽核。自动校验日志如下所示：
+                </p>
+
+                <!-- Terminal Simulator -->
+                <div class="bg-[#0d1117] border border-[#30363d] rounded-lg overflow-hidden flex flex-col font-mono text-xs">
+                    <!-- Terminal Header -->
+                    <div class="bg-[#161b22] px-4 py-2 border-b border-[#30363d] flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                            <span class="text-xs text-gray-400 ml-2">quant_data_validator.sh</span>
+                        </div>
+                        <div class="text-gray-500 flex items-center space-x-2">
+                            <i class="fa-regular fa-clipboard cursor-pointer hover:text-white" id="copy-log-btn" title="复制代码"></i>
+                            <span id="copy-success-tooltip" class="text-[10px] text-emerald-400 hidden">Copied!</span>
+                        </div>
+                    </div>
+                    <!-- Terminal Body -->
+                    <div class="p-4 overflow-x-auto custom-scrollbar bg-[#0d1117] text-gray-300 leading-relaxed font-mono">
+                        <pre id="validation-log-content">==================================================
+             TUSHARE VS YAHOO FINANCE             
+             VERIFICATION REPORT                  
+==================================================
+Report generated on: 2026-07-04 14:23:59
+Target stock: 600683 (Tushare) / 600683.SS (Yahoo)
+Timeframe: 2025-01-01 to 2026-07-04
+
+[Step 1] Fetching 600683 from Tushare...
+Tushare QFQ Rows: 362
+Tushare None Rows: 362
+Max difference within Tushare (QFQ vs None): 0.0000
+
+[Step 2] Fetching 600683.SS from Yahoo Finance...
+Yahoo Finance Rows: 362
+Yahoo Corporate Actions (Since 2025): Dividends = 0.0, Splits = 0.0
+
+[Step 3] Merged Overlapping Days: 362
+Max difference in Close Prices between Tushare and Yahoo: 0.0000
+Mean difference in Close Prices between Tushare and Yahoo: 0.0000
+
+Sample Data Points (Comparison):
+      date  close_tushare  close_yahoo   close_diff
+2025-01-02           4.18         4.18 1.716614e-07
+2025-01-03           3.96         3.96 3.814697e-08
+2025-01-06           3.79         3.79 3.814697e-08
+2025-01-07           3.86         3.86 1.049042e-07
+2025-01-08           3.80         3.80 4.768372e-08
+...
+      date  close_tushare  close_yahoo   close_diff
+2026-06-29          10.93        10.93 3.051758e-07
+2026-06-30          11.50        11.50 0.000000e+00
+2026-07-01          11.47        11.47 2.670288e-07
+2026-07-02          11.49        11.49 2.288818e-07
+2026-07-03          11.58        11.58 7.629395e-08
+
+==================================================
+VERIFICATION CONCLUSION:
+SUCCESS: Tushare and Yahoo Finance data are highly aligned (identical prices).
+Both source datasets confirm NO corporate actions (splits/dividends) occurred for 600683 since 2025-01-01.
+Therefore, unadjusted and front-adjusted prices are identical.
+==================================================</pre>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-[#161b22] border-t border-[#30363d] py-6 text-center text-xs text-gray-500 mt-12">
+            <div class="flex justify-center space-x-4 mb-2">
+                <a href="#overview" class="hover:text-gray-300">概览</a>
+                <span class="text-gray-700">•</span>
+                <a href="#quality" class="hover:text-gray-300">质量诊断</a>
+                <span class="text-gray-700">•</span>
+                <a href="#statistics" class="hover:text-gray-300">描述统计</a>
+                <span class="text-gray-700">•</span>
+                <a href="#indicators" class="hover:text-gray-300">指标算法</a>
+            </div>
+            <p>© 2026 HoloCyf Quant System. Designed for Beijing University Quantitative Course.</p>
+        </footer>
+    </div>
+
+    <!-- Script for mobile menu and copy functionality -->
+    <script>
+        // Copy Log Functionality
+        const copyBtn = document.getElementById('copy-log-btn');
+        const tooltip = document.getElementById('copy-success-tooltip');
+        
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                const textToCopy = document.getElementById('validation-log-content').innerText;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    tooltip.classList.remove('hidden');
+                    setTimeout(() => {
+                        tooltip.classList.add('hidden');
+                    }, 2000);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
