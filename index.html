@@ -3,564 +3,566 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>600683.SH 量化分析与技术诊断看板</title>
+    <title>600683.SH 量化分析与技术诊断看板 • Task 2</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts - Plus Jakarta Sans & JetBrains Mono for a highly fashionable tech aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Apache ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <!-- KaTeX for beautiful math formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'PingFang SC', 'Heiti SC', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace'],
+                        sans: ['Plus Jakarta Sans', 'PingFang SC', 'Heiti SC', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     }
                 }
             }
         }
     </script>
     <style>
+        /* Premium custom scrollbar styling */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #1e293b;
+            background: #0f1322;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 3px;
+            background: #2b3a60;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3b82f6;
+        }
+        
+        /* Glassmorphism card effects */
+        .glass-card {
+            background: rgba(17, 24, 39, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Glowing neon accents */
+        .neon-glow-indigo {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);
+        }
+        .neon-glow-emerald {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
         }
     </style>
 </head>
-<body class="bg-[#0d1117] text-gray-200 font-sans min-h-screen flex">
+<body class="bg-gradient-to-tr from-[#080b16] via-[#111625] to-[#04060f] text-gray-200 font-sans min-h-screen py-10 px-4 sm:px-6 antialiased">
 
-    <!-- Sidebar -->
-    <aside class="w-64 bg-[#161b22] border-r border-[#30363d] hidden md:flex flex-col fixed h-screen z-10">
-        <div class="p-5 border-b border-[#30363d] flex items-center space-x-3">
-            <div class="bg-blue-600 p-2 rounded-lg text-white">
-                <i class="fa-solid fa-chart-line fa-lg"></i>
-            </div>
-            <div>
-                <h1 class="font-bold text-sm leading-tight text-white">HoloCyf Quant</h1>
-                <span class="text-xs text-gray-400">600683.SH 看板</span>
-            </div>
-        </div>
+    <div class="max-w-6xl mx-auto space-y-10">
         
-        <nav class="flex-1 p-4 space-y-1">
-            <a href="#overview" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
-                <i class="fa-solid fa-house text-gray-400 group-hover:text-blue-500 w-5"></i>
-                <span class="text-sm font-medium">概览 Dashboard</span>
-            </a>
-            <a href="#quality" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
-                <i class="fa-solid fa-shield-halved text-gray-400 group-hover:text-blue-500 w-5"></i>
-                <span class="text-sm font-medium">数据诊断 Quality</span>
-            </a>
-            <a href="#statistics" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
-                <i class="fa-solid fa-calculator text-gray-400 group-hover:text-blue-500 w-5"></i>
-                <span class="text-sm font-medium">描述统计 Stats</span>
-            </a>
-            <a href="#analysis" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
-                <i class="fa-solid fa-brain text-gray-400 group-hover:text-blue-500 w-5"></i>
-                <span class="text-sm font-medium">深度量化分析</span>
-            </a>
-            <a href="#indicators" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
-                <i class="fa-solid fa-compass text-gray-400 group-hover:text-blue-500 w-5"></i>
-                <span class="text-sm font-medium">技术指标 Indicators</span>
-            </a>
-            <a href="#visualization" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
-                <i class="fa-solid fa-images text-gray-400 group-hover:text-blue-500 w-5"></i>
-                <span class="text-sm font-medium">可视化看板 Board</span>
-            </a>
-            <a href="#verification" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#21262d] hover:text-white transition-all group">
-                <i class="fa-solid fa-circle-check text-gray-400 group-hover:text-blue-500 w-5"></i>
-                <span class="text-sm font-medium">双源校验 Align</span>
-            </a>
-        </nav>
-        
-        <div class="p-4 border-t border-[#30363d] text-xs text-gray-500">
-            <p>北大量化交易课 Task 1</p>
-            <p class="mt-1">Generated: 2026-07-04</p>
-        </div>
-    </aside>
-
-    <!-- Main Content Container -->
-    <div class="flex-1 md:ml-64 flex flex-col min-h-screen">
-        
-        <!-- Header -->
-        <header class="bg-[#161b22] border-b border-[#30363d] p-4 flex items-center justify-between sticky top-0 z-20">
-            <div class="flex items-center space-x-3">
-                <div class="md:hidden bg-blue-600 p-1.5 rounded text-white mr-2" id="mobile-menu-toggle">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
-                <i class="fa-brands fa-github text-white text-2xl"></i>
-                <span class="font-semibold text-white text-md">HoloCyf_Quant / <span class="text-blue-400 font-bold">600683_technical_diagnostic</span></span>
-                <span class="bg-[#21262d] text-gray-400 text-xs px-2.5 py-0.5 rounded-full border border-[#30363d]">Public</span>
+        <!-- Premium Header Section -->
+        <header class="text-center space-y-4">
+            <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-900/40 to-indigo-900/40 border border-blue-800/30 px-4 py-1.5 rounded-full text-xs font-bold text-blue-400 shadow-lg tracking-wider uppercase">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>北京大学量化交易课 • Task 2</span>
             </div>
             
-            <div class="flex items-center space-x-2">
-                <a href="https://github.com" target="_blank" class="bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] text-gray-300 px-3 py-1.5 rounded-md text-xs font-semibold flex items-center space-x-1.5 transition-all">
-                    <i class="fa-regular fa-star"></i>
-                    <span>Star</span>
-                    <span class="bg-[#30363d] text-gray-400 px-1.5 py-0.2 rounded-full text-[10px]">12</span>
-                </a>
-                <a href="https://github.com" target="_blank" class="bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] text-gray-300 px-3 py-1.5 rounded-md text-xs font-semibold flex items-center space-x-1.5 transition-all hidden sm:flex">
-                    <i class="fa-solid fa-code-fork"></i>
-                    <span>Fork</span>
-                    <span class="bg-[#30363d] text-gray-400 px-1.5 py-0.2 rounded-full text-[10px]">3</span>
-                </a>
+            <h1 class="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-indigo-300 tracking-tight leading-none">
+                京投发展 (600683.SH) 行情数据与技术诊断看板
+            </h1>
+            
+            <p class="text-xs sm:text-sm text-gray-400 font-medium tracking-wide max-w-2xl mx-auto">
+                本项目全面覆盖了 A 股历史数据的双源高精确度稽核、量化统计诊断，以及基于黄金参数组的四大核心技术指标 (RSI, MACD, Bollinger Bands, DMI/ADX) 的时序建模。
+            </p>
+            
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <span class="bg-[#10b981]/10 text-[#10b981] border border-[#10b981]/20 px-3.5 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse"></span>Tushare 物理校验
+                </span>
+                <span class="bg-[#3b82f6]/10 text-[#3b82f6] border border-[#3b82f6]/20 px-3.5 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#3b82f6]"></span>Yahoo Finance 对齐
+                </span>
+                <span class="bg-[#8b5cf6]/10 text-[#8b5cf6] border border-[#8b5cf6]/20 px-3.5 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#8b5cf6]"></span>ECharts 4屏联动
+                </span>
             </div>
         </header>
 
-        <!-- Main Content Area -->
-        <main class="flex-1 p-6 max-w-6xl mx-auto w-full space-y-8">
+        <!-- Stats Overview Cards (Fashionable Tech Style) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div class="glass-card rounded-2xl p-5 hover:border-indigo-500/40 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between group">
+                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest group-hover:text-indigo-400 transition-colors">样本交易周期</span>
+                <div class="flex items-baseline space-x-1.5 mt-3">
+                    <span class="text-4xl font-extrabold text-white font-mono tracking-tighter">362</span>
+                    <span class="text-[10px] text-emerald-400 font-semibold uppercase font-mono">Days</span>
+                </div>
+                <div class="text-[10px] text-gray-400 flex items-center gap-1 mt-2">
+                    <i class="fa-solid fa-check-double text-emerald-500"></i>
+                    <span>100% 完备数据时序</span>
+                </div>
+            </div>
             
-            <!-- Repo Info / Overview -->
-            <section id="overview" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-6">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h2 class="text-xl font-bold text-white flex items-center space-x-2">
-                            <span>京投发展 (600683.SH) 历史行情数据与技术指标诊断</span>
-                        </h2>
-                        <p class="text-sm text-gray-400 mt-1">数据区间：2025年1月2日 至 2026年7月3日（共 362 个交易日）</p>
-                    </div>
-                    <div class="flex items-center space-x-2 text-xs">
-                        <span class="bg-emerald-950 text-emerald-400 border border-emerald-800 px-3 py-1 rounded-full font-semibold">Tushare 已校验</span>
-                        <span class="bg-blue-950 text-blue-400 border border-blue-800 px-3 py-1 rounded-full font-semibold">Yahoo 对齐</span>
-                    </div>
+            <div class="glass-card rounded-2xl p-5 hover:border-indigo-500/40 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between group">
+                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest group-hover:text-indigo-400 transition-colors">区间波段振幅</span>
+                <div class="flex items-baseline space-x-1 mt-3">
+                    <span class="text-2xl font-bold text-rose-400 font-mono">3.87</span>
+                    <span class="text-gray-500 mx-1">→</span>
+                    <span class="text-2xl font-bold text-emerald-400 font-mono">20.85</span>
                 </div>
-
-                <!-- Stats Cards -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-4 flex flex-col justify-between">
-                        <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">样本周期 (Trading Days)</span>
-                        <div class="flex items-baseline space-x-2 mt-2">
-                            <span class="text-3xl font-bold text-white font-mono">362</span>
-                            <span class="text-xs text-emerald-400"><i class="fa-solid fa-check"></i> 100% 连续</span>
-                        </div>
-                    </div>
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-4 flex flex-col justify-between">
-                        <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">区间波段极值 (Price Range)</span>
-                        <div class="flex items-baseline space-x-1 mt-2">
-                            <span class="text-2xl font-bold text-rose-400 font-mono">3.87</span>
-                            <span class="text-gray-500 mx-1">→</span>
-                            <span class="text-2xl font-bold text-emerald-400 font-mono">20.85</span>
-                        </div>
-                    </div>
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-4 flex flex-col justify-between">
-                        <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">日涨跌幅波动率 (Daily Std)</span>
-                        <div class="flex items-baseline space-x-2 mt-2">
-                            <span class="text-3xl font-bold text-white font-mono">3.55%</span>
-                            <span class="text-xs text-amber-500"><i class="fa-solid fa-triangle-exclamation"></i> 高振幅</span>
-                        </div>
-                    </div>
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-4 flex flex-col justify-between">
-                        <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider">峰值资金交易能级 (Max Vol)</span>
-                        <div class="flex items-baseline space-x-2 mt-2">
-                            <span class="text-2xl font-bold text-white font-mono">121.5万</span>
-                            <span class="text-xs text-gray-400">手</span>
-                        </div>
-                    </div>
+                <div class="text-[10px] text-gray-400 flex items-center gap-1 mt-2">
+                    <i class="fa-solid fa-arrow-trend-up text-indigo-400"></i>
+                    <span>最大振幅达 <b>+438.7%</b></span>
                 </div>
-            </section>
+            </div>
+            
+            <div class="glass-card rounded-2xl p-5 hover:border-indigo-500/40 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between group">
+                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest group-hover:text-indigo-400 transition-colors">日均波动率</span>
+                <div class="flex items-baseline space-x-1.5 mt-3">
+                    <span class="text-4xl font-extrabold text-white font-mono tracking-tighter">3.55%</span>
+                    <span class="text-[10px] text-amber-400 font-semibold uppercase font-mono">Daily Std</span>
+                </div>
+                <div class="text-[10px] text-gray-400 flex items-center gap-1 mt-2">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+                    <span>极具交易弹性，适合高频</span>
+                </div>
+            </div>
+            
+            <div class="glass-card rounded-2xl p-5 hover:border-indigo-500/40 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between group">
+                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest group-hover:text-indigo-400 transition-colors">峰值日成交量</span>
+                <div class="flex items-baseline space-x-1.5 mt-3">
+                    <span class="text-3xl font-extrabold text-white font-mono tracking-tighter">121.5万</span>
+                    <span class="text-xs text-gray-400">手</span>
+                </div>
+                <div class="text-[10px] text-gray-400 flex items-center gap-1 mt-2">
+                    <i class="fa-solid fa-fire text-rose-500"></i>
+                    <span>资金聚集效应极为强烈</span>
+                </div>
+            </div>
+        </div>
 
-            <!-- Part 1: Data Quality -->
-            <section id="quality" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-4">
-                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
-                    <i class="fa-solid fa-shield-halved text-blue-500"></i>
-                    <span>一、 数据基础与质量诊断 (Data Quality & Missing Values)</span>
-                </h3>
-                <p class="text-sm leading-relaxed text-gray-300">
-                    本看板对储存在 <code class="bg-[#21262d] px-1.5 py-0.5 rounded text-gray-300 text-xs font-mono">600683_SH_daily.csv</code> 中的历史行情数据进行了全面的质量诊断。数据涵盖了 <b>362 个交易日</b> 的日线级别行情，共包含 14 个特征字段。诊断结论一览：
-                </p>
+        <!-- Part 1: Data Quality Section -->
+        <section id="quality" class="glass-card rounded-2xl p-6 space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-blue-500 bg-blue-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-shield-halved"></i></span>
+                <span>一、 数据基础与质量诊断 (Data Quality & Missing Values)</span>
+            </h3>
+            <p class="text-sm leading-relaxed text-gray-400">
+                本看板对储存在 <code class="bg-[#0d1117] text-indigo-300 px-2 py-0.5 rounded text-xs font-mono border border-gray-800">600683_SH_daily.csv</code> 中的数据源进行全面质量诊断。数据覆盖 <b>362 个交易日</b>。字段完备度及边界特征诊断结果如下：
+            </p>
+            
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-[#161b22]/50 text-gray-400 uppercase tracking-widest border-b border-gray-800">
+                            <th class="p-3.5 font-bold">字段名称</th>
+                            <th class="p-3.5 font-bold">数据类型</th>
+                            <th class="p-3.5 font-bold">有效行数</th>
+                            <th class="p-3.5 font-bold">缺失数</th>
+                            <th class="p-3.5 font-bold">缺失比</th>
+                            <th class="p-3.5 font-bold">诊断结论与量化成因</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800 text-gray-300 font-medium">
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 font-mono text-indigo-400">ts_code</td>
+                            <td class="p-3.5 text-gray-500">string</td>
+                            <td class="p-3.5 font-mono">362</td>
+                            <td class="p-3.5 font-mono text-emerald-400 font-semibold">0</td>
+                            <td class="p-3.5 font-mono">0.00%</td>
+                            <td class="p-3.5 text-gray-400">正常，代码标记完整无错漏。</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 font-mono text-indigo-400">trade_date</td>
+                            <td class="p-3.5 text-gray-500">int64</td>
+                            <td class="p-3.5 font-mono">362</td>
+                            <td class="p-3.5 font-mono text-emerald-400 font-semibold">0</td>
+                            <td class="p-3.5 font-mono">0.00%</td>
+                            <td class="p-3.5 text-gray-400">正常，交易时间序列完整无断档。</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 font-mono text-indigo-400">open /.../ close</td>
+                            <td class="p-3.5 text-gray-500">float64</td>
+                            <td class="p-3.5 font-mono">362</td>
+                            <td class="p-3.5 font-mono text-emerald-400 font-semibold">0</td>
+                            <td class="p-3.5 font-mono">0.00%</td>
+                            <td class="p-3.5 text-gray-400">正常，开盘、最高、最低、收盘价 100% 闭合完整。</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 font-mono text-indigo-400">close_qfq / ...</td>
+                            <td class="p-3.5 text-gray-500">float64</td>
+                            <td class="p-3.5 font-mono">362</td>
+                            <td class="p-3.5 font-mono text-emerald-500">0</td>
+                            <td class="p-3.5 font-mono">0.00%</td>
+                            <td class="p-3.5 text-gray-400">正常，前复权价格序列已计算完整并闭合。</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors bg-[#1f191b]">
+                            <td class="p-3 font-mono font-semibold text-[#b45309]">pre_close</td>
+                            <td class="p-3 text-slate-500">float64</td>
+                            <td class="p-3 font-mono text-amber-700 font-semibold">361</td>
+                            <td class="p-3 font-mono text-amber-700 font-semibold">1</td>
+                            <td class="p-3 font-mono text-amber-700">0.28%</td>
+                            <td class="p-3.5 text-amber-300">首个交易日（2025-01-02）无昨收，属合规性边界缺失。</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors bg-[#1f191b]">
+                            <td class="p-3 font-mono font-semibold text-[#b45309]">change / pct_chg</td>
+                            <td class="p-3 text-slate-500">float64</td>
+                            <td class="p-3 font-mono text-amber-700 font-semibold">361</td>
+                            <td class="p-3 font-mono text-amber-700 font-semibold">1</td>
+                            <td class="p-3 font-mono text-amber-700">0.28%</td>
+                            <td class="p-3.5 text-amber-300">同上。由于首日昨收空值，导致首日衍生变幅指标缺失。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Part 2: Descriptive Stats Section -->
+        <section id="statistics" class="glass-card rounded-2xl p-6 space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-blue-500 bg-blue-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-calculator"></i></span>
+                <span>二、 核心特征描述性统计量 (Descriptive Statistics)</span>
+            </h3>
+            <p class="text-sm leading-relaxed text-gray-400">
+                经过对 362 个样本观测点执行标准化统计学描述，该股票的多维数据轮廓（价格：元；变动率：%；量：手）如下表：
+            </p>
+            
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-right text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-[#161b22]/50 text-gray-400 uppercase tracking-widest border-b border-gray-800">
+                            <th class="p-3.5 text-left font-bold">统计指标</th>
+                            <th class="p-3.5 font-bold">open (开盘)</th>
+                            <th class="p-3.5 font-bold">high (最高)</th>
+                            <th class="p-3.5 font-bold">low (最低)</th>
+                            <th class="p-3.5 font-bold">close (收盘)</th>
+                            <th class="p-3.5 font-bold">change (涨跌)</th>
+                            <th class="p-3.5 font-bold">pct_chg (%)</th>
+                            <th class="p-3.5 font-bold">vol (手)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800 text-gray-300 font-mono">
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 text-left font-sans text-gray-500">样本量 (Count)</td>
+                            <td class="p-3.5">362</td>
+                            <td class="p-3.5">362</td>
+                            <td class="p-3.5">362</td>
+                            <td class="p-3.5">362</td>
+                            <td class="p-3.5 text-amber-500">361</td>
+                            <td class="p-3.5 text-amber-500">361</td>
+                            <td class="p-3.5">362</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors font-bold text-white bg-slate-800/10">
+                            <td class="p-3.5 text-left font-sans text-gray-400">均值 (Mean)</td>
+                            <td class="p-3.5">6.15</td>
+                            <td class="p-3.5">6.32</td>
+                            <td class="p-3.5">5.97</td>
+                            <td class="p-3.5 text-blue-400">6.15</td>
+                            <td class="p-3.5">0.02</td>
+                            <td class="p-3.5 text-emerald-400">+0.34%</td>
+                            <td class="p-3.5 font-sans">216,553.11</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 text-left font-sans text-gray-500">标准差 (Std)</td>
+                            <td class="p-3.5">3.84</td>
+                            <td class="p-3.5">3.99</td>
+                            <td class="p-3.5">3.62</td>
+                            <td class="p-3.5">3.80</td>
+                            <td class="p-3.5">0.36</td>
+                            <td class="p-3.5 text-amber-400">3.55%</td>
+                            <td class="p-3.5 font-sans">191,706.13</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 text-left font-sans text-gray-500">最小值 (Min)</td>
+                            <td class="p-3.5">3.38</td>
+                            <td class="p-3.5">3.51</td>
+                            <td class="p-3.5">3.37</td>
+                            <td class="p-3.5 text-rose-500">3.43</td>
+                            <td class="p-3.5">-1.59</td>
+                            <td class="p-3.5 text-rose-500">-9.97%</td>
+                            <td class="p-3.5 font-sans">52,551.00</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 text-left font-sans text-gray-500">25% 分位数 (Q1)</td>
+                            <td class="p-3.5">3.90</td>
+                            <td class="p-3.5">3.95</td>
+                            <td class="p-3.5">3.85</td>
+                            <td class="p-3.5">3.90</td>
+                            <td class="p-3.5">-0.06</td>
+                            <td class="p-3.5">-1.29%</td>
+                            <td class="p-3.5 font-sans">92,023.50</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors bg-yellow-950/10">
+                            <td class="p-3.5 text-left font-sans text-yellow-500 font-semibold">中位数 (50%)</td>
+                            <td class="p-3.5 text-yellow-500 font-semibold">4.25</td>
+                            <td class="p-3.5 text-yellow-500 font-semibold">4.31</td>
+                            <td class="p-3.5 text-yellow-500 font-semibold">4.19</td>
+                            <td class="p-3.5 text-yellow-500 font-semibold">4.26</td>
+                            <td class="p-3.5 text-yellow-500 font-semibold">0.01</td>
+                            <td class="p-3.5 text-yellow-500 font-semibold">+0.26%</td>
+                            <td class="p-3.5 text-yellow-500 font-sans font-semibold">136,460.00</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 text-left font-sans text-gray-500">75% 分位数 (Q3)</td>
+                            <td class="p-3.5">6.60</td>
+                            <td class="p-3.5">7.05</td>
+                            <td class="p-3.5">6.40</td>
+                            <td class="p-3.5">6.73</td>
+                            <td class="p-3.5">0.07</td>
+                            <td class="p-3.5">+1.63%</td>
+                            <td class="p-3.5 font-sans">260,125.50</td>
+                        </tr>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 text-left font-sans text-gray-500">最大值 (Max)</td>
+                            <td class="p-3.5">20.80</td>
+                            <td class="p-3.5">21.83</td>
+                            <td class="p-3.5">18.78</td>
+                            <td class="p-3.5 text-emerald-400 font-bold">20.85</td>
+                            <td class="p-3.5">1.90</td>
+                            <td class="p-3.5 text-emerald-400 font-bold">+10.10%</td>
+                            <td class="p-3.5 font-sans font-bold">1,215,281.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Part 3: Deep Quant Analysis Section -->
+        <section id="analysis" class="glass-card rounded-2xl p-6 space-y-6">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-blue-500 bg-blue-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-brain"></i></span>
+                <span>三、 深度量化诊断与统计学特征分析</span>
+            </h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-[#161b22]/30 rounded-xl p-5 border border-gray-800/40 space-y-3">
+                    <div class="flex items-center space-x-2.5">
+                        <span class="bg-blue-900/20 text-blue-400 p-2 rounded-lg text-sm"><i class="fa-solid fa-chart-bar"></i></span>
+                        <h4 class="font-bold text-white text-sm">1. 显著的右偏分布 (Positive Skew)</h4>
+                    </div>
+                    <p class="text-xs leading-relaxed text-gray-400">
+                        收盘价均值（6.15元）远高于中位数（4.26元），表明该股票在统计周期内有超过 <b>60% 的交易日处于 5 元以下的低价震荡区</b>。随后的行情爆发迅速拉升至 20.85 元，导致算术均值受极值拉扯而大幅抬升，呈现长期筑底、短期爆发的右偏分布。在开发策略时，应配置自适应动态止损或趋势突破通道来过滤单边动能。
+                    </p>
+                </div>
                 
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-[#21262d] text-gray-300 uppercase tracking-wider border-b border-[#30363d]">
-                                <th class="p-3 font-semibold">字段名称</th>
-                                <th class="p-3 font-semibold">数据类型</th>
-                                <th class="p-3 font-semibold">有效行数</th>
-                                <th class="p-3 font-semibold">缺失数</th>
-                                <th class="p-3 font-semibold">缺失比</th>
-                                <th class="p-3 font-semibold">诊断结论与量化成因</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-[#30363d]">
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 font-mono text-blue-400">ts_code</td>
-                                <td class="p-3 text-gray-400">string</td>
-                                <td class="p-3 font-mono">362</td>
-                                <td class="p-3 font-mono text-emerald-500">0</td>
-                                <td class="p-3 font-mono">0.00%</td>
-                                <td class="p-3 text-gray-300">正常，代码标记完整无错漏。</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 font-mono text-blue-400">trade_date</td>
-                                <td class="p-3 text-gray-400">int64</td>
-                                <td class="p-3 font-mono">362</td>
-                                <td class="p-3 font-mono text-emerald-500">0</td>
-                                <td class="p-3 font-mono">0.00%</td>
-                                <td class="p-3 text-gray-300">正常，交易时间序列完整无断档。</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 font-mono text-blue-400">open/.../close</td>
-                                <td class="p-3 text-gray-400">float64</td>
-                                <td class="p-3 font-mono">362</td>
-                                <td class="p-3 font-mono text-emerald-500">0</td>
-                                <td class="p-3 font-mono">0.00%</td>
-                                <td class="p-3 text-gray-300">正常，开高低收基础 K 线报价 100% 完整。</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 font-mono text-blue-400">open_qfq/..._qfq</td>
-                                <td class="p-3 text-gray-400">float64</td>
-                                <td class="p-3 font-mono">362</td>
-                                <td class="p-3 font-mono text-emerald-500">0</td>
-                                <td class="p-3 font-mono">0.00%</td>
-                                <td class="p-3 text-gray-300">正常，前复权价格序列已计算完整并闭合。</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors bg-[#1f191b]">
-                                <td class="p-3 font-mono text-amber-400">pre_close</td>
-                                <td class="p-3 text-gray-400">float64</td>
-                                <td class="p-3 font-mono text-amber-400">361</td>
-                                <td class="p-3 font-mono text-amber-400">1</td>
-                                <td class="p-3 font-mono text-amber-400">0.28%</td>
-                                <td class="p-3 text-amber-300">首个交易日（2025-01-02）缺失昨收，属统计边界合规缺失。</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors bg-[#1f191b]">
-                                <td class="p-3 font-mono text-amber-400">change / pct_chg</td>
-                                <td class="p-3 text-gray-400">float64</td>
-                                <td class="p-3 font-mono text-amber-400">361</td>
-                                <td class="p-3 font-mono text-amber-400">1</td>
-                                <td class="p-3 font-mono text-amber-400">0.28%</td>
-                                <td class="p-3 text-amber-300">同上。由于首日昨收缺失导致衍生变量首日无法计算。</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 font-mono text-blue-400">vol</td>
-                                <td class="p-3 text-gray-400">float64</td>
-                                <td class="p-3 font-mono">362</td>
-                                <td class="p-3 font-mono text-emerald-500">0</td>
-                                <td class="p-3 font-mono">0.00%</td>
-                                <td class="p-3 text-gray-300">正常，成交量数据完整。</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Part 2: Descriptive Stats -->
-            <section id="statistics" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-4">
-                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
-                    <i class="fa-solid fa-calculator text-blue-500"></i>
-                    <span>二、 核心特征描述性统计量 (Descriptive Statistics)</span>
-                </h3>
-                <p class="text-sm leading-relaxed text-gray-300">
-                    针对该股在过去一年半内的交易表现，对其基础价格特征、涨跌变化及资金流量指标进行了算术均值、离散程度及极值统计。描述性统计指标如下表所示：
-                </p>
-                
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-right text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-[#21262d] text-gray-300 uppercase tracking-wider border-b border-[#30363d]">
-                                <th class="p-3 text-left font-semibold">统计指标</th>
-                                <th class="p-3 font-semibold">open (开盘)</th>
-                                <th class="p-3 font-semibold">high (最高)</th>
-                                <th class="p-3 font-semibold">low (最低)</th>
-                                <th class="p-3 font-semibold">close (收盘)</th>
-                                <th class="p-3 font-semibold">change (涨跌)</th>
-                                <th class="p-3 font-semibold">pct_chg (%)</th>
-                                <th class="p-3 font-semibold">vol (手)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-[#30363d] font-mono text-gray-300">
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 text-left font-sans text-gray-400">样本量 (Count)</td>
-                                <td class="p-3">362</td>
-                                <td class="p-3">362</td>
-                                <td class="p-3">362</td>
-                                <td class="p-3">362</td>
-                                <td class="p-3 text-amber-400">361</td>
-                                <td class="p-3 text-amber-400">361</td>
-                                <td class="p-3">362</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors font-semibold text-white">
-                                <td class="p-3 text-left font-sans text-gray-400">均值 (Mean)</td>
-                                <td class="p-3">6.15</td>
-                                <td class="p-3">6.32</td>
-                                <td class="p-3">5.97</td>
-                                <td class="p-3 text-blue-400">6.15</td>
-                                <td class="p-3">0.02</td>
-                                <td class="p-3 text-emerald-400">+0.34%</td>
-                                <td class="p-3">216,553.11</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 text-left font-sans text-gray-400">标准差 (Std)</td>
-                                <td class="p-3">3.84</td>
-                                <td class="p-3">3.99</td>
-                                <td class="p-3">3.62</td>
-                                <td class="p-3">3.80</td>
-                                <td class="p-3">0.36</td>
-                                <td class="p-3 text-amber-400">3.55%</td>
-                                <td class="p-3">191,706.13</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 text-left font-sans text-gray-400">最小值 (Min)</td>
-                                <td class="p-3">3.38</td>
-                                <td class="p-3">3.51</td>
-                                <td class="p-3">3.37</td>
-                                <td class="p-3 text-rose-500">3.43</td>
-                                <td class="p-3">-1.59</td>
-                                <td class="p-3 text-rose-500">-9.97%</td>
-                                <td class="p-3">52,551.00</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 text-left font-sans text-gray-400">25% 分位数 (Q1)</td>
-                                <td class="p-3">3.90</td>
-                                <td class="p-3">3.95</td>
-                                <td class="p-3">3.85</td>
-                                <td class="p-3">3.90</td>
-                                <td class="p-3">-0.06</td>
-                                <td class="p-3">-1.29%</td>
-                                <td class="p-3">92,023.50</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors bg-[#111827]">
-                                <td class="p-3 text-left font-sans text-gray-400">中位数 (50%)</td>
-                                <td class="p-3 text-yellow-500">4.25</td>
-                                <td class="p-3 text-yellow-500">4.31</td>
-                                <td class="p-3 text-yellow-500">4.19</td>
-                                <td class="p-3 text-yellow-500">4.26</td>
-                                <td class="p-3 text-yellow-500">0.01</td>
-                                <td class="p-3 text-yellow-500">+0.26%</td>
-                                <td class="p-3 text-yellow-500">136,460.00</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 text-left font-sans text-gray-400">75% 分位数 (Q3)</td>
-                                <td class="p-3">6.60</td>
-                                <td class="p-3">7.05</td>
-                                <td class="p-3">6.40</td>
-                                <td class="p-3">6.73</td>
-                                <td class="p-3">0.07</td>
-                                <td class="p-3">+1.63%</td>
-                                <td class="p-3">260,125.50</td>
-                            </tr>
-                            <tr class="hover:bg-[#1f242c] transition-colors">
-                                <td class="p-3 text-left font-sans text-gray-400">最大值 (Max)</td>
-                                <td class="p-3">20.80</td>
-                                <td class="p-3">21.83</td>
-                                <td class="p-3">18.78</td>
-                                <td class="p-3 text-emerald-400">20.85</td>
-                                <td class="p-3">1.90</td>
-                                <td class="p-3 text-emerald-400">+10.10%</td>
-                                <td class="p-3">1,215,281.00</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Part 3: Deep Analysis -->
-            <section id="analysis" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-6">
-                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
-                    <i class="fa-solid fa-brain text-blue-500"></i>
-                    <span>三、 深度量化诊断与统计学特征分析</span>
-                </h3>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-3">
-                        <div class="flex items-center space-x-2.5">
-                            <span class="bg-blue-950 text-blue-400 p-2 rounded-lg text-sm"><i class="fa-solid fa-chart-bar"></i></span>
-                            <h4 class="font-bold text-white text-sm">1. 显著的右偏分布 (Positive Skewness)</h4>
-                        </div>
-                        <p class="text-xs leading-relaxed text-gray-400">
-                            股价均值（6.15元）远高于中位数（4.26元），表明该股票在统计周期内有超过 <b>60% 的交易日处于 5 元以下的低价震荡区</b>。随后的行情爆发迅速拉升至 20.85 元，导致算术均值受极值拉扯而大幅抬升，呈现长期筑底、短期爆发的右偏分布结构。<br/>
-                            <span class="text-blue-400 font-semibold mt-1 block"><i class="fa-solid fa-lightbulb"></i> 策略：</span>在开发策略时，传统的均值回归或网格策略容易在高位面临巨大的趋势爆仓风险，应考虑配置自适应动态止损或趋势突破通道来过滤单边动能。
-                        </p>
+                <!-- Card 2 -->
+                <div class="bg-[#161b22]/30 rounded-xl p-5 border border-gray-800/40 space-y-3">
+                    <div class="flex items-center space-x-2.5">
+                        <span class="bg-rose-900/20 text-rose-400 p-2 rounded-lg text-sm"><i class="fa-solid fa-arrow-trend-up"></i></span>
+                        <h4 class="font-bold text-white text-sm">2. 极高波动性与明显的“封板”倾向</h4>
                     </div>
-                    
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-3">
-                        <div class="flex items-center space-x-2.5">
-                            <span class="bg-rose-950 text-rose-400 p-2 rounded-lg text-sm"><i class="fa-solid fa-arrow-trend-up"></i></span>
-                            <h4 class="font-bold text-white text-sm">2. 极高波动性与封板倾向 (High Volatility)</h4>
-                        </div>
-                        <p class="text-xs leading-relaxed text-gray-400">
-                            股价日涨跌幅标准差高达 <b>3.55%</b>。在统计期内，单日最大跌幅达 -9.97%（逼近跌停），单日最大涨幅达 +10.10%（封涨停板）。这种极高波动代表股价在趋势启动时弹性极大，而在退潮时存在极强的踩踏风险。<br/>
-                            <span class="text-rose-400 font-semibold mt-1 block"><i class="fa-solid fa-lightbulb"></i> 策略：</span>在策略执行端，必须引入硬滑点限制（Slippage Limit Protection）与封板撤单控制，防范挂单追高和流动性枯竭导致的无法及时止损风险。
-                        </p>
-                    </div>
-
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-3">
-                        <div class="flex items-center space-x-2.5">
-                            <span class="bg-emerald-950 text-emerald-400 p-2 rounded-lg text-sm"><i class="fa-solid fa-water"></i></span>
-                            <h4 class="font-bold text-white text-sm">3. 极度不均匀的流动性聚集 (Volume Clustering)</h4>
-                        </div>
-                        <p class="text-xs leading-relaxed text-gray-400">
-                            该股成交量的均值为 21.6 万手，中位数为 13.6 万手，而最大日成交量达到了惊人的 <b>121.5 万手</b>（为中位数的 8.9 倍）。说明该股属于典型的“情绪/资金驱动型”标的，在无行情时交投极清淡，一旦突破则伴随资金爆发式涌入。<br/>
-                            <span class="text-emerald-400 font-semibold mt-1 block"><i class="fa-solid fa-lightbulb"></i> 策略：</span>基于量价比值（Volume-Price Ratio）或 OBV 能量潮的突变信号，能够对趋势突破确立提供极高的过滤胜率。
-                        </p>
-                    </div>
+                    <p class="text-xs leading-relaxed text-gray-400">
+                        股价日涨跌幅标准差高达 <b>3.55%</b>。在统计期内，单日最大跌幅达 -9.97%（跌停），单日最大涨幅达 +10.10%（封涨停）。这种极高波动代表股价在趋势启动时弹性极大，而在退潮时存在极强的踩踏风险。在策略执行端，应引入硬滑点限制（Slippage Limit Protection）与封板撤单控制。
+                    </p>
                 </div>
-            </section>
 
-            <!-- Part 4: Technical Indicators -->
-            <section id="indicators" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-6">
-                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
-                    <i class="fa-solid fa-compass text-blue-500"></i>
-                    <span>四、 核心技术指标计算逻辑与作用</span>
-                </h3>
-                
-                <div class="space-y-8">
-                    <!-- RSI -->
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-4">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#21262d] pb-2">
-                            <h4 class="font-bold text-white text-md flex items-center space-x-2">
-                                <span class="bg-[#21262d] text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
-                                <span>相对强弱指标 (RSI)</span>
+                <!-- Card 3 -->
+                <div class="bg-[#161b22]/30 rounded-xl p-5 border border-gray-800/40 space-y-3">
+                    <div class="flex items-center space-x-2.5">
+                        <span class="bg-emerald-900/20 text-emerald-400 p-2 rounded-lg text-sm"><i class="fa-solid fa-water"></i></span>
+                        <h4 class="font-bold text-white text-sm">3. 极度不均匀的流动性聚集</h4>
+                    </div>
+                    <p class="text-xs leading-relaxed text-gray-400">
+                        该股成交量的均值为 21.6 万手，中位数为 13.6 万手，而最大日成交量达到了惊人的 <b>121.5 万手</b>（为中位数的 8.9 倍）。说明该股属于情绪和资金驱动型标的，在无行情时交投极度清淡，一旦突破则伴随资金爆发式涌入。基于量价比值或 OBV 能量潮的突变信号，能够对趋势突破确立提供极高的过滤胜率。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 4: Technical Indicators Section with double-escaped KaTeX -->
+        <section id="indicators" class="glass-card rounded-2xl p-6 space-y-6">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-blue-500 bg-blue-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-compass"></i></span>
+                <span>四、 核心技术指标计算逻辑与作用 (KaTeX 实时公式渲染)</span>
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- RSI Card -->
+                <div class="border border-gray-800 rounded-xl p-5 bg-[#161b22]/20 flex flex-col justify-between space-y-3">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                            <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                                <span class="bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">1</span>
+                                <span>RSI 相对强弱指标 (14日)</span>
                             </h4>
-                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-full font-bold">默认参数：N = 14</span>
+                            <span class="bg-blue-950 text-blue-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold">Wilder 平滑</span>
                         </div>
                         <p class="text-xs leading-relaxed text-gray-400">
-                            RSI是衡量多空力量对比的经典动能指标。其通过计算14日内价格上涨和下跌幅度的指数平滑比例，将数值归一化在[0, 100]之间。在本报告中，采用更纯正的Wilder指数平滑移动平均。RSI > 70代表超买，RSI < 30代表超卖。其核心数学表达式为：
+                            RSI是衡量多空对比的经典指标。其通过计算14日内价格上涨和下跌幅度的指数平滑比例，将数值归一化在[0, 100]之间。RSI > 70代表超买，RSI < 30代表超卖。
                         </p>
-                        <!-- Math Block -->
-                        <div class="bg-[#161b22] border border-[#21262d] rounded-lg p-3 text-center text-xs font-mono text-blue-300 space-y-1">
-                            <div>ΔP<sub>t</sub> = Close<sub>t</sub> - Close<sub>t-1</sub></div>
-                            <div>U<sub>t</sub> = max(ΔP<sub>t</sub>, 0),   D<sub>t</sub> = max(-ΔP<sub>t</sub>, 0)</div>
-                            <div>EMA_U<sub>t</sub> = EMA<sub>t</sub>(U, α),   EMA_D<sub>t</sub> = EMA<sub>t</sub>(D, α),   α = 1 / 14</div>
-                            <div class="font-bold text-white">RSI<sub>t</sub> = 100 × [ EMA_U<sub>t</sub> / ( EMA_U<sub>t</sub> + EMA_D<sub>t</sub> ) ]</div>
-                        </div>
+                        <p class="text-[11px] text-blue-400 font-bold"><i class="fa-solid fa-gear"></i> 默认推荐参数：周期 = <b>14日</b>，超买 = <b>70</b>，超卖 = <b>30</b></p>
                     </div>
-
-                    <!-- MACD -->
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-4">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#21262d] pb-2">
-                            <h4 class="font-bold text-white text-md flex items-center space-x-2">
-                                <span class="bg-[#21262d] text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
-                                <span>平滑异同移动平均线 (MACD)</span>
-                            </h4>
-                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-full font-bold">默认参数：(12, 26, 9)</span>
-                        </div>
-                        <p class="text-xs leading-relaxed text-gray-400">
-                            MACD属于趋势跟踪型动能指标，通过对长短期均线的差值处理，消除了传统均线的滞后性。计算12日和26日EMA的差值作为离差快速线（DIF），再计算DIF的9日EMA作为慢速信号线（DEA）；两线之差的2倍即为红绿柱HIST。
-                        </p>
-                        <!-- Math Block -->
-                        <div class="bg-[#161b22] border border-[#21262d] rounded-lg p-3 text-center text-xs font-mono text-blue-300 space-y-1">
-                            <div>EMA<sub>t</sub>(Close, N) = α × Close<sub>t</sub> + (1 - α) × EMA<sub>t-1</sub>(Close, N),   α = 2 / (N + 1)</div>
-                            <div>DIF<sub>t</sub> = EMA<sub>t</sub>(Close, 12) - EMA<sub>t</sub>(Close, 26)</div>
-                            <div>DEA<sub>t</sub> = EMA<sub>t</sub>(DIF, 9)</div>
-                            <div class="font-bold text-white">MACD_Bar<sub>t</sub> = 2 × ( DIF<sub>t</sub> - DEA<sub>t</sub> )</div>
-                        </div>
-                    </div>
-
-                    <!-- Bollinger Bands -->
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-4">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#21262d] pb-2">
-                            <h4 class="font-bold text-white text-md flex items-center space-x-2">
-                                <span class="bg-[#21262d] text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
-                                <span>布林带 (Bollinger Bands)</span>
-                            </h4>
-                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-full font-bold">默认参数：(20, 2)</span>
-                        </div>
-                        <p class="text-xs leading-relaxed text-gray-400">
-                            布林带是一种根据价格标准差建立的动态价格信道。其以20日简单收盘均线为中轨（MB），均线正负2倍的20日滚动标准差作为上下限轨道（UP / DN）。在常态波动下，由于价格运行在通道内部的概率达95.44%，触轨常伴随着超买超卖的回吐反弹。
-                        </p>
-                        <!-- Math Block -->
-                        <div class="bg-[#161b22] border border-[#21262d] rounded-lg p-3 text-center text-xs font-mono text-blue-300 space-y-1">
-                            <div>MB<sub>t</sub> = SMA<sub>t</sub>(Close, 20) = (1 / 20) × Σ<sub>i=0</sub><sup>19</sup> Close<sub>t-i</sub></div>
-                            <div>σ<sub>t</sub> = √ [ (1 / 20) × Σ<sub>i=0</sub><sup>19</sup> ( Close<sub>t-i</sub> - MB<sub>t</sub> )<sup>2</sup> ]</div>
-                            <div class="font-bold text-white">UP<sub>t</sub> = MB<sub>t</sub> + 2 × σ<sub>t</sub>,   DN<sub>t</sub> = MB<sub>t</sub> - 2 × σ<sub>t</sub></div>
-                        </div>
-                    </div>
-
-                    <!-- DMI & ADX -->
-                    <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-5 space-y-4">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#21262d] pb-2">
-                            <h4 class="font-bold text-white text-md flex items-center space-x-2">
-                                <span class="bg-[#21262d] text-blue-400 w-6 h-6 rounded-full flex items-center justify-center text-xs">4</span>
-                                <span>趋向指标 (DMI & ADX)</span>
-                            </h4>
-                            <span class="bg-blue-950 text-blue-400 text-xs px-2.5 py-1 rounded-full font-bold">自适应核心参数：(14, 20, 26)</span>
-                        </div>
-                        <p class="text-xs leading-relaxed text-gray-400">
-                            针对本股高爆发、大波段横盘等特征，特引入DMI/ADX趋向指标。其通过真实波幅TR与正负趋向DM算取多空向导+DI和-DI，并计算综合趋势强度ADX。<b>ADX < 20 为横盘无趋势弱能区，关闭趋势策略；ADX > 26 为高能趋势确立区，全线激活动量，顺势而为！</b>
-                        </p>
-                        <!-- Math Block -->
-                        <div class="bg-[#161b22] border border-[#21262d] rounded-lg p-3 text-center text-xs font-mono text-blue-300 space-y-1">
-                            <div>TR<sub>t</sub> = max( High<sub>t</sub> - Low<sub>t</sub>,  |High<sub>t</sub> - Close<sub>t-1</sub>|,  |Low<sub>t</sub> - Close<sub>t-1</sub>| )</div>
-                            <div>+DM<sub>t</sub> = High<sub>t</sub> - High<sub>t-1</sub>   (if > (Low<sub>t-1</sub> - Low<sub>t</sub>) and > 0, else 0)</div>
-                            <div>-DM<sub>t</sub> = Low<sub>t-1</sub> - Low<sub>t</sub>   (if > (High<sub>t</sub> - High<sub>t-1</sub>) and > 0, else 0)</div>
-                            <div>+DI<sub>t</sub> = 100 × [ EMA(+DM<sub>t</sub>, α) / EMA(TR<sub>t</sub>, α) ],   -DI<sub>t</sub> = 100 × [ EMA(-DM<sub>t</sub>, α) / EMA(TR<sub>t</sub>, α) ],   α = 1/14</div>
-                            <div class="font-bold text-white">DX<sub>t</sub> = 100 × | +DI<sub>t</sub> - -DI<sub>t</sub> | / ( +DI<sub>t</sub> + -DI<sub>t</sub> )    and    ADX<sub>t</sub> = EMA(DX<sub>t</sub>, α)</div>
-                        </div>
+                    <!-- KaTeX Block -->
+                    <div class="bg-[#0d1117]/80 border border-gray-800 rounded-lg p-3 text-center text-xs leading-relaxed overflow-x-auto font-mono text-indigo-300">
+                        $$\Delta P_t = Close_t - Close_{t-1}$$
+                        $$U_t = \max(\Delta P_t, 0), \quad D_t = \max(-\Delta P_t, 0)$$
+                        $$RS_t = \frac{{EMA_t(U, 1/14)}}{{EMA_t(D, 1/14)}}$$
+                        $$RSI_t = 100 - \frac{{100}}{{1 + RS_t}}$$
                     </div>
                 </div>
-            </section>
 
-            <!-- Part 5: Visualization -->
-            <section id="visualization" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-4">
-                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
-                    <i class="fa-solid fa-images text-blue-500"></i>
-                    <span>五、 技术指标可视化看板呈现效果与分析</span>
-                </h3>
-                <p class="text-sm leading-relaxed text-gray-300">
-                    4面板量化分析图（图 1）直观展示了各个技术指标的配合与变化：
-                </p>
+                <!-- MACD Card -->
+                <div class="border border-gray-800 rounded-xl p-5 bg-[#161b22]/20 flex flex-col justify-between space-y-3">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                            <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                                <span class="bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">2</span>
+                                <span>MACD 平滑异同移动平均线</span>
+                            </h4>
+                            <span class="bg-blue-950 text-blue-400 text-[10px] px-2.5 py-0.5 rounded-full font-bold">EMA 趋势</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-gray-400">
+                            MACD利用长短期EMA的差值处理，消除传统均线的滞后性。计算12日和26日EMA之差作为离差快速线（DIF），再计算DIF的9日EMA作为慢速线（DEA），红绿柱为2*(DIF-DEA)。
+                        </p>
+                        <p class="text-[11px] text-blue-400 font-bold"><i class="fa-solid fa-gear"></i> 默认推荐参数：快速 = <b>12日</b>，慢速 = <b>26日</b>，信号 = <b>9日</b></p>
+                    </div>
+                    <!-- KaTeX Block -->
+                    <div class="bg-[#0d1117]/80 border border-gray-800 rounded-lg p-3 text-center text-xs leading-relaxed overflow-x-auto font-mono text-indigo-300">
+                        $$EMA_t(Close, N) = Close_t \times \frac{{2}}{{N+1}} + EMA_{t-1} \times (1 - \frac{{2}}{{N+1}})$$
+                        $$DIF_t = EMA_t(Close, 12) - EMA_t(Close, 26)$$
+                        $$DEA_t = EMA_t(DIF, 9)$$
+                        $$MACD\_Bar_t = 2 \times \left( DIF_t - DEA_t \right)$$
+                    </div>
+                </div>
+
+                <!-- Bollinger Bands Card -->
+                <div class="border border-gray-800 rounded-xl p-5 bg-[#161b22]/20 flex flex-col justify-between space-y-3">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                            <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                                <span class="bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">3</span>
+                                <span>布林带 Bollinger Bands (20, 2)</span>
+                            </h4>
+                            <span class="bg-blue-100 text-blue-800 text-[10px] px-2.5 py-0.5 rounded-full font-bold">置信度通道</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-gray-400">
+                            布林带以20日简单收盘均线为中轨（MB），中轨正负2倍的20日滚动标准差作为上下限界轨。在常态分布下，价格运行在通道内部的理论概率高达 95.44%。
+                        </p>
+                        <p class="text-[11px] text-blue-700 font-bold"><i class="fa-solid fa-gear"></i> 默认推荐参数：均线周期 = <b>20日</b>，标准差倍数 K = <b>2.0</b></p>
+                    </div>
+                    <!-- KaTeX Block -->
+                    <div class="bg-[#0d1117]/80 border border-gray-800 rounded-lg p-3 text-center text-xs leading-relaxed overflow-x-auto font-mono text-indigo-300">
+                        $$MB_t = SMA_t(Close, 20) = \frac{{1}}{{20}} \sum_{{i=0}}^{{19}} Close_{{t-i}}$$
+                        $$\sigma_t = \sqrt{{ \frac{{1}}{{20}} \sum_{{i=0}}^{{19}} \left( Close_{{t-i}} - MB_t \right)^2 }}$$
+                        $$UP_t = MB_t + 2 \times \sigma_t, \quad DN_t = MB_t - 2 \times \sigma_t$$
+                    </div>
+                </div>
+
+                <!-- DMI / ADX Card -->
+                <div class="border border-gray-800 rounded-xl p-5 bg-[#161b22]/20 flex flex-col justify-between space-y-3">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-2">
+                            <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                                <span class="bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">4</span>
+                                <span>DMI & ADX 趋向指标系统</span>
+                            </h4>
+                            <span class="bg-blue-100 text-blue-800 text-[10px] px-2.5 py-0.5 rounded-full font-bold">趋势过滤闸</span>
+                        </div>
+                        <p class="text-xs leading-relaxed text-gray-400">
+                            针对该股长期震荡横盘特征，DMI/ADX用来衡量趋势强度。当ADX < 20时，代表市场无方向波动，策略防守；当ADX上穿26高能行情线时，代表单边大主升浪成型。
+                        </p>
+                        <p class="text-[11px] text-blue-700 font-bold"><i class="fa-solid fa-gear"></i> 默认推荐参数：平滑窗口 = <b>14日</b>，趋势界 = <b>20</b>，高能线 = <b>26</b></p>
+                    </div>
+                    <!-- KaTeX Block -->
+                    <div class="bg-[#0d1117]/80 border border-gray-800 rounded-lg p-3 text-center text-xs leading-relaxed overflow-x-auto font-mono text-indigo-300">
+                        $$TR_t = \max\left( H_t - L_t,  |H_t - C_{{t-1}}|,  |L_t - C_{{t-1}}| \right)$$
+                        $$+DI_t = 100 \times \frac{{EMA(+DM, 1/14)}}{{EMA(TR, 1/14)}}, \quad -DI_t = 100 \times \frac{{EMA(-DM, 1/14)}}{{EMA(TR, 1/14)}}$$
+                        $$DX_t = 100 \times \frac{{|+DI_t - -DI_t|}}{{+DI_t + -DI_t}}$$
+                        $$ADX_t = EMA_t(DX, 1/14)$$
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 5: Interactive Visualization Dashboard -->
+        <section id="interactive-board" class="glass-card rounded-2xl p-6 space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-blue-500 bg-blue-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-images"></i></span>
+                <span>五、 联动交互式技术指标可视化看板</span>
+            </h3>
+            <p class="text-sm leading-relaxed text-gray-400">
+                下面是由 4 个独立图表组件通过 X 轴时间指针连接而成的 **联动量化看板**。将您的鼠标放上去左右滑动，4 个图表的十字星将会<b>无缝对齐同步联动</b>，弹出每一天的完整量化指标明细气泡！
+            </p>
+            
+            <!-- Stacked Independent Connected ECharts Divs -->
+            <div class="bg-[#111827]/40 border border-gray-800 rounded-xl p-4 sm:p-6 space-y-5 shadow-sm">
+                <!-- 1. K-line / Candlestick + BB -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between px-1 text-xs font-bold text-gray-400">
+                        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>面板 A: 蜡烛 K线走势与布林通道 (Bollinger Bands 20, 2)</span>
+                        <span class="text-gray-500 font-normal">支持触控板/滚轮缩放与左右拖拽</span>
+                    </div>
+                    <div id="chart-kline" class="w-full bg-[#0d1117]/60 rounded-xl border border-gray-800/80" style="height: 350px;"></div>
+                </div>
                 
-                <!-- Chart Container -->
-                <div class="bg-[#0d1117] border border-[#30363d] rounded-lg p-4 flex flex-col items-center">
-                    <img src="600683_SH_indicators_chart.png" alt="600683.SH 核心技术指标可视化看板" class="max-w-full rounded-md shadow-2xl border border-[#30363d] hover:scale-[1.01] transition-all duration-300 cursor-pointer" style="max-height: 700px;">
-                    <span class="text-xs text-gray-400 mt-3 font-semibold">图 1: 京投发展 (600683.SH) 核心技术指标与 DMI/ADX 趋势强度可视化看板</span>
-                </div>
-
-                <div class="space-y-4 mt-6">
-                    <h4 class="font-bold text-sm text-white"><i class="fa-solid fa-list-check text-blue-500 mr-2"></i>看板细节量化解构：</h4>
-                    <ul class="space-y-3 text-xs text-gray-400">
-                        <li class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3">
-                            <strong class="text-white">● 第一面板 (价格与布林带)：</strong> 蓝色价格线在2025年底产生布林挤压（Squeeze），波动压缩至极限；随后价格强势上破并贴着布林上轨（UP）快速上摩擦行进，是主升浪启动的极佳信号。
-                        </li>
-                        <li class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3">
-                            <strong class="text-white">● 第二面板 (MACD 动能差)：</strong> 在2026年春节前后，DIF与DEA发生零轴下金叉，并以大倾角冲破零轴关口，柱状直方图伴随大体量放量（绿柱增长），趋势能量确立；5月中旬两线出现高位死叉破位，动量竭尽。
-                        </li>
-                        <li class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3">
-                            <strong class="text-white">● 第三面板 (RSI 强弱震荡器)：</strong> 14日RSI展现了2025年中的数个绝佳左侧抄底超卖位（RSI &lt; 30），并记录了2026年爆拉阶段超买区域（RSI &gt; 70）的严重价格钝化。
-                        </li>
-                        <li class="bg-[#0d1117] border border-[#30363d] rounded-lg p-3">
-                            <strong class="text-white">● 第四面板 (DMI/ADX 强震趋向)：</strong> 在2025年，深褐色ADX趋势强度线几乎全年在 20 以下无趋势弱震带运行，完美过滤磨损；2026年初 +DI（绿）金叉 -DI（红），且ADX上穿20、冲破26，趋势极速成型。
-                        </li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Part 6: Verification Results (Terminal View) -->
-            <section id="verification" class="bg-[#161b22] border border-[#30363d] rounded-lg p-6 space-y-4">
-                <h3 class="text-lg font-bold text-white flex items-center space-x-2 border-b border-[#30363d] pb-3">
-                    <i class="fa-solid fa-circle-check text-blue-500"></i>
-                    <span>六、 附录：数据源双源校验核对结果 (Tushare vs Yahoo Finance)</span>
-                </h3>
-                <p class="text-sm leading-relaxed text-gray-300">
-                    为保障历史数据精度，我们编写脚本对 **Tushare 原始数据** 与全球权威金融数据库 **Yahoo Finance (600683.SS)** 进行高精度数值稽核。自动校验日志如下所示：
-                </p>
-
-                <!-- Terminal Simulator -->
-                <div class="bg-[#0d1117] border border-[#30363d] rounded-lg overflow-hidden flex flex-col font-mono text-xs">
-                    <!-- Terminal Header -->
-                    <div class="bg-[#161b22] px-4 py-2 border-b border-[#30363d] flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                            <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
-                            <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                            <span class="text-xs text-gray-400 ml-2">quant_data_validator.sh</span>
-                        </div>
-                        <div class="text-gray-500 flex items-center space-x-2">
-                            <i class="fa-regular fa-clipboard cursor-pointer hover:text-white" id="copy-log-btn" title="复制代码"></i>
-                            <span id="copy-success-tooltip" class="text-[10px] text-emerald-400 hidden">Copied!</span>
-                        </div>
+                <!-- 2. MACD -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between px-1 text-xs font-bold text-gray-400">
+                        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>面板 B: MACD 动能平滑离差直方柱体 (12, 26, 9)</span>
                     </div>
-                    <!-- Terminal Body -->
-                    <div class="p-4 overflow-x-auto custom-scrollbar bg-[#0d1117] text-gray-300 leading-relaxed font-mono">
-                        <pre id="validation-log-content">==================================================
+                    <div id="chart-macd" class="w-full bg-[#0d1117]/60 rounded-xl border border-gray-800/80" style="height: 190px;"></div>
+                </div>
+                
+                <!-- 3. RSI -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between px-1 text-xs font-bold text-gray-400">
+                        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>面板 C: RSI 相对强弱动能摆动指标 (14日)</span>
+                        <span class="text-rose-500 font-bold text-[10px]">70 超买区 / 30 超卖区</span>
+                    </div>
+                    <div id="chart-rsi" class="w-full bg-[#0d1117]/60 rounded-xl border border-gray-800/80" style="height: 190px;"></div>
+                </div>
+
+                <!-- 4. DMI / ADX -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between px-1 text-xs font-bold text-gray-400">
+                        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>面板 D: DMI 趋向系统与 ADX 趋势能级过滤器 (14日)</span>
+                        <span class="text-amber-500 font-bold text-[10px]">20 趋势确立界 / 26 高单边动能触发线</span>
+                    </div>
+                    <div id="chart-dmi" class="w-full bg-[#0d1117]/60 rounded-xl border border-gray-800/80" style="height: 190px;"></div>
+                </div>
+                
+                <div class="text-center text-[11px] text-gray-500 font-bold mt-2 pt-3 border-t border-gray-800">
+                    图 1: 京投发展 (600683.SH) 核心技术指标与 DMI/ADX 趋势强度联动交互式可视化看板 (Task 2)
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 6: Verification Section -->
+        <section id="verification" class="glass-card rounded-2xl p-6 space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-blue-500 bg-blue-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-circle-check"></i></span>
+                <span>六、 附录：数据源双源校验核对结果 (Tushare vs Yahoo Finance)</span>
+            </h3>
+            <p class="text-sm leading-relaxed text-gray-400">
+                为保障历史数据精度，我们对 **Tushare 原始数据** 与全球权威金融数据库 **Yahoo Finance (600683.SS)** 执行了逐个交易日的严格交叉稽核。自动校验日志输出如下：
+            </p>
+
+            <!-- Terminal Simulator -->
+            <div class="bg-[#0d1117] border border-gray-800 rounded-xl overflow-hidden flex flex-col font-mono text-xs shadow-md">
+                <!-- Terminal Header -->
+                <div class="bg-[#161b22] px-4 py-2.5 border-b border-gray-800 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                        <span class="text-xs text-gray-400 ml-2">quant_data_validator.sh</span>
+                    </div>
+                    <div class="text-gray-500 flex items-center space-x-2">
+                        <i class="fa-regular fa-clipboard cursor-pointer hover:text-white" id="copy-log-btn" title="复制代码"></i>
+                        <span id="copy-success-tooltip" class="text-[10px] text-emerald-400 hidden">Copied!</span>
+                    </div>
+                </div>
+                <!-- Terminal Body -->
+                <div class="p-4 overflow-x-auto custom-scrollbar bg-[#0d1117] text-gray-300 leading-relaxed font-mono">
+                    <pre id="validation-log-content">==================================================
              TUSHARE VS YAHOO FINANCE             
              VERIFICATION REPORT                  
 ==================================================
@@ -569,6 +571,8 @@ Target stock: 600683 (Tushare) / 600683.SS (Yahoo)
 Timeframe: 2025-01-01 to 2026-07-04
 
 [Step 1] Fetching 600683 from Tushare...
+本接口即将停止更新，请尽快使用Pro版接口：https://tushare.pro/document/2
+本接口即将停止更新，请尽快使用Pro版接口：https://tushare.pro/document/2
 Tushare QFQ Rows: 362
 Tushare None Rows: 362
 Max difference within Tushare (QFQ vs None): 0.0000
@@ -601,34 +605,298 @@ VERIFICATION CONCLUSION:
 SUCCESS: Tushare and Yahoo Finance data are highly aligned (identical prices).
 Both source datasets confirm NO corporate actions (splits/dividends) occurred for 600683 since 2025-01-01.
 Therefore, unadjusted and front-adjusted prices are identical.
-==================================================</pre>
-                    </div>
+==================================================
+</pre>
                 </div>
-            </section>
-
-        </main>
-
-        <!-- Footer -->
-        <footer class="bg-[#161b22] border-t border-[#30363d] py-6 text-center text-xs text-gray-500 mt-12">
-            <div class="flex justify-center space-x-4 mb-2">
-                <a href="#overview" class="hover:text-gray-300">概览</a>
-                <span class="text-gray-700">•</span>
-                <a href="#quality" class="hover:text-gray-300">质量诊断</a>
-                <span class="text-gray-700">•</span>
-                <a href="#statistics" class="hover:text-gray-300">描述统计</a>
-                <span class="text-gray-700">•</span>
-                <a href="#indicators" class="hover:text-gray-300">指标算法</a>
             </div>
-            <p>© 2026 HoloCyf Quant System. Designed for Beijing University Quantitative Course.</p>
-        </footer>
+        </section>
+
     </div>
 
-    <!-- Script for mobile menu and copy functionality -->
+    <!-- Footer -->
+    <footer class="text-center text-xs text-gray-500 mt-12 py-6 border-t border-gray-800">
+        <div class="flex justify-center space-x-4 mb-2">
+            <a href="#overview" class="hover:text-white">概览</a>
+            <span class="text-gray-700">•</span>
+            <a href="#quality" class="hover:text-white">质量诊断</a>
+            <span class="text-gray-700">•</span>
+            <a href="#statistics" class="hover:text-white">描述统计</a>
+            <span class="text-gray-700">•</span>
+            <a href="#interactive-board" class="hover:text-white">多图联动看版</a>
+        </div>
+        <p>© 2026 HoloCyf Quant System. Designed for Beijing University Quantitative Course.</p>
+    </footer>
+
+    <!-- Interactive ECharts Configuration & Data Connection -->
     <script>
-        // Copy Log Functionality
+        // ------------------
+        // Pre-calculated Clean Data from Python (Chronological)
+        // ------------------
+        const rawData = [{"date": "2025-01-02", "open": 4.15, "high": 4.18, "low": 4.1, "close": 4.18, "vol": 194067.0, "rsi": null, "dif": 0.0, "dea": 0.0, "hist": 0.0, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 0.0, "plus_di": 0.0, "minus_di": 0.0}, {"date": "2025-01-03", "open": 4.12, "high": 4.31, "low": 3.91, "close": 3.96, "vol": 436110.0, "rsi": 0.0, "dif": -0.0175, "dea": -0.0035, "hist": -0.0281, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 7.1429, "plus_di": 0.0, "minus_di": 13.1944}, {"date": "2025-01-06", "open": 3.92, "high": 3.95, "low": 3.65, "close": 3.79, "vol": 242336.0, "rsi": 0.0, "dif": -0.0447, "dea": -0.0117, "hist": -0.0658, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 13.7755, "plus_di": 0.0, "minus_di": 26.4961}, {"date": "2025-01-07", "open": 3.84, "high": 3.86, "low": 3.72, "close": 3.86, "vol": 135477.0, "rsi": 2.4275, "dif": -0.0598, "dea": -0.0214, "hist": -0.0769, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 19.9344, "plus_di": 0.0, "minus_di": 24.2742}, {"date": "2025-01-08", "open": 3.85, "high": 3.88, "low": 3.71, "close": 3.8, "vol": 122809.0, "rsi": 2.3743, "dif": -0.0758, "dea": -0.0322, "hist": -0.0871, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 24.9324, "plus_di": 1.1626, "minus_di": 21.8753}, {"date": "2025-01-09", "open": 3.79, "high": 3.81, "low": 3.74, "close": 3.76, "vol": 90838.0, "rsi": 2.3376, "dif": -0.0906, "dea": -0.0439, "hist": -0.0934, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 29.5735, "plus_di": 1.1138, "minus_di": 20.957}, {"date": "2025-01-10", "open": 3.76, "high": 3.78, "low": 3.61, "close": 3.61, "vol": 133739.0, "rsi": 2.1999, "dif": -0.1132, "dea": -0.0578, "hist": -0.1108, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 34.0817, "plus_di": 1.0036, "minus_di": 26.4493}, {"date": "2025-01-13", "open": 3.54, "high": 3.64, "low": 3.48, "close": 3.61, "vol": 85112.0, "rsi": 2.1999, "dif": -0.1296, "dea": -0.0721, "hist": -0.1149, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 38.3874, "plus_di": 0.9122, "minus_di": 31.4438}, {"date": "2025-01-14", "open": 3.61, "high": 3.74, "low": 3.61, "close": 3.74, "vol": 100715.0, "rsi": 7.6644, "dif": -0.1306, "dea": -0.0838, "hist": -0.0935, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 40.173, "plus_di": 6.5261, "minus_di": 29.1215}, {"date": "2025-01-15", "open": 3.74, "high": 3.79, "low": 3.66, "close": 3.75, "vol": 87848.0, "rsi": 8.0898, "dif": -0.1291, "dea": -0.0929, "hist": -0.0724, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 40.9086, "plus_di": 8.8791, "minus_di": 26.9758}, {"date": "2025-01-16", "open": 3.75, "high": 3.85, "low": 3.75, "close": 3.82, "vol": 113092.0, "rsi": 11.1748, "dif": -0.1208, "dea": -0.0985, "hist": -0.0447, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 40.5957, "plus_di": 11.8198, "minus_di": 25.4241}, {"date": "2025-01-17", "open": 3.78, "high": 3.98, "low": 3.77, "close": 3.86, "vol": 121575.0, "rsi": 12.9725, "dif": -0.1098, "dea": -0.1007, "hist": -0.0181, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 38.5713, "plus_di": 17.5855, "minus_di": 22.4973}, {"date": "2025-01-20", "open": 3.8, "high": 3.89, "low": 3.74, "close": 3.87, "vol": 89904.0, "rsi": 13.4441, "dif": -0.0991, "dea": -0.1004, "hist": 0.0026, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 36.9567, "plus_di": 16.1549, "minus_di": 22.2941}, {"date": "2025-01-21", "open": 3.9, "high": 3.97, "low": 3.81, "close": 3.81, "vol": 114824.0, "rsi": 12.9893, "dif": -0.0944, "dea": -0.0992, "hist": 0.0096, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 34.5599, "plus_di": 19.0474, "minus_di": 20.3889}, {"date": "2025-01-22", "open": 3.78, "high": 3.8, "low": 3.7, "close": 3.71, "vol": 74571.0, "rsi": 12.2457, "dif": -0.0976, "dea": -0.0989, "hist": 0.0025, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 33.2883, "plus_di": 17.9139, "minus_di": 25.1264}, {"date": "2025-01-23", "open": 3.75, "high": 3.85, "low": 3.73, "close": 3.74, "vol": 94896.0, "rsi": 13.8392, "dif": -0.0966, "dea": -0.0984, "hist": 0.0036, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 31.5789, "plus_di": 19.2563, "minus_di": 23.2315}, {"date": "2025-01-24", "open": 3.77, "high": 3.77, "low": 3.68, "close": 3.75, "vol": 63900.0, "rsi": 14.3972, "dif": -0.0939, "dea": -0.0975, "hist": 0.0072, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 30.4053, "plus_di": 18.3008, "minus_di": 24.8354}, {"date": "2025-01-27", "open": 3.76, "high": 3.83, "low": 3.73, "close": 3.73, "vol": 59780.0, "rsi": 14.1992, "dif": -0.0924, "dea": -0.0965, "hist": 0.0083, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 28.6881, "plus_di": 20.6378, "minus_di": 23.4435}, {"date": "2025-02-05", "open": 3.75, "high": 3.82, "low": 3.72, "close": 3.81, "vol": 53274.0, "rsi": 18.9995, "dif": -0.0837, "dea": -0.0939, "hist": 0.0205, "bb_mb": null, "bb_up": null, "bb_dn": null, "adx": 27.1839, "plus_di": 19.4631, "minus_di": 22.6783}, {"date": "2025-02-06", "open": 3.79, "high": 3.82, "low": 3.73, "close": 3.81, "vol": 69070.0, "rsi": 18.9995, "dif": -0.076, "dea": -0.0903, "hist": 0.0288, "bb_mb": 3.7985, "bb_up": 4.0421, "bb_dn": 3.5549, "adx": 25.7872, "plus_di": 18.4455, "minus_di": 21.4926}, {"date": "2025-02-07", "open": 3.82, "high": 3.89, "low": 3.8, "close": 3.86, "vol": 98723.0, "rsi": 22.1563, "dif": -0.065, "dea": -0.0853, "hist": 0.0405, "bb_mb": 3.7825, "bb_up": 3.9511, "bb_dn": 3.6139, "adx": 24.16, "plus_di": 21.6082, "minus_di": 20.3469}, {"date": "2025-02-10", "open": 3.86, "high": 3.95, "low": 3.85, "close": 3.95, "vol": 103271.0, "rsi": 27.6241, "dif": -0.0486, "dea": -0.0779, "hist": 0.0588, "bb_mb": 3.782, "bb_up": 3.9484, "bb_dn": 3.6156, "adx": 23.2282, "plus_di": 23.9102, "minus_di": 19.1269}, {"date": "2025-02-11", "open": 3.96, "high": 3.98, "low": 3.85, "close": 3.88, "vol": 93402.0, "rsi": 26.0892, "dif": -0.0407, "dea": -0.0705, "hist": 0.0596, "bb_mb": 3.7865, "bb_up": 3.9586, "bb_dn": 3.6144, "adx": 22.6363, "plus_di": 23.8456, "minus_di": 17.6457}, {"date": "2025-02-12", "open": 3.91, "high": 3.98, "low": 3.86, "close": 3.98, "vol": 90503.0, "rsi": 31.9099, "dif": -0.0261, "dea": -0.0616, "hist": 0.0711, "bb_mb": 3.7925, "bb_up": 3.9828, "bb_dn": 3.6022, "adx": 22.0868, "plus_di": 22.1411, "minus_di": 16.3843}, {"date": "2025-02-13", "open": 3.97, "high": 4.03, "low": 3.93, "close": 3.98, "vol": 128220.0, "rsi": 31.9099, "dif": -0.0143, "dea": -0.0521, "hist": 0.0756, "bb_mb": 3.8015, "bb_up": 4.0095, "bb_dn": 3.5935, "adx": 22.0435, "plus_di": 23.8205, "minus_di": 15.3966}, {"date": "2025-02-14", "open": 3.97, "high": 4.0, "low": 3.89, "close": 3.9, "vol": 89300.0, "rsi": 29.7371, "dif": -0.0113, "dea": -0.044, "hist": 0.0653, "bb_mb": 3.8085, "bb_up": 4.02, "bb_dn": 3.597, "adx": 21.4643, "plus_di": 22.2328, "minus_di": 16.7941}, {"date": "2025-02-17", "open": 3.92, "high": 4.02, "low": 3.9, "close": 3.98, "vol": 127412.0, "rsi": 34.5374, "dif": -0.0025, "dea": -0.0357, "hist": 0.0664, "bb_mb": 3.827, "bb_up": 4.0299, "bb_dn": 3.6241, "adx": 21.1255, "plus_di": 21.8286, "minus_di": 15.5746}, {"date": "2025-02-18", "open": 3.98, "high": 3.99, "low": 3.84, "close": 3.85, "vol": 86484.0, "rsi": 30.8491, "dif": -0.0059, "dea": -0.0297, "hist": 0.0477, "bb_mb": 3.839, "bb_up": 4.0144, "bb_dn": 3.6636, "adx": 20.0218, "plus_di": 19.8848, "minus_di": 17.7497}, {"date": "2025-02-19", "open": 3.87, "high": 3.93, "low": 3.83, "close": 3.93, "vol": 79446.0, "rsi": 35.4197, "dif": -0.0021, "dea": -0.0242, "hist": 0.0442, "bb_mb": 3.8485, "bb_up": 4.0219, "bb_dn": 3.6751, "adx": 18.8708, "plus_di": 18.6899, "minus_di": 17.284}, {"date": "2025-02-20", "open": 3.93, "high": 3.97, "low": 3.88, "close": 3.95, "vol": 69629.0, "rsi": 36.5488, "dif": 0.0025, "dea": -0.0189, "hist": 0.0427, "bb_mb": 3.8585, "bb_up": 4.0311, "bb_dn": 3.6859, "adx": 18.2628, "plus_di": 20.1073, "minus_di": 16.3327}, {"date": "2025-02-21", "open": 3.94, "high": 3.95, "low": 3.85, "close": 3.9, "vol": 82612.0, "rsi": 34.9057, "dif": 0.002, "dea": -0.0147, "hist": 0.0334, "bb_mb": 3.8625, "bb_up": 4.035, "bb_dn": 3.69, "adx": 17.2928, "plus_di": 18.865, "minus_di": 17.1772}, {"date": "2025-02-24", "open": 3.87, "high": 4.03, "low": 3.87, "close": 3.97, "vol": 114745.0, "rsi": 39.0377, "dif": 0.0073, "dea": -0.0103, "hist": 0.0351, "bb_mb": 3.868, "bb_up": 4.0471, "bb_dn": 3.6889, "adx": 17.2682, "plus_di": 21.8608, "minus_di": 15.5244}, {"date": "2025-02-25", "open": 3.95, "high": 4.02, "low": 3.88, "close": 3.93, "vol": 106201.0, "rsi": 37.5701, "dif": 0.0081, "dea": -0.0066, "hist": 0.0294, "bb_mb": 3.871, "bb_up": 4.0522, "bb_dn": 3.6898, "adx": 17.2454, "plus_di": 20.0435, "minus_di": 14.2338}, {"date": "2025-02-26", "open": 3.93, "high": 4.01, "low": 3.93, "close": 3.99, "vol": 97538.0, "rsi": 41.1444, "dif": 0.0134, "dea": -0.0026, "hist": 0.0321, "bb_mb": 3.88, "bb_up": 4.0663, "bb_dn": 3.6937, "adx": 17.2242, "plus_di": 19.068, "minus_di": 13.5411}, {"date": "2025-02-27", "open": 3.97, "high": 4.04, "low": 3.94, "close": 3.97, "vol": 93904.0, "rsi": 40.3158, "dif": 0.0158, "dea": 0.0011, "hist": 0.0295, "bb_mb": 3.893, "bb_up": 4.0651, "bb_dn": 3.7209, "adx": 17.5418, "plus_di": 19.7402, "minus_di": 12.7085}, {"date": "2025-02-28", "open": 3.96, "high": 4.0, "low": 3.88, "close": 3.89, "vol": 112283.0, "rsi": 37.0976, "dif": 0.0112, "dea": 0.0031, "hist": 0.0162, "bb_mb": 3.9005, "bb_up": 4.0568, "bb_dn": 3.7442, "adx": 16.8887, "plus_di": 18.2871, "minus_di": 15.4535}, {"date": "2025-03-03", "open": 3.89, "high": 4.04, "low": 3.89, "close": 3.94, "vol": 121748.0, "rsi": 40.3049, "dif": 0.0114, "dea": 0.0048, "hist": 0.0133, "bb_mb": 3.91, "bb_up": 4.0501, "bb_dn": 3.7699, "adx": 16.7574, "plus_di": 19.0425, "minus_di": 14.0603}, {"date": "2025-03-04", "open": 4.0, "high": 4.0, "low": 3.9, "close": 3.96, "vol": 81419.0, "rsi": 41.5879, "dif": 0.013, "dea": 0.0064, "hist": 0.0132, "bb_mb": 3.9215, "bb_up": 4.0345, "bb_dn": 3.8085, "adx": 16.6355, "plus_di": 17.8849, "minus_di": 13.2055}, {"date": "2025-03-05", "open": 3.95, "high": 3.96, "low": 3.82, "close": 3.88, "vol": 117341.0, "rsi": 38.0639, "dif": 0.0078, "dea": 0.0067, "hist": 0.0022, "bb_mb": 3.925, "bb_up": 4.0273, "bb_dn": 3.8227, "adx": 15.557, "plus_di": 16.3832, "minus_di": 16.8946}, {"date": "2025-03-06", "open": 3.87, "high": 4.01, "low": 3.82, "close": 3.96, "vol": 165343.0, "rsi": 43.2432, "dif": 0.01, "dea": 0.0073, "hist": 0.0052, "bb_mb": 3.9325, "bb_up": 4.0202, "bb_dn": 3.8448, "adx": 14.9776, "plus_di": 17.4689, "minus_di": 15.048}, {"date": "2025-03-07", "open": 3.93, "high": 3.95, "low": 3.83, "close": 3.84, "vol": 126606.0, "rsi": 38.0969, "dif": 0.002, "dea": 0.0063, "hist": -0.0086, "bb_mb": 3.9315, "bb_up": 4.0231, "bb_dn": 3.8399, "adx": 14.4395, "plus_di": 16.1668, "minus_di": 13.9264}, {"date": "2025-03-10", "open": 3.84, "high": 3.9, "low": 3.82, "close": 3.84, "vol": 65723.0, "rsi": 38.0969, "dif": -0.0043, "dea": 0.0042, "hist": -0.0169, "bb_mb": 3.926, "bb_up": 4.0258, "bb_dn": 3.8262, "adx": 13.7856, "plus_di": 15.4059, "minus_di": 13.8593}, {"date": "2025-03-11", "open": 3.84, "high": 3.87, "low": 3.8, "close": 3.87, "vol": 77030.0, "rsi": 40.1616, "dif": -0.0068, "dea": 0.002, "hist": -0.0175, "bb_mb": 3.9255, "bb_up": 4.0263, "bb_dn": 3.8247, "adx": 12.8663, "plus_di": 14.7516, "minus_di": 14.4841}, {"date": "2025-03-12", "open": 3.87, "high": 3.88, "low": 3.83, "close": 3.86, "vol": 54090.0, "rsi": 39.6865, "dif": -0.0094, "dea": -0.0003, "hist": -0.0182, "bb_mb": 3.9195, "bb_up": 4.021, "bb_dn": 3.818, "adx": 12.1673, "plus_di": 14.9176, "minus_di": 14.0259}, {"date": "2025-03-13", "open": 3.86, "high": 3.86, "low": 3.79, "close": 3.83, "vol": 75735.0, "rsi": 38.2253, "dif": -0.0138, "dea": -0.003, "hist": -0.0216, "bb_mb": 3.912, "bb_up": 4.0168, "bb_dn": 3.8072, "adx": 11.7119, "plus_di": 14.2384, "minus_di": 15.9888}, {"date": "2025-03-14", "open": 3.83, "high": 3.94, "low": 3.82, "close": 3.93, "vol": 116377.0, "rsi": 45.4368, "dif": -0.0091, "dea": -0.0042, "hist": -0.0097, "bb_mb": 3.9135, "bb_up": 4.0184, "bb_dn": 3.8086, "adx": 11.6434, "plus_di": 18.3033, "minus_di": 14.7492}, {"date": "2025-03-17", "open": 3.93, "high": 4.0, "low": 3.92, "close": 3.98, "vol": 84756.0, "rsi": 48.6638, "dif": -0.0013, "dea": -0.0036, "hist": 0.0047, "bb_mb": 3.9135, "bb_up": 4.0184, "bb_dn": 3.8086, "adx": 12.2947, "plus_di": 21.2929, "minus_di": 13.9715}, {"date": "2025-03-18", "open": 3.99, "high": 4.0, "low": 3.93, "close": 3.96, "vol": 63440.0, "rsi": 47.4548, "dif": 0.0032, "dea": -0.0023, "hist": 0.011, "bb_mb": 3.919, "bb_up": 4.0214, "bb_dn": 3.8166, "adx": 12.8995, "plus_di": 20.285, "minus_di": 13.3101}, {"date": "2025-03-19", "open": 3.96, "high": 4.0, "low": 3.93, "close": 3.95, "vol": 60161.0, "rsi": 46.8283, "dif": 0.0059, "dea": -0.0006, "hist": 0.0131, "bb_mb": 3.92, "bb_up": 4.0232, "bb_dn": 3.8168, "adx": 13.461, "plus_di": 19.3011, "minus_di": 12.6645}, {"date": "2025-03-20", "open": 3.95, "high": 4.0, "low": 3.94, "close": 3.96, "vol": 60784.0, "rsi": 47.5736, "dif": 0.0088, "dea": 0.0013, "hist": 0.015, "bb_mb": 3.9205, "bb_up": 4.0244, "bb_dn": 3.8166, "adx": 13.9825, "plus_di": 18.474, "minus_di": 12.1218}, {"date": "2025-03-21", "open": 3.95, "high": 3.98, "low": 3.92, "close": 3.96, "vol": 90575.0, "rsi": 47.5736, "dif": 0.0109, "dea": 0.0032, "hist": 0.0154, "bb_mb": 3.9235, "bb_up": 4.0284, "bb_dn": 3.8186, "adx": 14.0538, "plus_di": 17.659, "minus_di": 13.0575}, {"date": "2025-03-24", "open": 3.94, "high": 3.95, "low": 3.73, "close": 3.78, "vol": 162240.0, "rsi": 36.8043, "dif": -0.0019, "dea": 0.0022, "hist": -0.0081, "bb_mb": 3.914, "bb_up": 4.0344, "bb_dn": 3.7936, "adx": 14.68, "plus_di": 14.9385, "minus_di": 23.7725}, {"date": "2025-03-25", "open": 3.77, "high": 3.79, "low": 3.72, "close": 3.78, "vol": 71489.0, "rsi": 36.8043, "dif": -0.0119, "dea": -0.0006, "hist": -0.0225, "bb_mb": 3.9065, "bb_up": 4.0406, "bb_dn": 3.7724, "adx": 15.3623, "plus_di": 14.2204, "minus_di": 23.3165}, {"date": "2025-03-26", "open": 3.77, "high": 3.89, "low": 3.76, "close": 3.87, "vol": 102798.0, "rsi": 44.1373, "dif": -0.0125, "dea": -0.003, "hist": -0.0189, "bb_mb": 3.9005, "bb_up": 4.0295, "bb_dn": 3.7715, "adx": 14.5354, "plus_di": 19.7196, "minus_di": 21.2716}, {"date": "2025-03-27", "open": 3.85, "high": 3.86, "low": 3.75, "close": 3.82, "vol": 76879.0, "rsi": 41.272, "dif": -0.0167, "dea": -0.0058, "hist": -0.0219, "bb_mb": 3.893, "bb_up": 4.0225, "bb_dn": 3.7635, "adx": 13.8873, "plus_di": 18.1383, "minus_di": 20.234}, {"date": "2025-03-28", "open": 3.81, "high": 3.81, "low": 3.75, "close": 3.78, "vol": 57447.0, "rsi": 39.086, "dif": -0.0231, "dea": -0.0092, "hist": -0.0277, "bb_mb": 3.8875, "bb_up": 4.0265, "bb_dn": 3.7485, "adx": 13.2854, "plus_di": 17.2683, "minus_di": 19.2636}, {"date": "2025-03-31", "open": 3.77, "high": 3.77, "low": 3.67, "close": 3.69, "vol": 72313.0, "rsi": 34.6402, "dif": -0.0349, "dea": -0.0144, "hist": -0.0412, "bb_mb": 3.875, "bb_up": 4.0372, "bb_dn": 3.7128, "adx": 13.6659, "plus_di": 15.972, "minus_di": 23.2772}, {"date": "2025-04-01", "open": 3.69, "high": 3.81, "low": 3.68, "close": 3.78, "vol": 117131.0, "rsi": 41.7727, "dif": -0.0367, "dea": -0.0188, "hist": -0.0357, "bb_mb": 3.866, "bb_up": 4.0283, "bb_dn": 3.7037, "adx": 13.4289, "plus_di": 17.2625, "minus_di": 21.2471}, {"date": "2025-04-02", "open": 3.78, "high": 3.78, "low": 3.7, "close": 3.73, "vol": 70480.0, "rsi": 39.2125, "dif": -0.0416, "dea": -0.0234, "hist": -0.0365, "bb_mb": 3.8585, "bb_up": 4.0316, "bb_dn": 3.6854, "adx": 13.2087, "plus_di": 16.3193, "minus_di": 20.0862}, {"date": "2025-04-03", "open": 3.72, "high": 3.83, "low": 3.7, "close": 3.81, "vol": 86678.0, "rsi": 45.0187, "dif": -0.0386, "dea": -0.0264, "hist": -0.0244, "bb_mb": 3.851, "bb_up": 4.0184, "bb_dn": 3.6836, "adx": 12.2812, "plus_di": 18.2517, "minus_di": 18.3332}, {"date": "2025-04-07", "open": 3.68, "high": 3.68, "low": 3.43, "close": 3.43, "vol": 164055.0, "rsi": 30.2423, "dif": -0.0661, "dea": -0.0344, "hist": -0.0635, "bb_mb": 3.8305, "bb_up": 4.0826, "bb_dn": 3.5784, "adx": 13.8995, "plus_di": 14.3181, "minus_di": 29.6954}, {"date": "2025-04-08", "open": 3.38, "high": 3.51, "low": 3.37, "close": 3.5, "vol": 128599.0, "rsi": 34.5068, "dif": -0.0814, "dea": -0.0438, "hist": -0.0752, "bb_mb": 3.8135, "bb_up": 4.1056, "bb_dn": 3.5214, "adx": 15.7594, "plus_di": 13.1902, "minus_di": 30.7322}, {"date": "2025-04-09", "open": 3.5, "high": 3.7, "low": 3.37, "close": 3.68, "vol": 144811.0, "rsi": 43.9891, "dif": -0.078, "dea": -0.0506, "hist": -0.0548, "bb_mb": 3.804, "bb_up": 4.1007, "bb_dn": 3.5073, "adx": 15.4106, "plus_di": 20.5867, "minus_di": 25.6109}, {"date": "2025-04-10", "open": 3.69, "high": 3.82, "low": 3.64, "close": 3.8, "vol": 130852.0, "rsi": 49.263, "dif": -0.0649, "dea": -0.0535, "hist": -0.0229, "bb_mb": 3.801, "bb_up": 4.0965, "bb_dn": 3.5055, "adx": 14.5133, "plus_di": 24.6953, "minus_di": 23.3274}, {"date": "2025-04-11", "open": 3.77, "high": 3.79, "low": 3.71, "close": 3.74, "vol": 74976.0, "rsi": 46.8858, "dif": -0.0587, "dea": -0.0545, "hist": -0.0084, "bb_mb": 3.7965, "bb_up": 4.0929, "bb_dn": 3.5001, "adx": 13.6801, "plus_di": 23.564, "minus_di": 22.2588}, {"date": "2025-04-14", "open": 3.74, "high": 3.8, "low": 3.73, "close": 3.75, "vol": 57687.0, "rsi": 47.3419, "dif": -0.0524, "dea": -0.0541, "hist": 0.0034, "bb_mb": 3.7875, "bb_up": 4.0777, "bb_dn": 3.4973, "adx": 12.9884, "plus_di": 23.2211, "minus_di": 21.4362}, {"date": "2025-04-15", "open": 3.76, "high": 3.77, "low": 3.71, "close": 3.75, "vol": 56703.0, "rsi": 47.3419, "dif": -0.0468, "dea": -0.0526, "hist": 0.0116, "bb_mb": 3.776, "bb_up": 4.0519, "bb_dn": 3.5001, "adx": 12.1617, "plus_di": 22.4552, "minus_di": 21.8287}, {"date": "2025-04-16", "open": 3.76, "high": 3.78, "low": 3.65, "close": 3.72, "vol": 64187.0, "rsi": 45.9686, "dif": -0.0443, "dea": -0.051, "hist": 0.0133, "bb_mb": 3.764, "bb_up": 4.0268, "bb_dn": 3.5012, "adx": 11.7299, "plus_di": 20.8504, "minus_di": 23.5671}, {"date": "2025-04-17", "open": 3.71, "high": 3.87, "low": 3.69, "close": 3.82, "vol": 120636.0, "rsi": 51.0645, "dif": -0.0339, "dea": -0.0476, "hist": 0.0273, "bb_mb": 3.7575, "bb_up": 4.007, "bb_dn": 3.508, "adx": 11.267, "plus_di": 23.6575, "minus_di": 21.2975}, {"date": "2025-04-18", "open": 3.82, "high": 3.89, "low": 3.77, "close": 3.87, "vol": 91610.0, "rsi": 53.4295, "dif": -0.0213, "dea": -0.0423, "hist": 0.042, "bb_mb": 3.753, "bb_up": 3.9901, "bb_dn": 3.5159, "adx": 11.0064, "plus_di": 23.2055, "minus_di": 19.9202}, {"date": "2025-04-21", "open": 3.82, "high": 3.9, "low": 3.79, "close": 3.87, "vol": 87998.0, "rsi": 53.4295, "dif": -0.0113, "dea": -0.0361, "hist": 0.0497, "bb_mb": 3.7485, "bb_up": 3.9721, "bb_dn": 3.5249, "adx": 10.8519, "plus_di": 22.3585, "minus_di": 18.7249}, {"date": "2025-04-22", "open": 3.89, "high": 3.94, "low": 3.88, "close": 3.93, "vol": 76997.0, "rsi": 56.3645, "dif": 0.0015, "dea": -0.0286, "hist": 0.0602, "bb_mb": 3.756, "bb_up": 3.9937, "bb_dn": 3.5183, "adx": 11.0608, "plus_di": 23.7325, "minus_di": 17.9852}, {"date": "2025-04-23", "open": 3.93, "high": 3.95, "low": 3.82, "close": 3.85, "vol": 73168.0, "rsi": 51.6871, "dif": 0.0052, "dea": -0.0218, "hist": 0.054, "bb_mb": 3.7595, "bb_up": 4.0007, "bb_dn": 3.5183, "adx": 10.6016, "plus_di": 21.9948, "minus_di": 20.0476}, {"date": "2025-04-24", "open": 3.85, "high": 3.94, "low": 3.81, "close": 3.86, "vol": 81719.0, "rsi": 52.2209, "dif": 0.0088, "dea": -0.0157, "hist": 0.049, "bb_mb": 3.759, "bb_up": 3.9993, "bb_dn": 3.5187, "adx": 10.0689, "plus_di": 20.3873, "minus_di": 19.1446}, {"date": "2025-04-25", "open": 3.87, "high": 4.05, "low": 3.84, "close": 3.91, "vol": 162678.0, "rsi": 54.9035, "dif": 0.0155, "dea": -0.0095, "hist": 0.0499, "bb_mb": 3.7635, "bb_up": 4.0118, "bb_dn": 3.5152, "adx": 10.5717, "plus_di": 23.9963, "minus_di": 16.9851}, {"date": "2025-04-28", "open": 3.85, "high": 3.87, "low": 3.65, "close": 3.7, "vol": 157932.0, "rsi": 43.7843, "dif": 0.0038, "dea": -0.0068, "hist": 0.0212, "bb_mb": 3.7595, "bb_up": 4.0093, "bb_dn": 3.5097, "adx": 10.3635, "plus_di": 20.859, "minus_di": 24.3185}, {"date": "2025-04-29", "open": 3.68, "high": 3.73, "low": 3.65, "close": 3.71, "vol": 66070.0, "rsi": 44.3621, "dif": -0.0046, "dea": -0.0064, "hist": 0.0035, "bb_mb": 3.7605, "bb_up": 4.0092, "bb_dn": 3.5118, "adx": 10.1702, "plus_di": 19.9929, "minus_di": 23.3087}, {"date": "2025-04-30", "open": 3.7, "high": 3.82, "low": 3.7, "close": 3.73, "vol": 99250.0, "rsi": 45.5672, "dif": -0.0095, "dea": -0.007, "hist": -0.0051, "bb_mb": 3.758, "bb_up": 4.0069, "bb_dn": 3.5091, "adx": 9.6972, "plus_di": 23.4506, "minus_di": 21.8435}, {"date": "2025-05-06", "open": 3.76, "high": 3.81, "low": 3.74, "close": 3.77, "vol": 75566.0, "rsi": 47.9934, "dif": -0.0101, "dea": -0.0076, "hist": -0.0049, "bb_mb": 3.76, "bb_up": 4.0086, "bb_dn": 3.5114, "adx": 9.258, "plus_di": 22.438, "minus_di": 20.9003}, {"date": "2025-05-07", "open": 3.83, "high": 4.02, "low": 3.81, "close": 3.83, "vol": 148824.0, "rsi": 51.4865, "dif": -0.0056, "dea": -0.0072, "hist": 0.0032, "bb_mb": 3.761, "bb_up": 4.0106, "bb_dn": 3.5114, "adx": 10.3642, "plus_di": 30.2491, "minus_di": 18.2484}, {"date": "2025-05-08", "open": 3.87, "high": 3.87, "low": 3.79, "close": 3.83, "vol": 86554.0, "rsi": 51.4865, "dif": -0.0021, "dea": -0.0062, "hist": 0.0082, "bb_mb": 3.781, "bb_up": 3.9774, "bb_dn": 3.5846, "adx": 11.195, "plus_di": 28.9818, "minus_di": 18.5313}, {"date": "2025-05-09", "open": 3.85, "high": 3.86, "low": 3.75, "close": 3.76, "vol": 72704.0, "rsi": 47.1973, "dif": -0.0049, "dea": -0.0059, "hist": 0.0022, "bb_mb": 3.794, "bb_up": 3.94, "bb_dn": 3.648, "adx": 11.5715, "plus_di": 27.289, "minus_di": 19.5729}, {"date": "2025-05-12", "open": 3.8, "high": 3.81, "low": 3.75, "close": 3.77, "vol": 73951.0, "rsi": 47.8654, "dif": -0.0062, "dea": -0.006, "hist": -0.0004, "bb_mb": 3.7985, "bb_up": 3.935, "bb_dn": 3.662, "adx": 11.921, "plus_di": 26.3837, "minus_di": 18.9236}, {"date": "2025-05-13", "open": 3.79, "high": 3.8, "low": 3.73, "close": 3.75, "vol": 65271.0, "rsi": 46.5954, "dif": -0.0087, "dea": -0.0065, "hist": -0.0044, "bb_mb": 3.796, "bb_up": 3.9342, "bb_dn": 3.6578, "adx": 12.0326, "plus_di": 25.328, "minus_di": 19.3096}, {"date": "2025-05-14", "open": 3.74, "high": 3.79, "low": 3.71, "close": 3.78, "vol": 65971.0, "rsi": 48.7903, "dif": -0.0082, "dea": -0.0069, "hist": -0.0027, "bb_mb": 3.798, "bb_up": 3.9339, "bb_dn": 3.6621, "adx": 11.9186, "plus_di": 24.1393, "minus_di": 19.5767}, {"date": "2025-05-15", "open": 3.78, "high": 3.82, "low": 3.74, "close": 3.76, "vol": 59534.0, "rsi": 47.3919, "dif": -0.0094, "dea": -0.0074, "hist": -0.004, "bb_mb": 3.7985, "bb_up": 3.9337, "bb_dn": 3.6633, "adx": 12.0786, "plus_di": 24.7821, "minus_di": 18.6348}, {"date": "2025-05-16", "open": 3.79, "high": 3.79, "low": 3.7, "close": 3.77, "vol": 83853.0, "rsi": 48.1915, "dif": -0.0093, "dea": -0.0078, "hist": -0.0031, "bb_mb": 3.7995, "bb_up": 3.9335, "bb_dn": 3.6655, "adx": 11.7681, "plus_di": 23.4171, "minus_di": 20.0564}, {"date": "2025-05-19", "open": 3.77, "high": 3.96, "low": 3.77, "close": 3.93, "vol": 210176.0, "rsi": 58.9434, "dif": 0.0036, "dea": -0.0055, "hist": 0.0181, "bb_mb": 3.81, "bb_up": 3.9505, "bb_dn": 3.6695, "adx": 12.8302, "plus_di": 30.7684, "minus_di": 17.8244}, {"date": "2025-05-20", "open": 3.94, "high": 3.94, "low": 3.86, "close": 3.9, "vol": 73627.0, "rsi": 56.5727, "dif": 0.0112, "dea": -0.0022, "hist": 0.0268, "bb_mb": 3.814, "bb_up": 3.9602, "bb_dn": 3.6678, "adx": 13.8164, "plus_di": 29.2903, "minus_di": 16.9681}, {"date": "2025-05-21", "open": 3.89, "high": 3.94, "low": 3.86, "close": 3.9, "vol": 55151.0, "rsi": 56.5727, "dif": 0.0171, "dea": 0.0017, "hist": 0.0308, "bb_mb": 3.8155, "bb_up": 3.9647, "bb_dn": 3.6663, "adx": 14.7322, "plus_di": 27.8496, "minus_di": 16.1335}, {"date": "2025-05-22", "open": 3.92, "high": 3.93, "low": 3.86, "close": 3.88, "vol": 74441.0, "rsi": 54.8665, "dif": 0.0199, "dea": 0.0053, "hist": 0.0292, "bb_mb": 3.816, "bb_up": 3.966, "bb_dn": 3.666, "adx": 15.5826, "plus_di": 26.6159, "minus_di": 15.4188}, {"date": "2025-05-23", "open": 3.87, "high": 3.89, "low": 3.73, "close": 3.73, "vol": 94663.0, "rsi": 44.1193, "dif": 0.0099, "dea": 0.0063, "hist": 0.0073, "bb_mb": 3.806, "bb_up": 3.9506, "bb_dn": 3.6614, "adx": 14.7977, "plus_di": 23.999, "minus_di": 21.8913}, {"date": "2025-05-26", "open": 3.75, "high": 3.85, "low": 3.72, "close": 3.81, "vol": 74833.0, "rsi": 49.7704, "dif": 0.0084, "dea": 0.0067, "hist": 0.0034, "bb_mb": 3.804, "bb_up": 3.9471, "bb_dn": 3.6609, "adx": 13.9626, "plus_di": 22.098, "minus_di": 20.7665}, {"date": "2025-05-27", "open": 3.82, "high": 3.9, "low": 3.79, "close": 3.88, "vol": 89609.0, "rsi": 54.1405, "dif": 0.0126, "dea": 0.0079, "hist": 0.0095, "bb_mb": 3.805, "bb_up": 3.95, "bb_dn": 3.66, "adx": 13.6792, "plus_di": 23.6704, "minus_di": 19.3684}, {"date": "2025-05-28", "open": 3.87, "high": 3.89, "low": 3.78, "close": 3.82, "vol": 66615.0, "rsi": 50.1157, "dif": 0.0111, "dea": 0.0085, "hist": 0.0051, "bb_mb": 3.8005, "bb_up": 3.9371, "bb_dn": 3.6639, "adx": 13.2976, "plus_di": 22.0703, "minus_di": 18.6737}, {"date": "2025-05-29", "open": 3.8, "high": 3.9, "low": 3.8, "close": 3.89, "vol": 79976.0, "rsi": 54.3769, "dif": 0.0153, "dea": 0.0099, "hist": 0.0108, "bb_mb": 3.81, "bb_up": 3.9436, "bb_dn": 3.6764, "adx": 13.0479, "plus_di": 21.321, "minus_di": 17.5145}, {"date": "2025-05-30", "open": 3.91, "high": 3.91, "low": 3.83, "close": 3.87, "vol": 52551.0, "rsi": 52.9843, "dif": 0.0168, "dea": 0.0113, "hist": 0.0111, "bb_mb": 3.818, "bb_up": 3.9454, "bb_dn": 3.6906, "adx": 12.925, "plus_di": 20.8732, "minus_di": 16.6254}, {"date": "2025-06-03", "open": 3.87, "high": 3.92, "low": 3.83, "close": 3.9, "vol": 85586.0, "rsi": 54.8521, "dif": 0.0202, "dea": 0.013, "hist": 0.0143, "bb_mb": 3.8265, "bb_up": 3.9519, "bb_dn": 3.7011, "adx": 12.9243, "plus_di": 20.3076, "minus_di": 15.6621}, {"date": "2025-06-04", "open": 3.9, "high": 3.96, "low": 3.89, "close": 3.94, "vol": 83754.0, "rsi": 57.2886, "dif": 0.0258, "dea": 0.0156, "hist": 0.0205, "bb_mb": 3.835, "bb_up": 3.9671, "bb_dn": 3.7029, "adx": 13.3689, "plus_di": 22.0125, "minus_di": 14.9372}, {"date": "2025-06-05", "open": 3.95, "high": 3.96, "low": 3.87, "close": 3.9, "vol": 75001.0, "rsi": 54.142, "dif": 0.0268, "dea": 0.0178, "hist": 0.0179, "bb_mb": 3.8385, "bb_up": 3.9737, "bb_dn": 3.7033, "adx": 13.4659, "plus_di": 20.6868, "minus_di": 15.3759}, {"date": "2025-06-06", "open": 3.85, "high": 3.93, "low": 3.85, "close": 3.88, "vol": 90501.0, "rsi": 52.5867, "dif": 0.0256, "dea": 0.0194, "hist": 0.0124, "bb_mb": 3.841, "bb_up": 3.9774, "bb_dn": 3.7046, "adx": 13.241, "plus_di": 19.5591, "minus_di": 15.9005}, {"date": "2025-06-09", "open": 3.86, "high": 3.93, "low": 3.84, "close": 3.91, "vol": 91425.0, "rsi": 54.6893, "dif": 0.0268, "dea": 0.0209, "hist": 0.0118, "bb_mb": 3.8485, "bb_up": 3.9826, "bb_dn": 3.7144, "adx": 12.8724, "plus_di": 18.3474, "minus_di": 15.6038}, {"date": "2025-06-10", "open": 3.91, "high": 3.94, "low": 3.83, "close": 3.88, "vol": 74477.0, "rsi": 52.1966, "dif": 0.025, "dea": 0.0217, "hist": 0.0066, "bb_mb": 3.854, "bb_up": 3.9835, "bb_dn": 3.7245, "adx": 12.5302, "plus_di": 16.9641, "minus_di": 14.4274}, {"date": "2025-06-11", "open": 3.86, "high": 3.93, "low": 3.86, "close": 3.9, "vol": 81782.0, "rsi": 53.7113, "dif": 0.0249, "dea": 0.0223, "hist": 0.0052, "bb_mb": 3.8615, "bb_up": 3.9828, "bb_dn": 3.7402, "adx": 12.2124, "plus_di": 16.1307, "minus_di": 13.7186}, {"date": "2025-06-12", "open": 3.88, "high": 3.92, "low": 3.81, "close": 3.86, "vol": 80071.0, "rsi": 50.2798, "dif": 0.0214, "dea": 0.0221, "hist": -0.0015, "bb_mb": 3.8655, "bb_up": 3.9806, "bb_dn": 3.7504, "adx": 11.6304, "plus_di": 14.8925, "minus_di": 16.1547}, {"date": "2025-06-13", "open": 3.84, "high": 3.86, "low": 3.74, "close": 3.77, "vol": 137179.0, "rsi": 43.5396, "dif": 0.0112, "dea": 0.0199, "hist": -0.0175, "bb_mb": 3.866, "bb_up": 3.9792, "bb_dn": 3.7528, "adx": 12.0829, "plus_di": 13.6606, "minus_di": 19.6437}, {"date": "2025-06-16", "open": 3.77, "high": 3.91, "low": 3.75, "close": 3.86, "vol": 127887.0, "rsi": 50.6623, "dif": 0.0102, "dea": 0.018, "hist": -0.0155, "bb_mb": 3.8705, "bb_up": 3.9744, "bb_dn": 3.7666, "adx": 11.6581, "plus_di": 15.528, "minus_di": 17.5582}, {"date": "2025-06-17", "open": 3.88, "high": 3.9, "low": 3.83, "close": 3.89, "vol": 61223.0, "rsi": 52.7998, "dif": 0.0118, "dea": 0.0168, "hist": -0.01, "bb_mb": 3.8685, "bb_up": 3.9691, "bb_dn": 3.7679, "adx": 11.2637, "plus_di": 14.7883, "minus_di": 16.7217}, {"date": "2025-06-18", "open": 3.89, "high": 3.91, "low": 3.79, "close": 3.8, "vol": 97607.0, "rsi": 46.3168, "dif": 0.0057, "dea": 0.0145, "hist": -0.0177, "bb_mb": 3.8635, "bb_up": 3.9674, "bb_dn": 3.7596, "adx": 11.4681, "plus_di": 13.5928, "minus_di": 18.0646}, {"date": "2025-06-19", "open": 3.81, "high": 3.81, "low": 3.71, "close": 3.72, "vol": 112246.0, "rsi": 41.4454, "dif": -0.0055, "dea": 0.0105, "hist": -0.0321, "bb_mb": 3.8545, "bb_up": 3.9749, "bb_dn": 3.7341, "adx": 12.6083, "plus_di": 12.6734, "minus_di": 22.2539}, {"date": "2025-06-20", "open": 3.73, "high": 3.76, "low": 3.7, "close": 3.71, "vol": 78307.0, "rsi": 40.8668, "dif": -0.0151, "dea": 0.0054, "hist": -0.041, "bb_mb": 3.846, "bb_up": 3.9819, "bb_dn": 3.7101, "adx": 13.7728, "plus_di": 12.1427, "minus_di": 22.02}, {"date": "2025-06-23", "open": 3.69, "high": 3.78, "low": 3.66, "close": 3.75, "vol": 72493.0, "rsi": 44.2212, "dif": -0.0192, "dea": 0.0005, "hist": -0.0393, "bb_mb": 3.847, "bb_up": 3.9795, "bb_dn": 3.7145, "adx": 15.265, "plus_di": 11.1381, "minus_di": 22.9559}, {"date": "2025-06-24", "open": 3.79, "high": 3.8, "low": 3.74, "close": 3.78, "vol": 67909.0, "rsi": 46.6649, "dif": -0.0198, "dea": -0.0036, "hist": -0.0324, "bb_mb": 3.8455, "bb_up": 3.9804, "bb_dn": 3.7106, "adx": 16.2491, "plus_di": 12.0847, "minus_di": 21.9769}, {"date": "2025-06-25", "open": 3.78, "high": 3.82, "low": 3.75, "close": 3.82, "vol": 67939.0, "rsi": 49.8215, "dif": -0.0168, "dea": -0.0062, "hist": -0.0212, "bb_mb": 3.8425, "bb_up": 3.9769, "bb_dn": 3.7081, "adx": 16.7664, "plus_di": 12.9232, "minus_di": 20.8592}, {"date": "2025-06-26", "open": 3.82, "high": 3.85, "low": 3.78, "close": 3.8, "vol": 79893.0, "rsi": 48.2828, "dif": -0.0159, "dea": -0.0082, "hist": -0.0156, "bb_mb": 3.8415, "bb_up": 3.9769, "bb_dn": 3.7061, "adx": 16.6737, "plus_di": 14.4775, "minus_di": 19.776}, {"date": "2025-06-27", "open": 3.82, "high": 3.87, "low": 3.79, "close": 3.81, "vol": 75861.0, "rsi": 49.1288, "dif": -0.0143, "dea": -0.0094, "hist": -0.0097, "bb_mb": 3.8375, "bb_up": 3.9716, "bb_dn": 3.7034, "adx": 16.22, "plus_di": 15.1096, "minus_di": 18.5881}, {"date": "2025-06-30", "open": 3.87, "high": 3.92, "low": 3.82, "close": 3.85, "vol": 88737.0, "rsi": 52.4774, "dif": -0.0096, "dea": -0.0094, "hist": -0.0003, "bb_mb": 3.8365, "bb_up": 3.9698, "bb_dn": 3.7032, "adx": 15.1683, "plus_di": 17.5883, "minus_di": 17.0697}, {"date": "2025-07-01", "open": 3.85, "high": 3.87, "low": 3.78, "close": 3.81, "vol": 72474.0, "rsi": 49.0036, "dif": -0.009, "dea": -0.0093, "hist": 0.0007, "bb_mb": 3.832, "bb_up": 3.9624, "bb_dn": 3.7016, "adx": 14.5906, "plus_di": 16.4074, "minus_di": 18.9077}, {"date": "2025-07-02", "open": 3.82, "high": 3.89, "low": 3.79, "close": 3.88, "vol": 93638.0, "rsi": 54.66, "dif": -0.0029, "dea": -0.008, "hist": 0.0104, "bb_mb": 3.829, "bb_up": 3.9514, "bb_dn": 3.7066, "adx": 13.7213, "plus_di": 16.6746, "minus_di": 17.5016}, {"date": "2025-07-03", "open": 3.86, "high": 3.94, "low": 3.86, "close": 3.9, "vol": 100454.0, "rsi": 56.1563, "dif": 0.0036, "dea": -0.0057, "hist": 0.0186, "bb_mb": 3.829, "bb_up": 3.9514, "bb_dn": 3.7066, "adx": 13.3356, "plus_di": 19.4338, "minus_di": 16.4478}, {"date": "2025-07-04", "open": 3.89, "high": 3.92, "low": 3.86, "close": 3.87, "vol": 86806.0, "rsi": 53.3141, "dif": 0.0062, "dea": -0.0033, "hist": 0.0191, "bb_mb": 3.8285, "bb_up": 3.9501, "bb_dn": 3.7069, "adx": 12.9774, "plus_di": 18.5325, "minus_di": 15.685}, {"date": "2025-07-07", "open": 3.85, "high": 4.19, "low": 3.85, "close": 4.03, "vol": 268113.0, "rsi": 63.829, "dif": 0.0209, "dea": 0.0015, "hist": 0.0388, "bb_mb": 3.8345, "bb_up": 3.9821, "bb_dn": 3.6869, "adx": 15.2409, "plus_di": 31.9617, "minus_di": 12.2251}, {"date": "2025-07-08", "open": 4.01, "high": 4.1, "low": 3.97, "close": 4.09, "vol": 188649.0, "rsi": 66.8447, "dif": 0.037, "dea": 0.0086, "hist": 0.0568, "bb_mb": 3.845, "bb_up": 4.0311, "bb_dn": 3.6589, "adx": 17.3427, "plus_di": 29.3003, "minus_di": 11.2072}, {"date": "2025-07-09", "open": 4.08, "high": 4.11, "low": 4.05, "close": 4.09, "vol": 108470.0, "rsi": 66.8447, "dif": 0.0492, "dea": 0.0167, "hist": 0.065, "bb_mb": 3.8545, "bb_up": 4.0696, "bb_dn": 3.6394, "adx": 19.3606, "plus_di": 28.7983, "minus_di": 10.7618}, {"date": "2025-07-10", "open": 4.09, "high": 4.21, "low": 4.09, "close": 4.18, "vol": 182484.0, "rsi": 71.0444, "dif": 0.0654, "dea": 0.0265, "hist": 0.0778, "bb_mb": 3.8705, "bb_up": 4.1303, "bb_dn": 3.6107, "adx": 21.828, "plus_di": 33.0983, "minus_di": 9.9132}, {"date": "2025-07-11", "open": 4.22, "high": 4.29, "low": 4.12, "close": 4.17, "vol": 164916.0, "rsi": 69.9837, "dif": 0.0765, "dea": 0.0365, "hist": 0.0801, "bb_mb": 3.8905, "bb_up": 4.1778, "bb_dn": 3.6032, "adx": 24.5021, "plus_di": 34.5974, "minus_di": 8.8487}, {"date": "2025-07-14", "open": 4.08, "high": 4.16, "low": 4.05, "close": 4.12, "vol": 116137.0, "rsi": 64.776, "dif": 0.0804, "dea": 0.0453, "hist": 0.0702, "bb_mb": 3.9035, "bb_up": 4.208, "bb_dn": 3.599, "adx": 25.8616, "plus_di": 31.9864, "minus_di": 12.5832}, {"date": "2025-07-15", "open": 4.09, "high": 4.13, "low": 3.96, "close": 4.06, "vol": 141441.0, "rsi": 59.0933, "dif": 0.0777, "dea": 0.0517, "hist": 0.0519, "bb_mb": 3.912, "bb_up": 4.2243, "bb_dn": 3.5997, "adx": 25.8905, "plus_di": 28.6839, "minus_di": 16.7501}, {"date": "2025-07-16", "open": 4.08, "high": 4.1, "low": 4.02, "close": 4.04, "vol": 83787.0, "rsi": 57.2892, "dif": 0.0731, "dea": 0.056, "hist": 0.0342, "bb_mb": 3.924, "bb_up": 4.2366, "bb_dn": 3.6114, "adx": 25.9173, "plus_di": 27.2576, "minus_di": 15.9172}, {"date": "2025-07-17", "open": 4.06, "high": 4.07, "low": 4.01, "close": 4.03, "vol": 79262.0, "rsi": 56.3626, "dif": 0.0679, "dea": 0.0584, "hist": 0.019, "bb_mb": 3.9395, "bb_up": 4.2401, "bb_dn": 3.6389, "adx": 25.8046, "plus_di": 26.2052, "minus_di": 15.9462}, {"date": "2025-07-18", "open": 4.06, "high": 4.07, "low": 4.0, "close": 4.04, "vol": 78638.0, "rsi": 57.1096, "dif": 0.0638, "dea": 0.0595, "hist": 0.0087, "bb_mb": 3.956, "bb_up": 4.2392, "bb_dn": 3.6728, "adx": 25.5562, "plus_di": 24.9928, "minus_di": 15.8693}, {"date": "2025-07-21", "open": 4.05, "high": 4.18, "low": 4.04, "close": 4.13, "vol": 100863.0, "rsi": 63.2136, "dif": 0.0671, "dea": 0.061, "hist": 0.0122, "bb_mb": 3.975, "bb_up": 4.2509, "bb_dn": 3.6991, "adx": 26.2177, "plus_di": 29.8481, "minus_di": 14.4313}, {"date": "2025-07-22", "open": 4.14, "high": 4.18, "low": 4.08, "close": 4.16, "vol": 89120.0, "rsi": 65.0016, "dif": 0.0713, "dea": 0.063, "hist": 0.0164, "bb_mb": 3.994, "bb_up": 4.2657, "bb_dn": 3.7223, "adx": 26.8319, "plus_di": 27.903, "minus_di": 13.4908}, {"date": "2025-07-23", "open": 4.17, "high": 4.19, "low": 4.1, "close": 4.11, "vol": 97964.0, "rsi": 59.7859, "dif": 0.0697, "dea": 0.0644, "hist": 0.0107, "bb_mb": 4.0085, "bb_up": 4.2719, "bb_dn": 3.7451, "adx": 27.4799, "plus_di": 26.9055, "minus_di": 12.6894}, {"date": "2025-07-24", "open": 4.12, "high": 4.2, "low": 4.1, "close": 4.17, "vol": 105658.0, "rsi": 63.5641, "dif": 0.0725, "dea": 0.066, "hist": 0.0131, "bb_mb": 4.027, "bb_up": 4.2806, "bb_dn": 3.7734, "adx": 28.1624, "plus_di": 25.7835, "minus_di": 11.8472}, {"date": "2025-07-25", "open": 4.21, "high": 4.22, "low": 4.13, "close": 4.17, "vol": 89027.0, "rsi": 63.5641, "dif": 0.0739, "dea": 0.0676, "hist": 0.0126, "bb_mb": 4.045, "bb_up": 4.2844, "bb_dn": 3.8056, "adx": 28.9607, "plus_di": 25.5682, "minus_di": 11.1312}, {"date": "2025-07-28", "open": 4.16, "high": 4.28, "low": 4.14, "close": 4.27, "vol": 121745.0, "rsi": 69.1639, "dif": 0.0821, "dea": 0.0705, "hist": 0.0232, "bb_mb": 4.066, "bb_up": 4.3071, "bb_dn": 3.8249, "adx": 30.1601, "plus_di": 27.1578, "minus_di": 10.1078}, {"date": "2025-07-29", "open": 4.28, "high": 4.31, "low": 4.21, "close": 4.23, "vol": 94990.0, "rsi": 64.8692, "dif": 0.0844, "dea": 0.0733, "hist": 0.0223, "bb_mb": 4.087, "bb_up": 4.3064, "bb_dn": 3.8676, "adx": 31.4826, "plus_di": 27.3455, "minus_di": 9.4402}, {"date": "2025-07-30", "open": 4.25, "high": 4.27, "low": 4.2, "close": 4.21, "vol": 89863.0, "rsi": 62.7705, "dif": 0.0837, "dea": 0.0754, "hist": 0.0166, "bb_mb": 4.1035, "bb_up": 4.3064, "bb_dn": 3.9006, "adx": 32.5091, "plus_di": 26.0485, "minus_di": 9.67}, {"date": "2025-07-31", "open": 4.18, "high": 4.21, "low": 4.04, "close": 4.06, "vol": 143621.0, "rsi": 49.7658, "dif": 0.0702, "dea": 0.0743, "hist": -0.0083, "bb_mb": 4.1115, "bb_up": 4.2919, "bb_dn": 3.9311, "adx": 30.8959, "plus_di": 23.1738, "minus_di": 18.9896}, {"date": "2025-08-01", "open": 4.1, "high": 4.11, "low": 4.04, "close": 4.08, "vol": 99500.0, "rsi": 51.217, "dif": 0.0604, "dea": 0.0715, "hist": -0.0223, "bb_mb": 4.122, "bb_up": 4.2635, "bb_dn": 3.9805, "adx": 29.3979, "plus_di": 22.0926, "minus_di": 18.1036}, {"date": "2025-08-04", "open": 4.08, "high": 4.13, "low": 4.02, "close": 4.12, "vol": 80214.0, "rsi": 54.0746, "dif": 0.0552, "dea": 0.0683, "hist": -0.0261, "bb_mb": 4.1265, "bb_up": 4.2613, "bb_dn": 3.9917, "adx": 27.7362, "plus_di": 20.476, "minus_di": 18.1093}, {"date": "2025-08-05", "open": 4.15, "high": 4.21, "low": 4.13, "close": 4.16, "vol": 91960.0, "rsi": 56.7999, "dif": 0.0537, "dea": 0.0654, "hist": -0.0233, "bb_mb": 4.13, "bb_up": 4.2644, "bb_dn": 3.9956, "adx": 27.0602, "plus_di": 24.6198, "minus_di": 17.0124}, {"date": "2025-08-06", "open": 4.17, "high": 4.18, "low": 4.09, "close": 4.13, "vol": 85119.0, "rsi": 54.202, "dif": 0.0496, "dea": 0.0622, "hist": -0.0253, "bb_mb": 4.132, "bb_up": 4.2651, "bb_dn": 3.9989, "adx": 25.8825, "plus_di": 23.1122, "minus_di": 18.6923}, {"date": "2025-08-07", "open": 4.15, "high": 4.16, "low": 4.08, "close": 4.13, "vol": 80681.0, "rsi": 54.202, "dif": 0.0457, "dea": 0.0589, "hist": -0.0264, "bb_mb": 4.1295, "bb_up": 4.2606, "bb_dn": 3.9984, "adx": 24.653, "plus_di": 21.8324, "minus_di": 18.3494}, {"date": "2025-08-08", "open": 4.14, "high": 4.18, "low": 4.08, "close": 4.18, "vol": 81181.0, "rsi": 57.922, "dif": 0.0462, "dea": 0.0564, "hist": -0.0203, "bb_mb": 4.13, "bb_up": 4.2619, "bb_dn": 3.9981, "adx": 23.7446, "plus_di": 21.7053, "minus_di": 17.0765}, {"date": "2025-08-11", "open": 4.38, "high": 4.38, "low": 4.22, "close": 4.29, "vol": 228370.0, "rsi": 64.7128, "dif": 0.0548, "dea": 0.056, "hist": -0.0025, "bb_mb": 4.1385, "bb_up": 4.2883, "bb_dn": 3.9887, "adx": 24.6505, "plus_di": 31.8829, "minus_di": 14.8567}, {"date": "2025-08-12", "open": 4.3, "high": 4.68, "low": 4.29, "close": 4.36, "vol": 259470.0, "rsi": 68.2269, "dif": 0.0665, "dea": 0.0581, "hist": 0.0167, "bb_mb": 4.1535, "bb_up": 4.3283, "bb_dn": 3.9787, "adx": 26.8994, "plus_di": 41.5413, "minus_di": 11.6708}, {"date": "2025-08-13", "open": 4.39, "high": 4.44, "low": 4.25, "close": 4.28, "vol": 183232.0, "rsi": 60.7776, "dif": 0.0685, "dea": 0.0602, "hist": 0.0166, "bb_mb": 4.1655, "bb_up": 4.3404, "bb_dn": 3.9906, "adx": 28.5124, "plus_di": 37.3403, "minus_di": 12.6196}, {"date": "2025-08-14", "open": 4.25, "high": 4.32, "low": 4.17, "close": 4.17, "vol": 139733.0, "rsi": 52.3188, "dif": 0.0606, "dea": 0.0603, "hist": 0.0006, "bb_mb": 4.1725, "bb_up": 4.3354, "bb_dn": 4.0096, "adx": 29.1125, "plus_di": 34.3839, "minus_di": 15.843}, {"date": "2025-08-15", "open": 4.19, "high": 4.31, "low": 4.15, "close": 4.19, "vol": 122953.0, "rsi": 53.5837, "dif": 0.0552, "dea": 0.0593, "hist": -0.0081, "bb_mb": 4.18, "bb_up": 4.3305, "bb_dn": 4.0295, "adx": 29.4533, "plus_di": 31.5175, "minus_di": 15.5643}, {"date": "2025-08-18", "open": 4.2, "high": 4.21, "low": 4.11, "close": 4.15, "vol": 134987.0, "rsi": 50.6875, "dif": 0.0472, "dea": 0.0569, "hist": -0.0193, "bb_mb": 4.181, "bb_up": 4.3304, "bb_dn": 4.0316, "adx": 29.3346, "plus_di": 29.8429, "minus_di": 16.8626}, {"date": "2025-08-19", "open": 4.15, "high": 4.25, "low": 4.13, "close": 4.19, "vol": 109643.0, "rsi": 53.4, "dif": 0.0436, "dea": 0.0542, "hist": -0.0212, "bb_mb": 4.1825, "bb_up": 4.3316, "bb_dn": 4.0334, "adx": 29.4654, "plus_di": 30.0672, "minus_di": 15.7792}, {"date": "2025-08-20", "open": 4.2, "high": 4.3, "low": 4.16, "close": 4.29, "vol": 121899.0, "rsi": 59.4109, "dif": 0.0483, "dea": 0.053, "hist": -0.0095, "bb_mb": 4.1915, "bb_up": 4.3439, "bb_dn": 4.0391, "adx": 29.8776, "plus_di": 30.489, "minus_di": 14.6006}, {"date": "2025-08-21", "open": 4.29, "high": 4.32, "low": 4.22, "close": 4.26, "vol": 77610.0, "rsi": 57.0341, "dif": 0.049, "dea": 0.0522, "hist": -0.0065, "bb_mb": 4.196, "bb_up": 4.351, "bb_dn": 4.041, "adx": 30.3755, "plus_di": 29.9191, "minus_di": 13.8073}, {"date": "2025-08-22", "open": 4.24, "high": 4.28, "low": 4.19, "close": 4.26, "vol": 108856.0, "rsi": 57.0341, "dif": 0.049, "dea": 0.0516, "hist": -0.0052, "bb_mb": 4.2005, "bb_up": 4.3575, "bb_dn": 4.0435, "adx": 30.4604, "plus_di": 28.4223, "minus_di": 14.7841}, {"date": "2025-08-25", "open": 4.24, "high": 4.37, "low": 4.23, "close": 4.29, "vol": 158887.0, "rsi": 58.9392, "dif": 0.0508, "dea": 0.0514, "hist": -0.0012, "bb_mb": 4.2015, "bb_up": 4.3606, "bb_dn": 4.0424, "adx": 31.0813, "plus_di": 31.1955, "minus_di": 13.6409}, {"date": "2025-08-26", "open": 4.26, "high": 4.33, "low": 4.2, "close": 4.31, "vol": 125976.0, "rsi": 60.206, "dif": 0.0532, "dea": 0.0518, "hist": 0.0029, "bb_mb": 4.2055, "bb_up": 4.3715, "bb_dn": 4.0395, "adx": 31.2774, "plus_di": 28.9564, "minus_di": 14.3182}, {"date": "2025-08-27", "open": 4.29, "high": 4.29, "low": 4.09, "close": 4.09, "vol": 205373.0, "rsi": 44.0915, "dif": 0.037, "dea": 0.0488, "hist": -0.0236, "bb_mb": 4.1995, "bb_up": 4.3733, "bb_dn": 4.0257, "adx": 30.2043, "plus_di": 25.6067, "minus_di": 18.4459}, {"date": "2025-08-28", "open": 4.11, "high": 4.17, "low": 4.03, "close": 4.15, "vol": 135831.0, "rsi": 48.1663, "dif": 0.0286, "dea": 0.0448, "hist": -0.0323, "bb_mb": 4.204, "bb_up": 4.3669, "bb_dn": 4.0411, "adx": 28.6134, "plus_di": 23.7258, "minus_di": 20.239}, {"date": "2025-08-29", "open": 4.18, "high": 4.18, "low": 4.05, "close": 4.07, "vol": 131157.0, "rsi": 43.6031, "dif": 0.0154, "dea": 0.0389, "hist": -0.047, "bb_mb": 4.2035, "bb_up": 4.3681, "bb_dn": 4.0389, "adx": 27.2195, "plus_di": 22.6286, "minus_di": 18.8541}, {"date": "2025-09-01", "open": 4.05, "high": 4.08, "low": 4.0, "close": 4.06, "vol": 143068.0, "rsi": 43.0541, "dif": 0.004, "dea": 0.0319, "hist": -0.0558, "bb_mb": 4.2005, "bb_up": 4.3735, "bb_dn": 4.0275, "adx": 25.4268, "plus_di": 21.647, "minus_di": 20.7475}, {"date": "2025-09-02", "open": 4.06, "high": 4.09, "low": 3.99, "close": 4.04, "vol": 132987.0, "rsi": 41.9172, "dif": -0.0065, "dea": 0.0242, "hist": -0.0615, "bb_mb": 4.1945, "bb_up": 4.3812, "bb_dn": 4.0078, "adx": 23.7621, "plus_di": 20.4526, "minus_di": 19.6028}, {"date": "2025-09-03", "open": 4.04, "high": 4.07, "low": 3.91, "close": 3.93, "vol": 108392.0, "rsi": 36.2478, "dif": -0.0235, "dea": 0.0147, "hist": -0.0763, "bb_mb": 4.1845, "bb_up": 4.4042, "bb_dn": 3.9648, "adx": 22.6871, "plus_di": 18.6769, "minus_di": 22.2418}, {"date": "2025-09-04", "open": 3.95, "high": 4.06, "low": 3.92, "close": 4.0, "vol": 126840.0, "rsi": 41.6557, "dif": -0.0309, "dea": 0.0056, "hist": -0.073, "bb_mb": 4.178, "bb_up": 4.4117, "bb_dn": 3.9443, "adx": 21.6889, "plus_di": 17.2645, "minus_di": 20.5598}, {"date": "2025-09-05", "open": 4.03, "high": 4.03, "low": 3.92, "close": 4.01, "vol": 100693.0, "rsi": 42.4073, "dif": -0.0356, "dea": -0.0027, "hist": -0.0659, "bb_mb": 4.1695, "bb_up": 4.415, "bb_dn": 3.924, "adx": 20.762, "plus_di": 16.2262, "minus_di": 19.3233}, {"date": "2025-09-08", "open": 4.01, "high": 4.11, "low": 4.0, "close": 4.09, "vol": 102872.0, "rsi": 48.1607, "dif": -0.0325, "dea": -0.0086, "hist": -0.0477, "bb_mb": 4.1595, "bb_up": 4.4006, "bb_dn": 3.9184, "adx": 19.5652, "plus_di": 19.663, "minus_di": 18.1479}, {"date": "2025-09-09", "open": 4.11, "high": 4.18, "low": 4.05, "close": 4.13, "vol": 135369.0, "rsi": 50.8069, "dif": -0.0265, "dea": -0.0122, "hist": -0.0285, "bb_mb": 4.148, "bb_up": 4.37, "bb_dn": 3.926, "adx": 19.1348, "plus_di": 22.1192, "minus_di": 16.844}, {"date": "2025-09-10", "open": 4.14, "high": 4.23, "low": 4.11, "close": 4.22, "vol": 144861.0, "rsi": 56.2217, "dif": -0.0143, "dea": -0.0126, "hist": -0.0033, "bb_mb": 4.145, "bb_up": 4.361, "bb_dn": 3.929, "adx": 19.1733, "plus_di": 23.4223, "minus_di": 15.721}, {"date": "2025-09-11", "open": 4.21, "high": 4.24, "low": 4.14, "close": 4.22, "vol": 132007.0, "rsi": 56.2217, "dif": -0.0046, "dea": -0.011, "hist": 0.0129, "bb_mb": 4.1475, "bb_up": 4.3659, "bb_dn": 3.9291, "adx": 19.2955, "plus_di": 22.6646, "minus_di": 14.8336}, {"date": "2025-09-12", "open": 4.23, "high": 4.32, "low": 4.22, "close": 4.29, "vol": 153863.0, "rsi": 60.1759, "dif": 0.0087, "dea": -0.0071, "hist": 0.0315, "bb_mb": 4.1525, "bb_up": 4.3794, "bb_dn": 3.9256, "adx": 20.0578, "plus_di": 25.9505, "minus_di": 13.9834}, {"date": "2025-09-15", "open": 4.29, "high": 4.34, "low": 4.15, "close": 4.33, "vol": 195216.0, "rsi": 62.2728, "dif": 0.0222, "dea": -0.0012, "hist": 0.0467, "bb_mb": 4.1615, "bb_up": 4.4019, "bb_dn": 3.9211, "adx": 19.8593, "plus_di": 23.2268, "minus_di": 16.3826}, {"date": "2025-09-16", "open": 4.3, "high": 4.39, "low": 4.29, "close": 4.37, "vol": 150083.0, "rsi": 64.2974, "dif": 0.0357, "dea": 0.0062, "hist": 0.059, "bb_mb": 4.1705, "bb_up": 4.4282, "bb_dn": 3.9128, "adx": 20.0877, "plus_di": 24.7301, "minus_di": 15.4627}, {"date": "2025-09-17", "open": 4.37, "high": 4.44, "low": 4.26, "close": 4.41, "vol": 183405.0, "rsi": 66.248, "dif": 0.049, "dea": 0.0147, "hist": 0.0686, "bb_mb": 4.1765, "bb_up": 4.451, "bb_dn": 3.902, "adx": 20.6843, "plus_di": 25.0293, "minus_di": 13.9449}, {"date": "2025-09-18", "open": 4.43, "high": 4.44, "low": 4.22, "close": 4.26, "vol": 151825.0, "rsi": 54.2733, "dif": 0.0469, "dea": 0.0212, "hist": 0.0515, "bb_mb": 4.1765, "bb_up": 4.451, "bb_dn": 3.902, "adx": 20.7168, "plus_di": 22.1655, "minus_di": 14.4297}, {"date": "2025-09-19", "open": 4.26, "high": 4.34, "low": 4.14, "close": 4.28, "vol": 156288.0, "rsi": 55.4301, "dif": 0.0464, "dea": 0.0262, "hist": 0.0403, "bb_mb": 4.1775, "bb_up": 4.4534, "bb_dn": 3.9016, "adx": 19.8031, "plus_di": 19.9327, "minus_di": 17.0055}, {"date": "2025-09-22", "open": 4.3, "high": 4.3, "low": 4.13, "close": 4.21, "vol": 124322.0, "rsi": 50.6047, "dif": 0.0398, "dea": 0.0289, "hist": 0.0218, "bb_mb": 4.1735, "bb_up": 4.4448, "bb_dn": 3.9022, "adx": 18.843, "plus_di": 18.2498, "minus_di": 16.0664}, {"date": "2025-09-23", "open": 4.2, "high": 4.2, "low": 3.96, "close": 4.08, "vol": 171331.0, "rsi": 43.1006, "dif": 0.0239, "dea": 0.0279, "hist": -0.0081, "bb_mb": 4.162, "bb_up": 4.4284, "bb_dn": 3.8956, "adx": 18.6339, "plus_di": 16.0975, "minus_di": 22.1913}, {"date": "2025-09-24", "open": 4.04, "high": 4.25, "low": 4.03, "close": 4.18, "vol": 137089.0, "rsi": 49.3256, "dif": 0.0191, "dea": 0.0262, "hist": -0.0141, "bb_mb": 4.1665, "bb_up": 4.4308, "bb_dn": 3.9022, "adx": 17.9246, "plus_di": 16.764, "minus_di": 19.9604}, {"date": "2025-09-25", "open": 4.15, "high": 4.19, "low": 4.04, "close": 4.05, "vol": 117613.0, "rsi": 42.7741, "dif": 0.0047, "dea": 0.0219, "hist": -0.0343, "bb_mb": 4.1615, "bb_up": 4.4309, "bb_dn": 3.8921, "adx": 17.266, "plus_di": 15.6116, "minus_di": 18.5882}, {"date": "2025-09-26", "open": 4.04, "high": 4.13, "low": 4.0, "close": 4.01, "vol": 150832.0, "rsi": 40.9709, "dif": -0.0097, "dea": 0.0156, "hist": -0.0506, "bb_mb": 4.1585, "bb_up": 4.4334, "bb_dn": 3.8836, "adx": 17.0103, "plus_di": 14.6704, "minus_di": 19.3227}, {"date": "2025-09-29", "open": 4.0, "high": 4.08, "low": 3.9, "close": 4.06, "vol": 133859.0, "rsi": 44.1409, "dif": -0.017, "dea": 0.0091, "hist": -0.0521, "bb_mb": 4.1585, "bb_up": 4.4334, "bb_dn": 3.8836, "adx": 17.5626, "plus_di": 13.4603, "minus_di": 22.3114}, {"date": "2025-09-30", "open": 4.06, "high": 4.11, "low": 4.02, "close": 4.09, "vol": 102786.0, "rsi": 46.0141, "dif": -0.0201, "dea": 0.0032, "hist": -0.0466, "bb_mb": 4.161, "bb_up": 4.4323, "bb_dn": 3.8897, "adx": 17.7214, "plus_di": 14.3054, "minus_di": 21.3625}, {"date": "2025-10-09", "open": 4.08, "high": 4.09, "low": 3.95, "close": 4.08, "vol": 131832.0, "rsi": 45.4668, "dif": -0.0231, "dea": -0.002, "hist": -0.0421, "bb_mb": 4.1685, "bb_up": 4.4205, "bb_dn": 3.9165, "adx": 18.3891, "plus_di": 13.354, "minus_di": 23.267}, {"date": "2025-10-10", "open": 4.08, "high": 4.21, "low": 4.02, "close": 4.15, "vol": 159423.0, "rsi": 49.9545, "dif": -0.0196, "dea": -0.0055, "hist": -0.028, "bb_mb": 4.176, "bb_up": 4.4155, "bb_dn": 3.9365, "adx": 17.7061, "plus_di": 17.766, "minus_di": 21.2059}, {"date": "2025-10-13", "open": 4.03, "high": 4.28, "low": 3.96, "close": 4.2, "vol": 193265.0, "rsi": 52.9338, "dif": -0.0126, "dea": -0.007, "hist": -0.0113, "bb_mb": 4.1855, "bb_up": 4.412, "bb_dn": 3.959, "adx": 16.4539, "plus_di": 18.3348, "minus_di": 18.2703}, {"date": "2025-10-14", "open": 4.2, "high": 4.27, "low": 4.13, "close": 4.14, "vol": 126850.0, "rsi": 49.1523, "dif": -0.0118, "dea": -0.0079, "hist": -0.0078, "bb_mb": 4.188, "bb_up": 4.4111, "bb_dn": 3.9649, "adx": 15.2913, "plus_di": 17.2122, "minus_di": 17.1516}, {"date": "2025-10-15", "open": 4.19, "high": 4.21, "low": 4.07, "close": 4.11, "vol": 92214.0, "rsi": 47.3316, "dif": -0.0134, "dea": -0.009, "hist": -0.0088, "bb_mb": 4.187, "bb_up": 4.4114, "bb_dn": 3.9626, "adx": 14.7302, "plus_di": 16.1474, "minus_di": 18.7418}, {"date": "2025-10-16", "open": 4.1, "high": 4.2, "low": 4.09, "close": 4.15, "vol": 107297.0, "rsi": 49.9915, "dif": -0.0114, "dea": -0.0095, "hist": -0.0037, "bb_mb": 4.1835, "bb_up": 4.4079, "bb_dn": 3.9591, "adx": 14.2091, "plus_di": 15.3443, "minus_di": 17.8095}, {"date": "2025-10-17", "open": 4.13, "high": 4.21, "low": 4.11, "close": 4.15, "vol": 105786.0, "rsi": 49.9915, "dif": -0.0096, "dea": -0.0095, "hist": -0.0002, "bb_mb": 4.18, "bb_up": 4.4042, "bb_dn": 3.9558, "adx": 13.6142, "plus_di": 15.0961, "minus_di": 16.9825}, {"date": "2025-10-20", "open": 4.14, "high": 4.23, "low": 4.13, "close": 4.21, "vol": 101326.0, "rsi": 54.0302, "dif": -0.0033, "dea": -0.0083, "hist": 0.0099, "bb_mb": 4.176, "bb_up": 4.3947, "bb_dn": 3.9573, "adx": 12.8332, "plus_di": 15.3297, "minus_di": 16.1737}, {"date": "2025-10-21", "open": 4.21, "high": 4.33, "low": 4.17, "close": 4.32, "vol": 205855.0, "rsi": 60.3522, "dif": 0.0104, "dea": -0.0045, "hist": 0.0299, "bb_mb": 4.1755, "bb_up": 4.3928, "bb_dn": 3.9582, "adx": 12.752, "plus_di": 18.907, "minus_di": 14.9471}, {"date": "2025-10-22", "open": 4.3, "high": 4.75, "low": 4.3, "close": 4.75, "vol": 295140.0, "rsi": 74.8897, "dif": 0.0553, "dea": 0.0074, "hist": 0.0958, "bb_mb": 4.1945, "bb_up": 4.5219, "bb_dn": 3.8671, "adx": 15.1222, "plus_di": 32.8096, "minus_di": 12.1551}, {"date": "2025-10-23", "open": 4.71, "high": 4.79, "low": 4.54, "close": 4.56, "vol": 674490.0, "rsi": 63.7642, "dif": 0.0747, "dea": 0.0209, "hist": 0.1077, "bb_mb": 4.202, "bb_up": 4.556, "bb_dn": 3.848, "adx": 17.4709, "plus_di": 31.1198, "minus_di": 10.9332}, {"date": "2025-10-24", "open": 4.55, "high": 4.59, "low": 4.44, "close": 4.47, "vol": 340978.0, "rsi": 59.2724, "dif": 0.0819, "dea": 0.0331, "hist": 0.0977, "bb_mb": 4.2125, "bb_up": 4.5857, "bb_dn": 3.8393, "adx": 18.6648, "plus_di": 29.2218, "minus_di": 14.3325}, {"date": "2025-10-27", "open": 4.48, "high": 4.58, "low": 4.36, "close": 4.48, "vol": 257049.0, "rsi": 59.6129, "dif": 0.0874, "dea": 0.044, "hist": 0.0869, "bb_mb": 4.2225, "bb_up": 4.6136, "bb_dn": 3.8314, "adx": 19.0599, "plus_di": 26.654, "minus_di": 16.2684}, {"date": "2025-10-28", "open": 4.49, "high": 4.68, "low": 4.43, "close": 4.54, "vol": 265000.0, "rsi": 61.6824, "dif": 0.0955, "dea": 0.0543, "hist": 0.0825, "bb_mb": 4.239, "bb_up": 4.6549, "bb_dn": 3.8231, "adx": 19.9199, "plus_di": 27.9498, "minus_di": 14.6888}, {"date": "2025-10-29", "open": 4.57, "high": 4.99, "low": 4.47, "close": 4.99, "vol": 371573.0, "rsi": 72.8991, "dif": 0.1367, "dea": 0.0707, "hist": 0.1318, "bb_mb": 4.2845, "bb_up": 4.8115, "bb_dn": 3.7575, "adx": 21.8661, "plus_di": 33.6065, "minus_di": 12.0649}, {"date": "2025-10-30", "open": 5.48, "high": 5.49, "low": 5.34, "close": 5.49, "vol": 315464.0, "rsi": 79.9293, "dif": 0.2072, "dea": 0.098, "hist": 0.2184, "bb_mb": 4.35, "bb_up": 5.1005, "bb_dn": 3.5995, "adx": 24.7612, "plus_di": 43.9708, "minus_di": 10.1815}, {"date": "2025-10-31", "open": 5.5, "high": 6.04, "low": 5.17, "close": 5.73, "vol": 1215281.0, "rsi": 82.3024, "dif": 0.2793, "dea": 0.1343, "hist": 0.29, "bb_mb": 4.434, "bb_up": 5.3908, "bb_dn": 3.4772, "adx": 28.1332, "plus_di": 48.3268, "minus_di": 7.8773}, {"date": "2025-11-03", "open": 5.16, "high": 5.3, "low": 5.16, "close": 5.16, "vol": 499364.0, "rsi": 63.1919, "dif": 0.2871, "dea": 0.1649, "hist": 0.2445, "bb_mb": 4.4915, "bb_up": 5.4788, "bb_dn": 3.5042, "adx": 31.2034, "plus_di": 41.6725, "minus_di": 7.0342}, {"date": "2025-11-04", "open": 4.89, "high": 5.11, "low": 4.7, "close": 4.98, "vol": 714667.0, "rsi": 58.5671, "dif": 0.2756, "dea": 0.187, "hist": 0.1772, "bb_mb": 4.5375, "bb_up": 5.5259, "bb_dn": 3.5491, "adx": 31.6436, "plus_di": 37.2186, "minus_di": 16.9703}, {"date": "2025-11-05", "open": 4.82, "high": 5.22, "low": 4.76, "close": 5.07, "vol": 649404.0, "rsi": 60.138, "dif": 0.2706, "dea": 0.2037, "hist": 0.1338, "bb_mb": 4.5865, "bb_up": 5.5786, "bb_dn": 3.5944, "adx": 32.2686, "plus_di": 35.8452, "minus_di": 15.2186}, {"date": "2025-11-06", "open": 5.05, "high": 5.2, "low": 4.88, "close": 5.0, "vol": 508985.0, "rsi": 58.287, "dif": 0.2581, "dea": 0.2146, "hist": 0.0869, "bb_mb": 4.6325, "bb_up": 5.611, "bb_dn": 3.654, "adx": 32.849, "plus_di": 33.2723, "minus_di": 14.1262}, {"date": "2025-11-07", "open": 4.95, "high": 5.01, "low": 4.77, "close": 4.78, "vol": 417722.0, "rsi": 52.7877, "dif": 0.2277, "dea": 0.2172, "hist": 0.021, "bb_mb": 4.664, "bb_up": 5.6173, "bb_dn": 3.7107, "adx": 32.8556, "plus_di": 31.4491, "minus_di": 15.8637}, {"date": "2025-11-10", "open": 4.75, "high": 4.92, "low": 4.71, "close": 4.87, "vol": 369459.0, "rsi": 54.6718, "dif": 0.2085, "dea": 0.2155, "hist": -0.0139, "bb_mb": 4.6975, "bb_up": 5.629, "bb_dn": 3.766, "adx": 32.5745, "plus_di": 29.9049, "minus_di": 16.4877}, {"date": "2025-11-11", "open": 4.87, "high": 4.96, "low": 4.85, "close": 4.91, "vol": 299048.0, "rsi": 55.5214, "dif": 0.1943, "dea": 0.2113, "hist": -0.0339, "bb_mb": 4.736, "bb_up": 5.6335, "bb_dn": 3.8385, "adx": 32.4214, "plus_di": 30.0789, "minus_di": 16.0433}, {"date": "2025-11-12", "open": 4.89, "high": 4.99, "low": 4.88, "close": 4.95, "vol": 237399.0, "rsi": 56.4014, "dif": 0.1842, "dea": 0.2058, "hist": -0.0433, "bb_mb": 4.778, "bb_up": 5.6296, "bb_dn": 3.9264, "adx": 32.3631, "plus_di": 29.9998, "minus_di": 15.5908}, {"date": "2025-11-13", "open": 4.93, "high": 4.98, "low": 4.81, "close": 4.98, "vol": 245235.0, "rsi": 57.0872, "dif": 0.1765, "dea": 0.2, "hist": -0.0469, "bb_mb": 4.8195, "bb_up": 5.6217, "bb_dn": 4.0173, "adx": 31.9266, "plus_di": 28.6546, "minus_di": 16.738}, {"date": "2025-11-14", "open": 4.94, "high": 5.28, "low": 4.91, "close": 5.19, "vol": 535920.0, "rsi": 61.6361, "dif": 0.1852, "dea": 0.197, "hist": -0.0236, "bb_mb": 4.8715, "bb_up": 5.6243, "bb_dn": 4.1187, "adx": 32.3539, "plus_di": 33.6406, "minus_di": 15.1462}, {"date": "2025-11-17", "open": 5.13, "high": 5.69, "low": 5.07, "close": 5.48, "vol": 621612.0, "rsi": 66.8605, "dif": 0.2131, "dea": 0.2002, "hist": 0.0257, "bb_mb": 4.935, "bb_up": 5.6668, "bb_dn": 4.2032, "adx": 33.5877, "plus_di": 38.3995, "minus_di": 12.9276}, {"date": "2025-11-18", "open": 5.49, "high": 5.51, "low": 5.1, "close": 5.23, "vol": 447066.0, "rsi": 59.3563, "dif": 0.2126, "dea": 0.2027, "hist": 0.0197, "bb_mb": 4.9805, "bb_up": 5.6628, "bb_dn": 4.2982, "adx": 34.7333, "plus_di": 34.7721, "minus_di": 11.7064}, {"date": "2025-11-19", "open": 5.2, "high": 5.21, "low": 4.91, "close": 4.95, "vol": 318485.0, "rsi": 52.279, "dif": 0.1874, "dea": 0.1996, "hist": -0.0245, "bb_mb": 4.9905, "bb_up": 5.6644, "bb_dn": 4.3166, "adx": 34.8129, "plus_di": 32.2144, "minus_di": 15.2128}, {"date": "2025-11-20", "open": 5.01, "high": 5.01, "low": 4.78, "close": 4.9, "vol": 256379.0, "rsi": 51.1072, "dif": 0.1615, "dea": 0.192, "hist": -0.061, "bb_mb": 5.0075, "bb_up": 5.6522, "bb_dn": 4.3628, "adx": 34.2703, "plus_di": 30.479, "minus_di": 17.4381}, {"date": "2025-11-21", "open": 4.89, "high": 4.99, "low": 4.61, "close": 4.61, "vol": 259155.0, "rsi": 44.8304, "dif": 0.1163, "dea": 0.1769, "hist": -0.1212, "bb_mb": 5.0145, "bb_up": 5.6372, "bb_dn": 4.3918, "adx": 33.02, "plus_di": 27.8131, "minus_di": 19.8258}, {"date": "2025-11-24", "open": 4.68, "high": 4.73, "low": 4.57, "close": 4.65, "vol": 172491.0, "rsi": 45.8189, "dif": 0.0827, "dea": 0.158, "hist": -0.1506, "bb_mb": 5.023, "bb_up": 5.6191, "bb_dn": 4.4269, "adx": 31.6889, "plus_di": 26.7521, "minus_di": 20.0232}, {"date": "2025-11-25", "open": 4.65, "high": 4.74, "low": 4.57, "close": 4.7, "vol": 147215.0, "rsi": 47.0948, "dif": 0.0595, "dea": 0.1383, "hist": -0.1577, "bb_mb": 5.031, "bb_up": 5.6036, "bb_dn": 4.4584, "adx": 30.4864, "plus_di": 25.8792, "minus_di": 19.1858}, {"date": "2025-11-26", "open": 4.69, "high": 4.83, "low": 4.63, "close": 4.67, "vol": 158522.0, "rsi": 46.3889, "dif": 0.0382, "dea": 0.1183, "hist": -0.1602, "bb_mb": 5.015, "bb_up": 5.6099, "bb_dn": 4.4201, "adx": 29.6753, "plus_di": 26.8415, "minus_di": 18.2203}, {"date": "2025-11-27", "open": 4.63, "high": 4.71, "low": 4.55, "close": 4.67, "vol": 133578.0, "rsi": 46.3889, "dif": 0.0211, "dea": 0.0988, "hist": -0.1556, "bb_mb": 4.974, "bb_up": 5.5436, "bb_dn": 4.4044, "adx": 28.5317, "plus_di": 25.7261, "minus_di": 19.5408}, {"date": "2025-11-28", "open": 4.66, "high": 4.72, "low": 4.55, "close": 4.72, "vol": 144215.0, "rsi": 47.8985, "dif": 0.0114, "dea": 0.0814, "hist": -0.1399, "bb_mb": 4.9235, "bb_up": 5.3784, "bb_dn": 4.4686, "adx": 27.5076, "plus_di": 24.8254, "minus_di": 18.6539}, {"date": "2025-12-01", "open": 4.71, "high": 4.78, "low": 4.63, "close": 4.67, "vol": 130257.0, "rsi": 46.4888, "dif": -0.0003, "dea": 0.065, "hist": -0.1306, "bb_mb": 4.899, "bb_up": 5.353, "bb_dn": 4.445, "adx": 26.7905, "plus_di": 25.4528, "minus_di": 17.8826}, {"date": "2025-12-02", "open": 4.62, "high": 4.72, "low": 4.55, "close": 4.71, "vol": 137220.0, "rsi": 47.812, "dif": -0.0063, "dea": 0.0508, "hist": -0.114, "bb_mb": 4.8855, "bb_up": 5.3454, "bb_dn": 4.4256, "adx": 25.6888, "plus_di": 24.2301, "minus_di": 19.2842}, {"date": "2025-12-03", "open": 4.73, "high": 4.77, "low": 4.61, "close": 4.7, "vol": 153538.0, "rsi": 47.4958, "dif": -0.0117, "dea": 0.0383, "hist": -0.0999, "bb_mb": 4.867, "bb_up": 5.3254, "bb_dn": 4.4086, "adx": 24.8796, "plus_di": 24.556, "minus_di": 18.3889}, {"date": "2025-12-04", "open": 4.67, "high": 4.71, "low": 4.53, "close": 4.55, "vol": 124817.0, "rsi": 42.9114, "dif": -0.0277, "dea": 0.0251, "hist": -0.1056, "bb_mb": 4.8445, "bb_up": 5.3193, "bb_dn": 4.3697, "adx": 23.6789, "plus_di": 23.2482, "minus_di": 19.7765}, {"date": "2025-12-05", "open": 4.53, "high": 4.58, "low": 4.45, "close": 4.57, "vol": 108765.0, "rsi": 43.6918, "dif": -0.0384, "dea": 0.0124, "hist": -0.1016, "bb_mb": 4.834, "bb_up": 5.3239, "bb_dn": 4.3441, "adx": 22.1321, "plus_di": 22.3236, "minus_di": 21.4376}, {"date": "2025-12-08", "open": 4.57, "high": 4.6, "low": 4.49, "close": 4.52, "vol": 126538.0, "rsi": 42.1408, "dif": -0.0503, "dea": -0.0001, "hist": -0.1003, "bb_mb": 4.8165, "bb_up": 5.3256, "bb_dn": 4.3074, "adx": 20.7997, "plus_di": 22.1787, "minus_di": 20.6878}, {"date": "2025-12-09", "open": 4.55, "high": 4.69, "low": 4.49, "close": 4.56, "vol": 211617.0, "rsi": 43.8578, "dif": -0.0559, "dea": -0.0113, "hist": -0.0892, "bb_mb": 4.799, "bb_up": 5.3185, "bb_dn": 4.2795, "adx": 20.0249, "plus_di": 23.6414, "minus_di": 19.3618}, {"date": "2025-12-10", "open": 4.54, "high": 4.65, "low": 4.47, "close": 4.58, "vol": 172317.0, "rsi": 44.7408, "dif": -0.058, "dea": -0.0206, "hist": -0.0747, "bb_mb": 4.7805, "bb_up": 5.3037, "bb_dn": 4.2573, "adx": 19.1813, "plus_di": 22.2587, "minus_di": 18.8792}, {"date": "2025-12-11", "open": 4.55, "high": 5.04, "low": 4.43, "close": 4.89, "vol": 526716.0, "rsi": 56.2315, "dif": -0.0343, "dea": -0.0234, "hist": -0.0218, "bb_mb": 4.776, "bb_up": 5.2935, "bb_dn": 4.2585, "adx": 20.0312, "plus_di": 29.59, "minus_di": 15.5581}, {"date": "2025-12-12", "open": 4.68, "high": 4.76, "low": 4.4, "close": 4.48, "vol": 541587.0, "rsi": 43.3826, "dif": -0.048, "dea": -0.0283, "hist": -0.0394, "bb_mb": 4.7405, "bb_up": 5.2353, "bb_dn": 4.2457, "adx": 20.6311, "plus_di": 25.6818, "minus_di": 14.3118}, {"date": "2025-12-15", "open": 4.37, "high": 4.45, "low": 4.35, "close": 4.38, "vol": 244181.0, "rsi": 40.9263, "dif": -0.0662, "dea": -0.0359, "hist": -0.0607, "bb_mb": 4.6855, "bb_up": 5.0654, "bb_dn": 4.3056, "adx": 20.8668, "plus_di": 24.7479, "minus_di": 15.19}, {"date": "2025-12-16", "open": 4.37, "high": 4.41, "low": 4.23, "close": 4.27, "vol": 234238.0, "rsi": 38.3538, "dif": -0.0885, "dea": -0.0464, "hist": -0.0842, "bb_mb": 4.6375, "bb_up": 4.967, "bb_dn": 4.308, "adx": 20.351, "plus_di": 23.475, "minus_di": 17.8377}, {"date": "2025-12-17", "open": 4.2, "high": 4.29, "low": 4.2, "close": 4.25, "vol": 126026.0, "rsi": 37.8875, "dif": -0.1065, "dea": -0.0584, "hist": -0.0962, "bb_mb": 4.6025, "bb_up": 4.9408, "bb_dn": 4.2642, "adx": 19.6946, "plus_di": 22.8424, "minus_di": 18.2553}, {"date": "2025-12-18", "open": 4.25, "high": 4.29, "low": 4.18, "close": 4.19, "vol": 110702.0, "rsi": 36.4555, "dif": -0.1242, "dea": -0.0716, "hist": -0.1053, "bb_mb": 4.567, "bb_up": 4.9225, "bb_dn": 4.2115, "adx": 18.9624, "plus_di": 22.0599, "minus_di": 18.2528}, {"date": "2025-12-19", "open": 4.2, "high": 4.38, "low": 4.19, "close": 4.35, "vol": 199212.0, "rsi": 42.6773, "dif": -0.1239, "dea": -0.082, "hist": -0.0837, "bb_mb": 4.554, "bb_up": 4.9217, "bb_dn": 4.1863, "adx": 18.7331, "plus_di": 23.576, "minus_di": 17.1594}, {"date": "2025-12-22", "open": 4.35, "high": 4.4, "low": 4.28, "close": 4.35, "vol": 126437.0, "rsi": 42.6773, "dif": -0.1222, "dea": -0.0901, "hist": -0.0643, "bb_mb": 4.539, "bb_up": 4.9146, "bb_dn": 4.1634, "adx": 18.6188, "plus_di": 23.3055, "minus_di": 16.4876}, {"date": "2025-12-23", "open": 4.38, "high": 4.38, "low": 4.24, "close": 4.26, "vol": 117919.0, "rsi": 40.115, "dif": -0.1267, "dea": -0.0974, "hist": -0.0586, "bb_mb": 4.517, "bb_up": 4.9042, "bb_dn": 4.1298, "adx": 18.2273, "plus_di": 22.2129, "minus_di": 17.0541}, {"date": "2025-12-24", "open": 4.25, "high": 4.32, "low": 4.24, "close": 4.32, "vol": 82187.0, "rsi": 42.5897, "dif": -0.124, "dea": -0.1027, "hist": -0.0426, "bb_mb": 4.4995, "bb_up": 4.8892, "bb_dn": 4.1098, "adx": 17.8638, "plus_di": 21.59, "minus_di": 16.5759}, {"date": "2025-12-25", "open": 4.56, "high": 4.67, "low": 4.32, "close": 4.35, "vol": 368805.0, "rsi": 43.8394, "dif": -0.1181, "dea": -0.1058, "hist": -0.0246, "bb_mb": 4.4835, "bb_up": 4.87, "bb_dn": 4.097, "adx": 19.1217, "plus_di": 30.7404, "minus_di": 14.6415}, {"date": "2025-12-26", "open": 4.3, "high": 4.41, "low": 4.27, "close": 4.32, "vol": 255805.0, "rsi": 42.8352, "dif": -0.1145, "dea": -0.1075, "hist": -0.0139, "bb_mb": 4.4635, "bb_up": 4.8398, "bb_dn": 4.0872, "adx": 19.9215, "plus_di": 29.2691, "minus_di": 15.6501}, {"date": "2025-12-29", "open": 4.29, "high": 4.36, "low": 4.26, "close": 4.29, "vol": 159616.0, "rsi": 41.8041, "dif": -0.1128, "dea": -0.1086, "hist": -0.0083, "bb_mb": 4.4445, "bb_up": 4.8152, "bb_dn": 4.0738, "adx": 20.5885, "plus_di": 28.2297, "minus_di": 15.4495}, {"date": "2025-12-30", "open": 4.29, "high": 4.31, "low": 4.21, "close": 4.23, "vol": 126713.0, "rsi": 39.7434, "dif": -0.1149, "dea": -0.1099, "hist": -0.0101, "bb_mb": 4.4205, "bb_up": 4.7808, "bb_dn": 4.0602, "adx": 20.8206, "plus_di": 27.1898, "minus_di": 16.7221}, {"date": "2025-12-31", "open": 4.24, "high": 4.3, "low": 4.18, "close": 4.27, "vol": 113156.0, "rsi": 41.803, "dif": -0.1121, "dea": -0.1103, "hist": -0.0036, "bb_mb": 4.399, "bb_up": 4.7399, "bb_dn": 4.0581, "adx": 20.8027, "plus_di": 25.9544, "minus_di": 17.0982}, {"date": "2026-01-05", "open": 4.28, "high": 4.31, "low": 4.23, "close": 4.27, "vol": 144367.0, "rsi": 41.803, "dif": -0.1086, "dea": -0.11, "hist": 0.0027, "bb_mb": 4.385, "bb_up": 4.7228, "bb_dn": 4.0472, "adx": 20.8394, "plus_di": 25.5293, "minus_di": 16.5581}, {"date": "2026-01-06", "open": 4.27, "high": 4.36, "low": 4.25, "close": 4.32, "vol": 113537.0, "rsi": 44.5506, "dif": -0.1006, "dea": -0.1081, "hist": 0.0149, "bb_mb": 4.3725, "bb_up": 4.6998, "bb_dn": 4.0452, "adx": 21.1437, "plus_di": 26.4198, "minus_di": 15.8181}, {"date": "2026-01-07", "open": 4.3, "high": 4.34, "low": 4.27, "close": 4.28, "vol": 95529.0, "rsi": 42.8093, "dif": -0.0965, "dea": -0.1058, "hist": 0.0186, "bb_mb": 4.3605, "bb_up": 4.6826, "bb_dn": 4.0384, "adx": 21.4263, "plus_di": 25.6347, "minus_di": 15.348}, {"date": "2026-01-08", "open": 4.27, "high": 4.45, "low": 4.26, "close": 4.4, "vol": 185249.0, "rsi": 49.2214, "dif": -0.0825, "dea": -0.1011, "hist": 0.0372, "bb_mb": 4.3525, "bb_up": 4.6614, "bb_dn": 4.0436, "adx": 22.2734, "plus_di": 28.2129, "minus_di": 14.1214}, {"date": "2026-01-09", "open": 4.38, "high": 4.44, "low": 4.34, "close": 4.38, "vol": 123792.0, "rsi": 48.2504, "dif": -0.0722, "dea": -0.0953, "hist": 0.0462, "bb_mb": 4.3425, "bb_up": 4.6328, "bb_dn": 4.0522, "adx": 23.06, "plus_di": 26.9903, "minus_di": 13.5094}, {"date": "2026-01-12", "open": 4.38, "high": 4.42, "low": 4.34, "close": 4.39, "vol": 121975.0, "rsi": 48.7943, "dif": -0.0625, "dea": -0.0888, "hist": 0.0525, "bb_mb": 4.3175, "bb_up": 4.4553, "bb_dn": 4.1797, "adx": 23.7905, "plus_di": 26.0189, "minus_di": 13.0232}, {"date": "2026-01-13", "open": 4.39, "high": 4.44, "low": 4.35, "close": 4.38, "vol": 129438.0, "rsi": 48.2482, "dif": -0.055, "dea": -0.082, "hist": 0.054, "bb_mb": 4.3125, "bb_up": 4.4314, "bb_dn": 4.1936, "adx": 24.5842, "plus_di": 25.8602, "minus_di": 12.4791}, {"date": "2026-01-14", "open": 4.38, "high": 4.44, "low": 4.32, "close": 4.35, "vol": 141334.0, "rsi": 46.5645, "dif": -0.0509, "dea": -0.0758, "hist": 0.0497, "bb_mb": 4.311, "bb_up": 4.4271, "bb_dn": 4.1949, "adx": 24.9584, "plus_di": 24.3965, "minus_di": 13.1878}, {"date": "2026-01-15", "open": 4.35, "high": 4.42, "low": 4.33, "close": 4.38, "vol": 101013.0, "rsi": 48.5, "dif": -0.0448, "dea": -0.0696, "hist": 0.0497, "bb_mb": 4.3165, "bb_up": 4.4348, "bb_dn": 4.1982, "adx": 25.3058, "plus_di": 23.3299, "minus_di": 12.6112}, {"date": "2026-01-16", "open": 4.42, "high": 4.43, "low": 4.27, "close": 4.27, "vol": 111607.0, "rsi": 42.4312, "dif": -0.0482, "dea": -0.0653, "hist": 0.0343, "bb_mb": 4.3175, "bb_up": 4.4337, "bb_dn": 4.2013, "adx": 24.8837, "plus_di": 21.5281, "minus_di": 14.5335}, {"date": "2026-01-19", "open": 4.22, "high": 4.34, "low": 4.19, "close": 4.32, "vol": 113718.0, "rsi": 45.7539, "dif": -0.0463, "dea": -0.0615, "hist": 0.0304, "bb_mb": 4.324, "bb_up": 4.4236, "bb_dn": 4.2244, "adx": 23.6099, "plus_di": 19.9708, "minus_di": 17.3401}, {"date": "2026-01-20", "open": 4.32, "high": 4.47, "low": 4.29, "close": 4.43, "vol": 158326.0, "rsi": 52.2794, "dif": -0.0355, "dea": -0.0563, "hist": 0.0415, "bb_mb": 4.328, "bb_up": 4.4379, "bb_dn": 4.2181, "adx": 23.4444, "plus_di": 24.4377, "minus_di": 15.8577}, {"date": "2026-01-21", "open": 4.39, "high": 4.46, "low": 4.31, "close": 4.45, "vol": 130752.0, "rsi": 53.3776, "dif": -0.0251, "dea": -0.0501, "hist": 0.0499, "bb_mb": 4.333, "bb_up": 4.4554, "bb_dn": 4.2106, "adx": 23.2907, "plus_di": 22.6964, "minus_di": 14.7278}, {"date": "2026-01-22", "open": 4.44, "high": 4.53, "low": 4.37, "close": 4.52, "vol": 110197.0, "rsi": 57.0987, "dif": -0.0111, "dea": -0.0423, "hist": 0.0624, "bb_mb": 4.346, "bb_up": 4.4893, "bb_dn": 4.2027, "adx": 23.639, "plus_di": 24.2893, "minus_di": 13.6135}, {"date": "2026-01-23", "open": 4.52, "high": 4.55, "low": 4.48, "close": 4.54, "vol": 88316.0, "rsi": 58.1271, "dif": 0.0017, "dea": -0.0335, "hist": 0.0703, "bb_mb": 4.357, "bb_up": 4.5237, "bb_dn": 4.1903, "adx": 24.0966, "plus_di": 24.4367, "minus_di": 13.1449}, {"date": "2026-01-26", "open": 4.54, "high": 4.6, "low": 4.48, "close": 4.54, "vol": 109411.0, "rsi": 58.1271, "dif": 0.0116, "dea": -0.0245, "hist": 0.0722, "bb_mb": 4.3665, "bb_up": 4.5521, "bb_dn": 4.1809, "adx": 24.8504, "plus_di": 25.4662, "minus_di": 12.3596}, {"date": "2026-01-27", "open": 4.52, "high": 4.56, "low": 4.42, "close": 4.5, "vol": 89339.0, "rsi": 55.0655, "dif": 0.0161, "dea": -0.0164, "hist": 0.0649, "bb_mb": 4.3755, "bb_up": 4.5689, "bb_dn": 4.1821, "adx": 24.7965, "plus_di": 23.688, "minus_di": 14.4891}, {"date": "2026-01-28", "open": 4.52, "high": 4.63, "low": 4.49, "close": 4.53, "vol": 103385.0, "rsi": 56.8991, "dif": 0.0218, "dea": -0.0087, "hist": 0.061, "bb_mb": 4.3875, "bb_up": 4.5882, "bb_dn": 4.1868, "adx": 25.2325, "plus_di": 25.5282, "minus_di": 13.4757}, {"date": "2026-01-29", "open": 4.56, "high": 4.98, "low": 4.56, "close": 4.81, "vol": 454980.0, "rsi": 69.4352, "dif": 0.0484, "dea": 0.0027, "hist": 0.0913, "bb_mb": 4.4165, "bb_up": 4.6794, "bb_dn": 4.1536, "adx": 27.2443, "plus_di": 35.712, "minus_di": 10.8492}, {"date": "2026-01-30", "open": 4.79, "high": 4.91, "low": 4.73, "close": 4.89, "vol": 299942.0, "rsi": 71.9458, "dif": 0.075, "dea": 0.0171, "hist": 0.1157, "bb_mb": 4.4475, "bb_up": 4.7757, "bb_dn": 4.1193, "adx": 29.1124, "plus_di": 32.9459, "minus_di": 10.0089}, {"date": "2026-02-02", "open": 4.86, "high": 5.14, "low": 4.84, "close": 4.95, "vol": 296090.0, "rsi": 73.6913, "dif": 0.0998, "dea": 0.0337, "hist": 0.1323, "bb_mb": 4.4815, "bb_up": 4.868, "bb_dn": 4.095, "adx": 31.5089, "plus_di": 38.2823, "minus_di": 8.7872}, {"date": "2026-02-03", "open": 5.45, "high": 5.45, "low": 5.45, "close": 5.45, "vol": 85568.0, "rsi": 83.1178, "dif": 0.158, "dea": 0.0585, "hist": 0.1989, "bb_mb": 4.538, "bb_up": 5.1107, "bb_dn": 3.9653, "adx": 34.3314, "plus_di": 42.5445, "minus_di": 7.2081}, {"date": "2026-02-04", "open": 6.0, "high": 6.0, "low": 5.4, "close": 6.0, "vol": 883427.0, "rsi": 88.1482, "dif": 0.2456, "dea": 0.096, "hist": 0.2994, "bb_mb": 4.624, "bb_up": 5.48, "bb_dn": 3.768, "adx": 37.5725, "plus_di": 51.8024, "minus_di": 5.8496}, {"date": "2026-02-05", "open": 6.0, "high": 6.6, "low": 6.0, "close": 6.6, "vol": 688970.0, "rsi": 91.2214, "dif": 0.3594, "dea": 0.1487, "hist": 0.4215, "bb_mb": 4.734, "bb_up": 5.956, "bb_dn": 3.512, "adx": 40.9596, "plus_di": 59.9343, "minus_di": 4.8627}, {"date": "2026-02-06", "open": 6.6, "high": 7.07, "low": 5.96, "close": 6.05, "vol": 1149789.0, "rsi": 72.6301, "dif": 0.4005, "dea": 0.199, "hist": 0.403, "bb_mb": 4.8175, "bb_up": 6.1599, "bb_dn": 3.4751, "adx": 44.2978, "plus_di": 55.5086, "minus_di": 3.6393}, {"date": "2026-02-09", "open": 6.17, "high": 6.66, "low": 6.01, "close": 6.66, "vol": 1099542.0, "rsi": 77.9883, "dif": 0.4769, "dea": 0.2546, "hist": 0.4445, "bb_mb": 4.931, "bb_up": 6.488, "bb_dn": 3.374, "adx": 47.3975, "plus_di": 47.9079, "minus_di": 3.141}, {"date": "2026-02-10", "open": 6.4, "high": 6.77, "low": 6.33, "close": 6.68, "vol": 938355.0, "rsi": 78.1394, "dif": 0.5328, "dea": 0.3102, "hist": 0.4452, "bb_mb": 5.046, "bb_up": 6.7631, "bb_dn": 3.3289, "adx": 50.3168, "plus_di": 45.8288, "minus_di": 2.8559}, {"date": "2026-02-11", "open": 6.4, "high": 7.35, "low": 6.4, "close": 7.21, "vol": 951204.0, "rsi": 81.7206, "dif": 0.6129, "dea": 0.3708, "hist": 0.4842, "bb_mb": 5.189, "bb_up": 7.1245, "bb_dn": 3.2535, "adx": 53.2029, "plus_di": 48.4817, "minus_di": 2.3583}, {"date": "2026-02-12", "open": 6.89, "high": 7.2, "low": 6.79, "close": 6.93, "vol": 579976.0, "rsi": 74.7533, "dif": 0.6463, "dea": 0.4259, "hist": 0.4408, "bb_mb": 5.3165, "bb_up": 7.3606, "bb_dn": 3.2724, "adx": 55.8829, "plus_di": 44.7674, "minus_di": 2.1776}, {"date": "2026-02-13", "open": 6.92, "high": 6.98, "low": 6.55, "close": 6.71, "vol": 403003.0, "rsi": 69.7234, "dif": 0.6475, "dea": 0.4702, "hist": 0.3547, "bb_mb": 5.4385, "bb_up": 7.5106, "bb_dn": 3.3664, "adx": 57.1282, "plus_di": 41.2805, "minus_di": 6.3553}, {"date": "2026-02-24", "open": 6.7, "high": 7.25, "low": 6.7, "close": 7.11, "vol": 361992.0, "rsi": 73.248, "dif": 0.6731, "dea": 0.5108, "hist": 0.3246, "bb_mb": 5.578, "bb_up": 7.7079, "bb_dn": 3.4481, "adx": 58.4744, "plus_di": 42.0373, "minus_di": 5.7395}, {"date": "2026-02-25", "open": 7.05, "high": 7.51, "low": 7.05, "close": 7.47, "vol": 387497.0, "rsi": 75.9604, "dif": 0.7141, "dea": 0.5514, "hist": 0.3253, "bb_mb": 5.73, "bb_up": 7.9471, "bb_dn": 3.5129, "adx": 59.8849, "plus_di": 43.1999, "minus_di": 5.2788}, {"date": "2026-02-26", "open": 7.29, "high": 7.56, "low": 7.01, "close": 7.06, "vol": 331152.0, "rsi": 67.559, "dif": 0.7054, "dea": 0.5822, "hist": 0.2463, "bb_mb": 5.8605, "bb_up": 8.0676, "bb_dn": 3.6534, "adx": 61.2243, "plus_di": 40.0049, "minus_di": 4.7843}, {"date": "2026-02-27", "open": 7.1, "high": 7.13, "low": 6.6, "close": 6.73, "vol": 376290.0, "rsi": 61.6488, "dif": 0.6642, "dea": 0.5986, "hist": 0.1312, "bb_mb": 5.971, "bb_up": 8.1159, "bb_dn": 3.8261, "adx": 60.6337, "plus_di": 36.4606, "minus_di": 11.2142}, {"date": "2026-03-02", "open": 6.58, "high": 7.0, "low": 6.4, "close": 6.86, "vol": 336723.0, "rsi": 63.0212, "dif": 0.6348, "dea": 0.6059, "hist": 0.0578, "bb_mb": 6.087, "bb_up": 8.1557, "bb_dn": 4.0183, "adx": 59.3181, "plus_di": 32.9062, "minus_di": 13.3705}, {"date": "2026-03-03", "open": 6.86, "high": 7.55, "low": 6.86, "close": 7.0, "vol": 513644.0, "rsi": 64.4948, "dif": 0.6156, "dea": 0.6078, "hist": 0.0156, "bb_mb": 6.21, "bb_up": 8.1816, "bb_dn": 4.2384, "adx": 58.807, "plus_di": 37.9482, "minus_di": 11.9301}, {"date": "2026-03-04", "open": 7.06, "high": 7.06, "low": 6.5, "close": 7.03, "vol": 319131.0, "rsi": 64.8183, "dif": 0.596, "dea": 0.6054, "hist": -0.0189, "bb_mb": 6.3365, "bb_up": 8.1657, "bb_dn": 4.5073, "adx": 57.1562, "plus_di": 34.6827, "minus_di": 16.4354}, {"date": "2026-03-05", "open": 7.07, "high": 7.15, "low": 6.79, "close": 6.9, "vol": 248593.0, "rsi": 62.1745, "dif": 0.5635, "dea": 0.597, "hist": -0.0672, "bb_mb": 6.455, "bb_up": 8.088, "bb_dn": 4.822, "adx": 55.7534, "plus_di": 34.1382, "minus_di": 15.5113}, {"date": "2026-03-06", "open": 6.9, "high": 7.1, "low": 6.85, "close": 7.01, "vol": 205876.0, "rsi": 63.53, "dif": 0.5403, "dea": 0.5857, "hist": -0.0908, "bb_mb": 6.565, "bb_up": 8.0179, "bb_dn": 5.1121, "adx": 54.4508, "plus_di": 32.7607, "minus_di": 14.8854}, {"date": "2026-03-09", "open": 6.89, "high": 7.35, "low": 6.89, "close": 7.16, "vol": 345865.0, "rsi": 65.3533, "dif": 0.528, "dea": 0.5742, "hist": -0.0923, "bb_mb": 6.6785, "bb_up": 7.9196, "bb_dn": 5.4374, "adx": 53.6142, "plus_di": 34.359, "minus_di": 13.7833}, {"date": "2026-03-10", "open": 7.15, "high": 7.6, "low": 7.02, "close": 7.3, "vol": 329000.0, "rsi": 67.0111, "dif": 0.5235, "dea": 0.564, "hist": -0.0811, "bb_mb": 6.796, "bb_up": 7.7628, "bb_dn": 5.8292, "adx": 53.1752, "plus_di": 35.1578, "minus_di": 12.5242}, {"date": "2026-03-11", "open": 7.39, "high": 7.75, "low": 6.9, "close": 7.46, "vol": 586771.0, "rsi": 68.8458, "dif": 0.5268, "dea": 0.5566, "hist": -0.0596, "bb_mb": 6.8965, "bb_up": 7.6734, "bb_dn": 6.1196, "adx": 52.9576, "plus_di": 32.9513, "minus_di": 10.9461}, {"date": "2026-03-12", "open": 7.46, "high": 8.07, "low": 7.38, "close": 7.96, "vol": 581591.0, "rsi": 73.7574, "dif": 0.5632, "dea": 0.5579, "hist": 0.0106, "bb_mb": 6.9945, "bb_up": 7.7895, "bb_dn": 6.1995, "adx": 53.1269, "plus_di": 34.2835, "minus_di": 9.86}, {"date": "2026-03-13", "open": 7.91, "high": 8.76, "low": 7.8, "close": 8.76, "vol": 433776.0, "rsi": 79.3634, "dif": 0.6492, "dea": 0.5762, "hist": 0.146, "bb_mb": 7.1025, "bb_up": 8.2008, "bb_dn": 6.0042, "adx": 53.906, "plus_di": 39.1489, "minus_di": 8.5838}, {"date": "2026-03-16", "open": 9.58, "high": 9.64, "low": 9.03, "close": 9.64, "vol": 243900.0, "rsi": 83.5311, "dif": 0.7793, "dea": 0.6168, "hist": 0.325, "bb_mb": 7.282, "bb_up": 8.7629, "bb_dn": 5.8011, "adx": 55.1719, "plus_di": 46.0431, "minus_di": 7.6113}, {"date": "2026-03-17", "open": 10.6, "high": 10.6, "low": 10.28, "close": 10.6, "vol": 456800.0, "rsi": 86.6892, "dif": 0.949, "dea": 0.6832, "hist": 0.5315, "bb_mb": 7.479, "bb_up": 9.5444, "bb_dn": 5.4136, "adx": 56.7501, "plus_di": 52.3812, "minus_di": 6.7172}, {"date": "2026-03-18", "open": 11.0, "high": 11.37, "low": 10.13, "close": 10.64, "vol": 1012542.0, "rsi": 86.8027, "dif": 1.0743, "dea": 0.7614, "hist": 0.6257, "bb_mb": 7.677, "bb_up": 10.1407, "bb_dn": 5.2133, "adx": 58.4536, "plus_di": 53.7457, "minus_di": 5.7738}, {"date": "2026-03-19", "open": 10.2, "high": 10.44, "low": 9.58, "close": 9.87, "vol": 673969.0, "rsi": 73.7579, "dif": 1.0988, "dea": 0.8289, "hist": 0.5398, "bb_mb": 7.81, "bb_up": 10.4486, "bb_dn": 5.1714, "adx": 58.7286, "plus_di": 47.5922, "minus_di": 11.0534}, {"date": "2026-03-20", "open": 9.27, "high": 10.86, "low": 9.27, "close": 10.86, "vol": 495206.0, "rsi": 78.2779, "dif": 1.1844, "dea": 0.9, "hist": 0.5689, "bb_mb": 8.0065, "bb_up": 10.9382, "bb_dn": 5.0748, "adx": 59.1911, "plus_di": 44.2868, "minus_di": 9.3282}, {"date": "2026-03-23", "open": 10.5, "high": 11.28, "low": 10.4, "close": 10.54, "vol": 688875.0, "rsi": 73.85, "dif": 1.2125, "dea": 0.9625, "hist": 0.5, "bb_mb": 8.198, "bb_up": 11.2701, "bb_dn": 5.1259, "adx": 59.8106, "plus_di": 44.5796, "minus_di": 8.5342}, {"date": "2026-03-24", "open": 10.8, "high": 11.47, "low": 10.2, "close": 10.88, "vol": 530964.0, "rsi": 75.4397, "dif": 1.2478, "dea": 1.0196, "hist": 0.4565, "bb_mb": 8.3865, "bb_up": 11.6351, "bb_dn": 5.1379, "adx": 59.9334, "plus_di": 39.3715, "minus_di": 9.377}, {"date": "2026-03-25", "open": 11.1, "high": 11.35, "low": 10.71, "close": 11.01, "vol": 566216.0, "rsi": 76.0394, "dif": 1.2716, "dea": 1.07, "hist": 0.4033, "bb_mb": 8.5635, "bb_up": 11.9831, "bb_dn": 5.1439, "adx": 60.0474, "plus_di": 37.0241, "minus_di": 8.8179}, {"date": "2026-03-26", "open": 11.12, "high": 11.18, "low": 10.43, "close": 10.49, "vol": 459355.0, "rsi": 68.802, "dif": 1.2343, "dea": 1.1029, "hist": 0.2629, "bb_mb": 8.735, "bb_up": 12.181, "bb_dn": 5.289, "adx": 59.487, "plus_di": 34.4332, "minus_di": 10.8134}, {"date": "2026-03-27", "open": 10.29, "high": 10.53, "low": 10.02, "close": 10.33, "vol": 368053.0, "rsi": 66.6984, "dif": 1.1783, "dea": 1.1179, "hist": 0.1206, "bb_mb": 8.915, "bb_up": 12.2955, "bb_dn": 5.5345, "adx": 58.0594, "plus_di": 32.7546, "minus_di": 14.2052}, {"date": "2026-03-30", "open": 10.24, "high": 10.3, "low": 9.3, "close": 10.12, "vol": 325450.0, "rsi": 63.9354, "dif": 1.1041, "dea": 1.1152, "hist": -0.0221, "bb_mb": 9.078, "bb_up": 12.3541, "bb_dn": 5.8019, "adx": 55.3755, "plus_di": 29.6147, "minus_di": 19.5445}, {"date": "2026-03-31", "open": 10.27, "high": 10.36, "low": 9.68, "close": 9.76, "vol": 260344.0, "rsi": 59.3931, "dif": 1.0048, "dea": 1.0931, "hist": -0.1766, "bb_mb": 9.216, "bb_up": 12.3531, "bb_dn": 6.0789, "adx": 52.952, "plus_di": 28.2881, "minus_di": 18.2974}, {"date": "2026-04-01", "open": 9.74, "high": 9.85, "low": 9.36, "close": 9.62, "vol": 294990.0, "rsi": 57.6769, "dif": 0.9043, "dea": 1.0553, "hist": -0.302, "bb_mb": 9.3455, "bb_up": 12.3118, "bb_dn": 6.3792, "adx": 50.1385, "plus_di": 26.9535, "minus_di": 20.5152}, {"date": "2026-04-02", "open": 9.69, "high": 9.69, "low": 9.26, "close": 9.4, "vol": 182286.0, "rsi": 54.9881, "dif": 0.7978, "dea": 1.0038, "hist": -0.4121, "bb_mb": 9.4705, "bb_up": 12.2045, "bb_dn": 6.7365, "adx": 47.3525, "plus_di": 25.803, "minus_di": 20.6322}, {"date": "2026-04-03", "open": 9.44, "high": 9.44, "low": 8.77, "close": 8.98, "vol": 235779.0, "rsi": 50.1788, "dif": 0.6717, "dea": 0.9374, "hist": -0.5315, "bb_mb": 9.569, "bb_up": 12.061, "bb_dn": 7.077, "adx": 43.9795, "plus_di": 24.0785, "minus_di": 24.1412}, {"date": "2026-04-07", "open": 8.97, "high": 9.23, "low": 8.49, "close": 8.65, "vol": 263473.0, "rsi": 46.7211, "dif": 0.5389, "dea": 0.8577, "hist": -0.6376, "bb_mb": 9.6435, "bb_up": 11.9113, "bb_dn": 7.3757, "adx": 41.2663, "plus_di": 22.3052, "minus_di": 25.1499}, {"date": "2026-04-08", "open": 8.75, "high": 8.94, "low": 8.6, "close": 8.92, "vol": 198022.0, "rsi": 49.7708, "dif": 0.4503, "dea": 0.7762, "hist": -0.6519, "bb_mb": 9.7245, "bb_up": 11.7418, "bb_dn": 7.7072, "adx": 38.7469, "plus_di": 21.521, "minus_di": 24.2657}, {"date": "2026-04-09", "open": 8.84, "high": 9.14, "low": 8.68, "close": 9.07, "vol": 196317.0, "rsi": 51.434, "dif": 0.3877, "dea": 0.6985, "hist": -0.6217, "bb_mb": 9.805, "bb_up": 11.5522, "bb_dn": 8.0578, "adx": 36.0562, "plus_di": 22.591, "minus_di": 23.0833}, {"date": "2026-04-10", "open": 9.07, "high": 9.18, "low": 8.91, "close": 9.0, "vol": 181170.0, "rsi": 50.5921, "dif": 0.3286, "dea": 0.6245, "hist": -0.5918, "bb_mb": 9.857, "bb_up": 11.4258, "bb_dn": 8.2882, "adx": 33.4863, "plus_di": 22.3586, "minus_di": 22.3935}, {"date": "2026-04-13", "open": 8.91, "high": 9.29, "low": 8.86, "close": 8.94, "vol": 199727.0, "rsi": 49.839, "dif": 0.2738, "dea": 0.5544, "hist": -0.5611, "bb_mb": 9.866, "bb_up": 11.4101, "bb_dn": 8.3219, "adx": 31.2924, "plus_di": 22.5157, "minus_di": 21.3018}, {"date": "2026-04-14", "open": 9.11, "high": 9.3, "low": 8.94, "close": 9.01, "vol": 240974.0, "rsi": 50.7599, "dif": 0.2334, "dea": 0.4902, "hist": -0.5136, "bb_mb": 9.8345, "bb_up": 11.4231, "bb_dn": 8.2459, "adx": 29.2744, "plus_di": 21.6847, "minus_di": 20.4049}, {"date": "2026-04-15", "open": 9.08, "high": 9.91, "low": 8.91, "close": 9.91, "vol": 293130.0, "rsi": 60.7393, "dif": 0.2708, "dea": 0.4463, "hist": -0.351, "bb_mb": 9.8, "bb_up": 11.3481, "bb_dn": 8.2519, "adx": 28.4696, "plus_di": 26.0826, "minus_di": 18.1223}, {"date": "2026-04-16", "open": 10.4, "high": 10.9, "low": 10.2, "close": 10.9, "vol": 242846.0, "rsi": 68.3403, "dif": 0.376, "dea": 0.4323, "hist": -0.1125, "bb_mb": 9.813, "bb_up": 11.3948, "bb_dn": 8.2312, "adx": 28.9667, "plus_di": 33.9589, "minus_di": 16.1913}, {"date": "2026-04-17", "open": 11.98, "high": 11.99, "low": 11.68, "close": 11.99, "vol": 272945.0, "rsi": 74.2511, "dif": 0.5411, "dea": 0.454, "hist": 0.1742, "bb_mb": 9.919, "bb_up": 11.7769, "bb_dn": 8.0611, "adx": 30.3564, "plus_di": 41.3667, "minus_di": 14.3751}, {"date": "2026-04-20", "open": 12.51, "high": 12.51, "low": 11.21, "close": 12.05, "vol": 764600.0, "rsi": 74.533, "dif": 0.6691, "dea": 0.497, "hist": 0.3441, "bb_mb": 9.9785, "bb_up": 12.0295, "bb_dn": 7.9275, "adx": 31.992, "plus_di": 41.1946, "minus_di": 12.5649}, {"date": "2026-04-21", "open": 11.96, "high": 12.47, "low": 11.43, "close": 11.95, "vol": 446468.0, "rsi": 73.0968, "dif": 0.7537, "dea": 0.5484, "hist": 0.4107, "bb_mb": 10.049, "bb_up": 12.271, "bb_dn": 7.827, "adx": 33.5108, "plus_di": 37.1627, "minus_di": 11.3351}, {"date": "2026-04-22", "open": 12.14, "high": 13.15, "low": 11.65, "close": 13.15, "vol": 345609.0, "rsi": 78.4604, "dif": 0.9072, "dea": 0.6201, "hist": 0.5741, "bb_mb": 10.1625, "bb_up": 12.7629, "bb_dn": 7.5621, "adx": 35.3366, "plus_di": 38.2409, "minus_di": 9.8393}, {"date": "2026-04-23", "open": 13.5, "high": 13.75, "low": 13.1, "close": 13.3, "vol": 467557.0, "rsi": 79.0234, "dif": 1.0291, "dea": 0.7019, "hist": 0.6543, "bb_mb": 10.277, "bb_up": 13.2144, "bb_dn": 7.3396, "adx": 37.341, "plus_di": 41.3773, "minus_di": 9.2685}, {"date": "2026-04-24", "open": 13.3, "high": 14.35, "low": 13.23, "close": 13.71, "vol": 452779.0, "rsi": 80.5219, "dif": 1.1455, "dea": 0.7907, "hist": 0.7098, "bb_mb": 10.438, "bb_up": 13.7532, "bb_dn": 7.1228, "adx": 39.4695, "plus_di": 42.5624, "minus_di": 8.3678}, {"date": "2026-04-27", "open": 13.5, "high": 13.87, "low": 12.8, "close": 13.56, "vol": 313889.0, "rsi": 78.3176, "dif": 1.2118, "dea": 0.8749, "hist": 0.6738, "bb_mb": 10.5995, "bb_up": 14.1954, "bb_dn": 7.0036, "adx": 40.573, "plus_di": 38.6936, "minus_di": 11.2601}, {"date": "2026-04-28", "open": 13.68, "high": 13.95, "low": 13.31, "close": 13.44, "vol": 204111.0, "rsi": 76.513, "dif": 1.2403, "dea": 0.948, "hist": 0.5846, "bb_mb": 10.7655, "bb_up": 14.5687, "bb_dn": 6.9623, "adx": 41.6441, "plus_di": 37.2447, "minus_di": 10.6373}, {"date": "2026-04-29", "open": 13.59, "high": 13.95, "low": 13.22, "close": 13.71, "vol": 252091.0, "rsi": 77.755, "dif": 1.27, "dea": 1.0124, "hist": 0.5153, "bb_mb": 10.963, "bb_up": 14.9521, "bb_dn": 6.9739, "adx": 42.4477, "plus_di": 34.8752, "minus_di": 10.7449}, {"date": "2026-04-30", "open": 14.0, "high": 15.08, "low": 14.0, "close": 14.5, "vol": 428958.0, "rsi": 80.9322, "dif": 1.3418, "dea": 1.0783, "hist": 0.5272, "bb_mb": 11.207, "bb_up": 15.4398, "bb_dn": 6.9742, "adx": 43.8285, "plus_di": 40.2992, "minus_di": 9.5207}, {"date": "2026-05-06", "open": 15.23, "high": 15.45, "low": 14.26, "close": 14.97, "vol": 406814.0, "rsi": 82.5308, "dif": 1.4203, "dea": 1.1467, "hist": 0.5473, "bb_mb": 11.4855, "bb_up": 15.9446, "bb_dn": 7.0264, "adx": 45.281, "plus_di": 39.4124, "minus_di": 8.6037}, {"date": "2026-05-07", "open": 15.27, "high": 15.9, "low": 14.71, "close": 15.66, "vol": 368454.0, "rsi": 84.5753, "dif": 1.5207, "dea": 1.2215, "hist": 0.5984, "bb_mb": 11.8195, "bb_up": 16.4843, "bb_dn": 7.1547, "adx": 46.823, "plus_di": 39.2623, "minus_di": 7.7952}, {"date": "2026-05-08", "open": 15.82, "high": 17.23, "low": 15.82, "close": 17.23, "vol": 352243.0, "rsi": 88.013, "dif": 1.7072, "dea": 1.3186, "hist": 0.7772, "bb_mb": 12.2485, "bb_up": 17.2519, "bb_dn": 7.2451, "adx": 48.7135, "plus_di": 44.6161, "minus_di": 6.877}, {"date": "2026-05-11", "open": 18.95, "high": 18.95, "low": 18.3, "close": 18.95, "vol": 482732.0, "rsi": 90.5086, "dif": 1.9711, "dea": 1.4491, "hist": 1.044, "bb_mb": 12.75, "bb_up": 18.3265, "bb_dn": 7.1735, "adx": 50.8744, "plus_di": 51.3738, "minus_di": 6.0379}, {"date": "2026-05-12", "open": 20.8, "high": 20.85, "low": 18.39, "close": 20.85, "vol": 850490.0, "rsi": 92.3928, "dif": 2.307, "dea": 1.6207, "hist": 1.3726, "bb_mb": 13.339, "bb_up": 19.7107, "bb_dn": 6.9673, "adx": 53.1842, "plus_di": 55.4652, "minus_di": 5.0827}, {"date": "2026-05-13", "open": 20.8, "high": 21.83, "low": 18.78, "close": 19.26, "vol": 788303.0, "rsi": 78.372, "dif": 2.417, "dea": 1.7799, "hist": 1.2741, "bb_mb": 13.852, "bb_up": 20.4024, "bb_dn": 7.3016, "adx": 55.4498, "plus_di": 51.3959, "minus_di": 4.1963}, {"date": "2026-05-14", "open": 18.69, "high": 18.69, "low": 17.6, "close": 17.7, "vol": 598116.0, "rsi": 67.5421, "dif": 2.3512, "dea": 1.8942, "hist": 0.914, "bb_mb": 14.29, "bb_up": 20.6254, "bb_dn": 7.9546, "adx": 56.027, "plus_di": 46.6295, "minus_di": 10.3994}, {"date": "2026-05-15", "open": 17.73, "high": 17.8, "low": 16.52, "close": 16.82, "vol": 410815.0, "rsi": 62.3113, "dif": 2.2026, "dea": 1.9559, "hist": 0.4935, "bb_mb": 14.6805, "bb_up": 20.5943, "bb_dn": 8.7667, "adx": 55.3681, "plus_di": 43.2953, "minus_di": 15.6889}, {"date": "2026-05-18", "open": 16.33, "high": 16.98, "low": 15.72, "close": 16.62, "vol": 471309.0, "rsi": 61.1521, "dif": 2.0452, "dea": 1.9737, "hist": 0.1429, "bb_mb": 15.016, "bb_up": 20.5387, "bb_dn": 9.4933, "adx": 53.9653, "plus_di": 40.2447, "minus_di": 19.0571}, {"date": "2026-05-19", "open": 16.71, "high": 17.91, "low": 16.5, "close": 16.62, "vol": 498869.0, "rsi": 61.1521, "dif": 1.8985, "dea": 1.9587, "hist": -0.1203, "bb_mb": 15.302, "bb_up": 20.5107, "bb_dn": 10.0933, "adx": 53.0588, "plus_di": 42.2572, "minus_di": 17.5656}, {"date": "2026-05-20", "open": 16.52, "high": 16.62, "low": 15.68, "close": 16.02, "vol": 344281.0, "rsi": 57.4347, "dif": 1.7141, "dea": 1.9098, "hist": -0.3913, "bb_mb": 15.5035, "bb_up": 20.4794, "bb_dn": 10.5276, "adx": 51.4528, "plus_di": 40.009, "minus_di": 21.2721}, {"date": "2026-05-21", "open": 15.93, "high": 16.0, "low": 14.5, "close": 14.51, "vol": 413248.0, "rsi": 49.3106, "dif": 1.4297, "dea": 1.8138, "hist": -0.7682, "bb_mb": 15.6265, "bb_up": 20.3586, "bb_dn": 10.8944, "adx": 48.9819, "plus_di": 36.6166, "minus_di": 26.0509}, {"date": "2026-05-22", "open": 14.95, "high": 15.96, "low": 14.37, "close": 15.96, "vol": 253119.0, "rsi": 55.7791, "dif": 1.3062, "dea": 1.7123, "hist": -0.8121, "bb_mb": 15.827, "bb_up": 20.2317, "bb_dn": 11.4223, "adx": 46.5848, "plus_di": 33.424, "minus_di": 24.4924}, {"date": "2026-05-25", "open": 16.76, "high": 17.36, "low": 15.76, "close": 16.56, "vol": 517742.0, "rsi": 58.1585, "dif": 1.2424, "dea": 1.6183, "hist": -0.7517, "bb_mb": 15.9975, "bb_up": 20.2263, "bb_dn": 11.7687, "adx": 45.1135, "plus_di": 38.0924, "minus_di": 22.3779}, {"date": "2026-05-26", "open": 16.41, "high": 17.2, "low": 16.3, "close": 17.0, "vol": 462843.0, "rsi": 59.864, "dif": 1.2134, "dea": 1.5373, "hist": -0.6478, "bb_mb": 16.1825, "bb_up": 20.2345, "bb_dn": 12.1305, "adx": 43.7473, "plus_di": 36.1993, "minus_di": 21.2658}, {"date": "2026-05-27", "open": 16.7, "high": 17.08, "low": 16.01, "close": 16.34, "vol": 354244.0, "rsi": 56.1658, "dif": 1.1242, "dea": 1.4547, "hist": -0.661, "bb_mb": 16.314, "bb_up": 20.1952, "bb_dn": 12.4328, "adx": 42.2165, "plus_di": 34.0337, "minus_di": 21.615}, {"date": "2026-05-28", "open": 16.35, "high": 16.94, "low": 15.76, "close": 16.12, "vol": 278014.0, "rsi": 54.9472, "dif": 1.0239, "dea": 1.3685, "hist": -0.6892, "bb_mb": 16.442, "bb_up": 20.1034, "bb_dn": 12.7806, "adx": 40.565, "plus_di": 31.7761, "minus_di": 21.5866}, {"date": "2026-05-29", "open": 16.3, "high": 16.35, "low": 14.93, "close": 15.2, "vol": 292405.0, "rsi": 50.0564, "dif": 0.8603, "dea": 1.2669, "hist": -0.8132, "bb_mb": 16.53, "bb_up": 19.9653, "bb_dn": 13.0947, "adx": 38.2993, "plus_di": 29.2606, "minus_di": 24.5048}, {"date": "2026-06-01", "open": 14.96, "high": 15.07, "low": 14.31, "close": 14.43, "vol": 259036.0, "rsi": 46.3388, "dif": 0.6609, "dea": 1.1457, "hist": -0.9696, "bb_mb": 16.566, "bb_up": 19.8901, "bb_dn": 13.2419, "adx": 35.6921, "plus_di": 27.7765, "minus_di": 26.7953}, {"date": "2026-06-02", "open": 14.43, "high": 14.59, "low": 13.88, "close": 14.21, "vol": 205616.0, "rsi": 45.3036, "dif": 0.4796, "dea": 1.0125, "hist": -1.0658, "bb_mb": 16.5515, "bb_up": 19.9159, "bb_dn": 13.1871, "adx": 33.3496, "plus_di": 26.6166, "minus_di": 28.2054}, {"date": "2026-06-03", "open": 14.15, "high": 15.63, "low": 13.96, "close": 15.63, "vol": 244790.0, "rsi": 52.6559, "dif": 0.4453, "dea": 0.899, "hist": -0.9074, "bb_mb": 16.5845, "bb_up": 19.8961, "bb_dn": 13.2729, "adx": 31.5489, "plus_di": 30.0275, "minus_di": 25.5074}, {"date": "2026-06-04", "open": 15.63, "high": 16.16, "low": 14.92, "close": 15.06, "vol": 336487.0, "rsi": 49.7642, "dif": 0.3679, "dea": 0.7928, "hist": -0.8497, "bb_mb": 16.5545, "bb_up": 19.9119, "bb_dn": 13.1971, "adx": 30.2416, "plus_di": 30.9309, "minus_di": 23.695}, {"date": "2026-06-05", "open": 15.23, "high": 15.84, "low": 14.68, "close": 15.48, "vol": 350270.0, "rsi": 51.8619, "dif": 0.3366, "dea": 0.7016, "hist": -0.7299, "bb_mb": 16.467, "bb_up": 19.8414, "bb_dn": 13.0926, "adx": 28.8141, "plus_di": 28.8647, "minus_di": 23.4943}, {"date": "2026-06-08", "open": 15.1, "high": 15.36, "low": 14.34, "close": 14.64, "vol": 214265.0, "rsi": 47.5823, "dif": 0.2413, "dea": 0.6095, "hist": -0.7365, "bb_mb": 16.2515, "bb_up": 19.5067, "bb_dn": 12.9963, "adx": 27.1837, "plus_di": 26.9588, "minus_di": 23.9122}, {"date": "2026-06-09", "open": 14.99, "high": 15.08, "low": 14.16, "close": 14.3, "vol": 216775.0, "rsi": 45.9302, "dif": 0.1367, "dea": 0.5149, "hist": -0.7566, "bb_mb": 15.924, "bb_up": 18.4724, "bb_dn": 13.3756, "adx": 25.5063, "plus_di": 25.4957, "minus_di": 23.6763}, {"date": "2026-06-10", "open": 14.23, "high": 14.3, "low": 13.3, "close": 13.35, "vol": 313117.0, "rsi": 41.5855, "dif": -0.0226, "dea": 0.4074, "hist": -0.8601, "bb_mb": 15.6285, "bb_up": 17.9042, "bb_dn": 13.3528, "adx": 24.1609, "plus_di": 23.9727, "minus_di": 27.3992}, {"date": "2026-06-11", "open": 13.11, "high": 13.4, "low": 12.4, "close": 12.63, "vol": 340620.0, "rsi": 38.6049, "dif": -0.2046, "dea": 0.285, "hist": -0.9793, "bb_mb": 15.375, "bb_up": 17.8035, "bb_dn": 12.9465, "adx": 23.5867, "plus_di": 22.5238, "minus_di": 31.1829}, {"date": "2026-06-12", "open": 12.8, "high": 13.45, "low": 12.36, "close": 12.38, "vol": 227287.0, "rsi": 37.5973, "dif": -0.3648, "dea": 0.1551, "hist": -1.0397, "bb_mb": 15.153, "bb_up": 17.8249, "bb_dn": 12.4811, "adx": 23.0036, "plus_di": 21.3355, "minus_di": 29.1171}, {"date": "2026-06-15", "open": 12.0, "high": 12.72, "low": 12.0, "close": 12.57, "vol": 211840.0, "rsi": 38.9025, "dif": -0.471, "dea": 0.0299, "hist": -1.0017, "bb_mb": 14.9505, "bb_up": 17.7643, "bb_dn": 12.1367, "adx": 22.7318, "plus_di": 20.3753, "minus_di": 30.0569}, {"date": "2026-06-16", "open": 12.62, "high": 12.89, "low": 12.27, "close": 12.74, "vol": 176442.0, "rsi": 40.1096, "dif": -0.5352, "dea": -0.0832, "hist": -0.9042, "bb_mb": 14.7565, "bb_up": 17.6203, "bb_dn": 11.8927, "adx": 22.2904, "plus_di": 20.6575, "minus_di": 28.8527}, {"date": "2026-06-17", "open": 12.61, "high": 12.97, "low": 12.54, "close": 12.69, "vol": 164379.0, "rsi": 39.8601, "dif": -0.5835, "dea": -0.1832, "hist": -0.8005, "bb_mb": 14.59, "bb_up": 17.5306, "bb_dn": 11.6494, "adx": 21.788, "plus_di": 20.5978, "minus_di": 28.0144}, {"date": "2026-06-18", "open": 12.78, "high": 13.96, "low": 12.5, "close": 13.63, "vol": 403783.0, "rsi": 46.5852, "dif": -0.5397, "dea": -0.2545, "hist": -0.5703, "bb_mb": 14.546, "bb_up": 17.5179, "bb_dn": 11.5741, "adx": 20.2589, "plus_di": 25.1317, "minus_di": 25.324}, {"date": "2026-06-22", "open": 13.4, "high": 14.12, "low": 12.5, "close": 12.78, "vol": 375780.0, "rsi": 42.0105, "dif": -0.567, "dea": -0.317, "hist": -0.4999, "bb_mb": 14.387, "bb_up": 17.3805, "bb_dn": 11.3935, "adx": 18.9422, "plus_di": 23.5613, "minus_di": 22.7171}, {"date": "2026-06-23", "open": 12.73, "high": 13.28, "low": 12.5, "close": 12.84, "vol": 217010.0, "rsi": 42.4401, "dif": -0.5771, "dea": -0.369, "hist": -0.4162, "bb_mb": 14.201, "bb_up": 17.0863, "bb_dn": 11.3157, "adx": 17.7194, "plus_di": 22.3674, "minus_di": 21.566}, {"date": "2026-06-24", "open": 12.8, "high": 13.09, "low": 12.41, "close": 12.96, "vol": 197081.0, "rsi": 43.3443, "dif": -0.5689, "dea": -0.409, "hist": -0.3198, "bb_mb": 13.999, "bb_up": 16.6121, "bb_dn": 11.3859, "adx": 16.4813, "plus_di": 21.3516, "minus_di": 21.1876}, {"date": "2026-06-25", "open": 12.96, "high": 12.98, "low": 12.05, "close": 12.17, "vol": 210283.0, "rsi": 39.0008, "dif": -0.619, "dea": -0.451, "hist": -0.336, "bb_mb": 13.7905, "bb_up": 16.2796, "bb_dn": 11.3014, "adx": 15.6879, "plus_di": 20.0129, "minus_di": 22.2862}, {"date": "2026-06-26", "open": 12.12, "high": 12.12, "low": 11.3, "close": 11.31, "vol": 215209.0, "rsi": 34.9006, "dif": -0.7198, "dea": -0.5048, "hist": -0.4301, "bb_mb": 13.55, "bb_up": 16.0209, "bb_dn": 11.0791, "adx": 15.7221, "plus_di": 18.824, "minus_di": 26.0836}, {"date": "2026-06-29", "open": 11.66, "high": 11.66, "low": 10.8, "close": 10.93, "vol": 213093.0, "rsi": 33.2378, "dif": -0.8209, "dea": -0.568, "hist": -0.5059, "bb_mb": 13.3365, "bb_up": 15.9413, "bb_dn": 10.7317, "adx": 16.207, "plus_di": 17.7043, "minus_di": 27.9904}, {"date": "2026-06-30", "open": 10.85, "high": 11.97, "low": 10.75, "close": 11.5, "vol": 220100.0, "rsi": 38.0088, "dif": -0.8453, "dea": -0.6235, "hist": -0.4437, "bb_mb": 13.19, "bb_up": 15.8645, "bb_dn": 10.5155, "adx": 16.2363, "plus_di": 18.3462, "minus_di": 25.6587}, {"date": "2026-07-01", "open": 11.5, "high": 11.73, "low": 11.27, "close": 11.47, "vol": 147686.0, "rsi": 37.8554, "dif": -0.8572, "dea": -0.6702, "hist": -0.3739, "bb_mb": 13.053, "bb_up": 15.7876, "bb_dn": 10.3184, "adx": 16.2635, "plus_di": 17.7459, "minus_di": 24.8192}, {"date": "2026-07-02", "open": 11.41, "high": 11.9, "low": 11.2, "close": 11.49, "vol": 199531.0, "rsi": 38.0349, "dif": -0.8551, "dea": -0.7072, "hist": -0.2958, "bb_mb": 12.846, "bb_up": 15.3785, "bb_dn": 10.3135, "adx": 16.0415, "plus_di": 18.0787, "minus_di": 23.5562}, {"date": "2026-07-03", "open": 11.5, "high": 11.95, "low": 11.4, "close": 11.58, "vol": 148952.0, "rsi": 38.8902, "dif": -0.8366, "dea": -0.7331, "hist": -0.207, "bb_mb": 12.672, "bb_up": 15.0367, "bb_dn": 10.3073, "adx": 15.7601, "plus_di": 17.7077, "minus_di": 22.5837}];
+        
+        // Extract Series
+        const dates = rawData.map(d => d.date);
+        const candleData = rawData.map(d => [d.open, d.close, d.low, d.high]);
+        const closes = rawData.map(d => d.close);
+        
+        const bbMid = rawData.map(d => d.bb_mb);
+        const bbUp = rawData.map(d => d.bb_up);
+        const bbDn = rawData.map(d => d.bb_dn);
+        
+        const macdDif = rawData.map(d => d.dif);
+        const macdDea = rawData.map(d => d.dea);
+        const macdHist = rawData.map(d => d.hist);
+        
+        const rsiSeries = rawData.map(d => d.rsi);
+        
+        const adxSeries = rawData.map(d => d.adx);
+        const plusDi = rawData.map(d => d.plus_di);
+        const minusDi = rawData.map(d => d.minus_di);
+
+        // ------------------
+        // Initialize 4 Independent Charts (Manual styling is highly robust!)
+        // ------------------
+        const klineChart = echarts.init(document.getElementById('chart-kline'));
+        const macdChart = echarts.init(document.getElementById('chart-macd'));
+        const rsiChart = echarts.init(document.getElementById('chart-rsi'));
+        const dmiChart = echarts.init(document.getElementById('chart-dmi'));
+
+        // Grid Alignments & Custom Dynamic Tooltips
+        const commonTooltip = {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                lineStyle: { color: 'rgba(99, 102, 241, 0.4)', type: 'dashed' },
+                crossStyle: { color: 'rgba(99, 102, 241, 0.4)', type: 'dashed' }
+            },
+            backgroundColor: 'rgba(11, 15, 30, 0.95)',
+            borderColor: 'rgba(255, 255, 255, 0.08)',
+            borderWidth: 1,
+            textStyle: { color: '#e2e8f0', fontSize: 11, fontFamily: 'Plus Jakarta Sans' },
+            formatter: function(params) {
+                let html = `<div class="font-bold border-b border-gray-800 pb-1.5 mb-1.5 text-indigo-400 font-mono">${params[0].axisValue}</div>`;
+                params.forEach(p => {
+                    if (p.value !== null && p.value !== undefined) {
+                        let val = typeof p.value === 'number' ? p.value.toFixed(2) : p.value;
+                        if (p.seriesName.includes('K线')) {
+                            val = `开:${p.value[1]} 收:${p.value[2]} 低:${p.value[3]} 高:${p.value[4]}`;
+                        }
+                        html += `<div class="flex items-center justify-between space-x-6 py-0.5">
+                            <span class="flex items-center space-x-1.5 text-gray-400">
+                                <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${p.color}"></span>
+                                <span>${p.seriesName}:</span>
+                            </span>
+                            <span class="font-mono font-bold text-white">${val}</span>
+                        </div>`;
+                    }
+                });
+                return html;
+            }
+        };
+
+        // Standard Grid Margin Styles
+        const commonGrid = { left: '6%', right: '4%', top: '15%', bottom: '15%' };
+
+        // 1. K-line + BB Option (A-Share Standard candles)
+        klineChart.setOption({
+            tooltip: commonTooltip,
+            grid: { left: '6%', right: '4%', top: '15%', bottom: '22%' },
+            legend: { data: ['K线', '布林中轨', '布林上轨', '布林下轨'], textStyle: { color: '#94a3b8', fontSize: 10, fontFamily: 'Plus Jakarta Sans' }, top: 5 },
+            xAxis: {
+                type: 'category',
+                data: dates,
+                boundaryGap: true,
+                axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                axisLabel: { show: false },
+                axisTick: { show: false }
+            },
+            yAxis: {
+                type: 'value',
+                scale: true,
+                axisLine: { show: true, lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)', type: 'dashed' } },
+                axisLabel: { textStyle: { color: '#94a3b8', fontSize: 10, fontFamily: 'Plus Jakarta Sans' } }
+            },
+            dataZoom: [
+                { type: 'inside', xAxisIndex: 0, start: 40, end: 100 },
+                { type: 'slider', xAxisIndex: 0, bottom: 0, height: 16, borderColor: 'rgba(255,255,255,0.08)', fillerColor: 'rgba(99, 102, 241, 0.1)', handleStyle: { color: '#6366f1' } }
+            ],
+            series: [
+                {
+                    name: 'K线',
+                    type: 'candlestick',
+                    data: candleData,
+                    itemStyle: {
+                        color: '#ff4d4f',      // Bright Red for Up (highly artistic)
+                        color0: '#20c997',     // Neon Emerald for Down
+                        borderColor: '#ff4d4f',
+                        borderColor0: '#20c997'
+                    }
+                },
+                { name: '布林中轨', type: 'line', data: bbMid, smooth: true, showSymbol: false, lineStyle: { width: 1.2, type: 'dashed', color: '#f59e0b' } },
+                { name: '布林上轨', type: 'line', data: bbUp, smooth: true, showSymbol: false, lineStyle: { width: 1.0, type: 'dotted', color: '#20c997' } },
+                { name: '布林下轨', type: 'line', data: bbDn, smooth: true, showSymbol: false, lineStyle: { width: 1.0, type: 'dotted', color: '#ff4d4f' } }
+            ]
+        });
+
+        // 2. MACD Option
+        macdChart.setOption({
+            tooltip: commonTooltip,
+            grid: commonGrid,
+            legend: { data: ['MACD柱体', 'DIF快线', 'DEA慢线'], textStyle: { color: '#94a3b8', fontSize: 10, fontFamily: 'Plus Jakarta Sans' }, top: 5 },
+            xAxis: {
+                type: 'category',
+                data: dates,
+                boundaryGap: true,
+                axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                axisLabel: { show: false },
+                axisTick: { show: false }
+            },
+            yAxis: {
+                type: 'value',
+                axisLine: { show: true, lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)', type: 'dashed' } },
+                axisLabel: { textStyle: { color: '#94a3b8', fontSize: 10, fontFamily: 'Plus Jakarta Sans' } }
+            },
+            series: [
+                {
+                    name: 'MACD柱体',
+                    type: 'bar',
+                    data: macdHist,
+                    itemStyle: {
+                        color: function(p) {
+                            return p.value >= 0 ? '#ff4d4f' : '#20c997';
+                        }
+                    }
+                },
+                { name: 'DIF快线', type: 'line', data: macdDif, smooth: true, showSymbol: false, lineStyle: { width: 1.5, color: '#3b82f6' } },
+                { name: 'DEA慢线', type: 'line', data: macdDea, smooth: true, showSymbol: false, lineStyle: { width: 1.5, color: '#f59e0b' } }
+            ]
+        });
+
+        // 3. RSI Option (With dynamic glowing area gradient)
+        rsiChart.setOption({
+            tooltip: commonTooltip,
+            grid: commonGrid,
+            legend: { data: ['RSI(14)'], textStyle: { color: '#94a3b8', fontSize: 10, fontFamily: 'Plus Jakarta Sans' }, top: 5 },
+            xAxis: {
+                type: 'category',
+                data: dates,
+                boundaryGap: true,
+                axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                axisLabel: { show: false },
+                axisTick: { show: false }
+            },
+            yAxis: {
+                type: 'value',
+                min: 0,
+                max: 100,
+                axisLine: { show: true, lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)', type: 'dashed' } },
+                axisLabel: { textStyle: { color: '#94a3b8', fontSize: 10, fontFamily: 'Plus Jakarta Sans' } }
+            },
+            series: [
+                {
+                    name: 'RSI(14)',
+                    type: 'line',
+                    data: rsiSeries,
+                    smooth: true,
+                    showSymbol: false,
+                    lineStyle: { width: 1.5, color: '#a855f7' },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(168, 85, 247, 0.2)' },
+                            { offset: 1, color: 'rgba(168, 85, 247, 0.0)' }
+                        ])
+                    },
+                    markLine: {
+                        symbol: ['none', 'none'],
+                        label: { show: true, position: 'end', textStyle: { color: '#64748b', fontSize: 9 } },
+                        lineStyle: { type: 'dashed', color: 'rgba(239, 68, 68, 0.3)', width: 0.8 },
+                        data: [
+                            { yAxis: 70, name: '70 超买' },
+                            { yAxis: 30, name: '30 超卖' },
+                            { yAxis: 50, name: '50 分界', lineStyle: { color: 'rgba(255,255,255,0.15)', type: 'dotted' } }
+                        ]
+                    }
+                }
+            ]
+        });
+
+        // 4. DMI / ADX Option
+        dmiChart.setOption({
+            tooltip: commonTooltip,
+            grid: { left: '6%', right: '4%', top: '15%', bottom: '25%' },
+            legend: { data: ['ADX趋势线', '+DI多头', '-DI空头'], textStyle: { color: '#94a3b8', fontSize: 10, fontFamily: 'Plus Jakarta Sans' }, top: 5 },
+            xAxis: {
+                type: 'category',
+                data: dates,
+                boundaryGap: true,
+                axisLine: { lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                axisLabel: { show: true, textStyle: { color: '#94a3b8', fontSize: 10, fontFamily: 'Plus Jakarta Sans' }, rotate: 0 }
+            },
+            yAxis: {
+                type: 'value',
+                axisLine: { show: true, lineStyle: { color: 'rgba(255,255,255,0.1)' } },
+                splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)', type: 'dashed' } },
+                axisLabel: { textStyle: { color: '#94a3b8', fontSize: 10, fontFamily: 'Plus Jakarta Sans' } }
+            },
+            series: [
+                { name: 'ADX趋势线', type: 'line', data: adxSeries, smooth: true, showSymbol: false, lineStyle: { width: 2.2, color: '#f59e0b' },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(245, 158, 11, 0.15)' },
+                            { offset: 1, color: 'rgba(245, 158, 11, 0.0)' }
+                        ])
+                    },
+                    markLine: {
+                        symbol: ['none', 'none'],
+                        label: { show: true, position: 'end', textStyle: { color: '#64748b', fontSize: 9 } },
+                        lineStyle: { type: 'dashed', color: 'rgba(99, 102, 241, 0.3)', width: 0.8 },
+                        data: [
+                            { yAxis: 20, name: '20 趋势区' },
+                            { yAxis: 26, name: '26 高能区', lineStyle: { color: 'rgba(245, 158, 11, 0.3)' } }
+                        ]
+                    }
+                },
+                { name: '+DI多头', type: 'line', data: plusDi, smooth: true, showSymbol: false, lineStyle: { width: 1.1, color: '#10b981', opacity: 0.7 } },
+                { name: '-DI空头', type: 'line', data: minusDi, smooth: true, showSymbol: false, lineStyle: { width: 1.1, color: '#ef4444', opacity: 0.7 } }
+            ]
+        });
+
+        // ------------------
+        // Synchronized Hover and Zoom Connections (ECharts Magic Connect)
+        // ------------------
+        echarts.connect([klineChart, macdChart, rsiChart, dmiChart]);
+
+        // Connect Zoom actions so zooming K-line zooms all other charts instantly!
+        klineChart.on('dataZoom', function(params) {
+            let start = 0;
+            let end = 100;
+            if (params.batch) {
+                start = params.batch[0].start;
+                end = params.batch[0].end;
+            } else {
+                start = params.start;
+                end = params.end;
+            }
+            
+            macdChart.setOption({ dataZoom: [ { type: 'inside', start: start, end: end } ] });
+            rsiChart.setOption({ dataZoom: [ { type: 'inside', start: start, end: end } ] });
+            dmiChart.setOption({ dataZoom: [ { type: 'inside', start: start, end: end } ] });
+        });
+
+        // Resize Chart on Window Resize
+        window.addEventListener('resize', () => {
+            klineChart.resize();
+            macdChart.resize();
+            rsiChart.resize();
+            dmiChart.resize();
+        });
+
+        // Copy Code Terminal Logic
         const copyBtn = document.getElementById('copy-log-btn');
         const tooltip = document.getElementById('copy-success-tooltip');
-        
         if (copyBtn) {
             copyBtn.addEventListener('click', () => {
                 const textToCopy = document.getElementById('validation-log-content').innerText;
