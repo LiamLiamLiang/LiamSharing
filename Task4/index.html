@@ -3,248 +3,407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task 4 | 原版海龟交易法则多品种跨样检验与 5D 寻优报告</title>
+    <title>原版海龟交易法则多品种跨样检验与 5D 寻优报告 • Task 4</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Plus Jakarta Sans & JetBrains Mono for a highly fashionable tech aesthetic -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- KaTeX for beautiful math formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'PingFang SC', 'Heiti SC', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Premium custom scrollbar styling */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f1322;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2b3a60;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3b82f6;
+        }
+        
+        /* Glassmorphism card effects */
+        .glass-card {
+            background: rgba(17, 24, 39, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Glowing neon accents */
+        .neon-glow-indigo {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.15);
+        }
+        .neon-glow-emerald {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen font-sans leading-relaxed">
-    <div class="max-w-5xl mx-auto px-6 py-12">
-        <!-- Breadcrumb & Header -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-200 pb-6 mb-8">
-            <div>
-                <a href="../" class="text-blue-700 hover:text-blue-500 text-xs font-mono flex items-center gap-1 mb-2">
-                    ← 返回总投研门户
-                </a>
-                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">原版海龟法则多品种跨样检验与 5D 寻优 (Task 4)</h1>
-                <p class="text-slate-500 text-sm font-mono mt-1">研究员：梁一鸣 | BA工作坊量化交易课程</p>
+<body class="bg-gradient-to-tr from-[#080b16] via-[#111625] to-[#04060f] text-gray-200 font-sans min-h-screen py-10 px-4 sm:px-6 antialiased">
+
+    <div class="max-w-6xl mx-auto space-y-10">
+        
+        <!-- Premium Header Section -->
+        <header class="text-center space-y-4">
+            <div class="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-900/40 to-indigo-900/40 border border-blue-800/30 px-4 py-1.5 rounded-full text-xs font-bold text-blue-400 shadow-lg tracking-wider uppercase">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>北京大学量化交易课 • Task 4</span>
             </div>
-            <a href="./梁一鸣+TASK4.pdf" download class="mt-4 md:mt-0 px-5 py-2.5 bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:shadow-blue-500/20 flex items-center gap-2 transition duration-200">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                下载学术级 PDF 报告
-            </a>
+            
+            <h1 class="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-100 to-indigo-300 tracking-tight leading-none">
+                原版海龟交易法则多品种跨样检验与 5D 寻优报告
+            </h1>
+            
+            <p class="text-xs sm:text-sm text-gray-400 font-medium tracking-wide max-w-3xl mx-auto">
+                基于 Python 事件驱动回测引擎对经典海龟法则进行全生命周期复盘。程序通过影子战役双宇宙状态机联动，跨加密合约（BTC、ETH、SOL、BNB）多级验证，并进行季度夏普稳定性评分的 5D 全局最优寻优。
+            </p>
+            
+            <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <a href="../" class="bg-gray-800/40 text-gray-400 hover:text-white border border-gray-700/30 px-3.5 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5 transition-colors">
+                    <i class="fa-solid fa-arrow-left"></i>返回主门户
+                </a>
+                <span class="bg-[#10b981]/10 text-[#10b981] border border-[#10b981]/20 px-3.5 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse"></span>双宇宙影子战役联动
+                </span>
+                <span class="bg-[#3b82f6]/10 text-[#3b82f6] border border-[#3b82f6]/20 px-3.5 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#3b82f6]"></span>5D 全局平稳扫参
+                </span>
+                <a href="./梁一鸣+TASK4.pdf" download class="bg-[#8b5cf6]/20 text-[#a78bfa] hover:bg-[#8b5cf6]/35 border border-[#8b5cf6]/30 px-4 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5 transition-all">
+                    <i class="fa-solid fa-download"></i>下载学术级 PDF 报告
+                </a>
+            </div>
+        </header>
+
+        <!-- Stats Overview Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div class="glass-card rounded-2xl p-5 hover:border-indigo-500/40 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between group neon-glow-indigo">
+                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest group-hover:text-indigo-400 transition-colors">组合 5D 寻优年化收益率 (Rank 1)</span>
+                <div class="flex items-baseline space-x-1.5 mt-3">
+                    <span class="text-3xl font-extrabold text-white font-mono tracking-tighter">+1811.72%</span>
+                </div>
+                <div class="text-[10px] text-gray-400 flex items-center gap-1 mt-2">
+                    <i class="fa-solid fa-check-double text-emerald-500"></i>
+                    <span>跨标的抗过拟合黄金参数中枢</span>
+                </div>
+            </div>
+            
+            <div class="glass-card rounded-2xl p-5 hover:border-indigo-500/40 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between group neon-glow-indigo">
+                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest group-hover:text-indigo-400 transition-colors">组合最大历史回撤 (Diversified)</span>
+                <div class="flex items-baseline space-x-1 mt-3">
+                    <span class="text-3xl font-extrabold text-white font-mono">-59.79%</span>
+                </div>
+                <div class="text-[10px] text-gray-400 flex items-center gap-1 mt-2">
+                    <i class="fa-solid fa-shield text-[#10b981]"></i>
+                    <span>相比单兵 90%+ 获极佳对消红利</span>
+                </div>
+            </div>
+            
+            <div class="glass-card rounded-2xl p-5 hover:border-indigo-500/40 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between group neon-glow-indigo">
+                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest group-hover:text-indigo-400 transition-colors">组合季度夏普平稳性得分</span>
+                <div class="flex items-baseline space-x-1.5 mt-3">
+                    <span class="text-3xl font-extrabold text-white font-mono tracking-tighter">0.8025</span>
+                </div>
+                <div class="text-[10px] text-gray-400 flex items-center gap-1 mt-2">
+                    <i class="fa-solid fa-fire text-rose-500"></i>
+                    <span>Mean: 1.40 | Std: 1.20</span>
+                </div>
+            </div>
+            
+            <div class="glass-card rounded-2xl p-5 hover:border-indigo-500/40 hover:scale-[1.02] transition-all duration-300 flex flex-col justify-between group neon-glow-indigo">
+                <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest group-hover:text-indigo-400 transition-colors">测试标的选择必然性</span>
+                <div class="flex items-baseline space-x-1.5 mt-3">
+                    <span class="text-2xl font-extrabold text-white font-mono tracking-tighter">Perp Futures</span>
+                </div>
+                <div class="text-[10px] text-gray-400 flex items-center gap-1 mt-2">
+                    <i class="fa-solid fa-eye-slash text-amber-500"></i>
+                    <span>双向顺滑，完美匹配头寸杠杆</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Abstract Box -->
-        <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm mb-8">
-            <h2 class="text-xl font-bold text-slate-900 border-l-4 border-blue-700 pl-3 mb-4">一、 核心研究摘要与总体脉络</h2>
-            <p class="text-sm text-slate-600 leading-relaxed mb-4">
-                <b>研究背景与方法：</b>本课题旨在通过 Python 自主研发的高保真事件驱动量化回测引擎对经典“海龟交易法则”进行全生命周期复盘与多维度网格优化。研究加载了加密货币永续合约（BTC、ETH、SOL、BNB）的 4H 与 1D 行情序列，设计了带有后台“影子战役”独立运行与拦截功能的双宇宙状态机。研究系统性比对了三种时变加仓控制路径（瞬时、渐进、严格错过），验证了数据时间频率（4H vs 1D）的敏感度，并最终使用 1/N 资金均配法构建了四资产 Portfolio，引入止损步长等五大维度进行了 5D 组合全局扫参，以“季度夏普稳定性评分”为核心目标函数提取全局最优抗拟合黄金参数组合。
+        <!-- Section 1: Abstract -->
+        <section id="abstract" class="glass-card rounded-2xl p-6 sm:p-8 space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-blue-500 bg-blue-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-circle-info"></i></span>
+                <span>一、 核心研究摘要与总体脉络</span>
+            </h3>
+            <p class="text-sm leading-relaxed text-gray-400">
+                <b>1. 研究背景与方法：</b> 本课题旨在通过 Python 自主研发的高保真事件驱动量化回测引擎对经典“海龟交易法则”进行全生命周期复盘与多维度网格优化。研究加载了加密货币永续合约（BTC、ETH、SOL、BNB）的 4H 与 1D 行情序列，设计了带有后台“影子战役”独立运行与拦截功能的双宇宙状态机。研究系统性比对了三种时变加仓控制路径（瞬时、渐进、严格错过），验证了数据时间频率（4H vs 1D）的敏感度，并最终使用 1/N 资金均配法构建了四资产 Portfolio，引入止损步长等五大维度进行了 5D 组合全局扫参，以“季度夏普稳定性评分”为核心目标函数提取全局最优抗拟合黄金参数组合。
             </p>
-            <p class="text-sm text-slate-600 leading-relaxed">
-                <b>核心发现与成果：</b>回测表明，(1)<b>渐进平滑加仓法</b>在单兵和组合维度上均展现出了压倒性的统治级期望优势，有效隔离了假突破带来的满仓刚性摩擦；(2)加密货币属于 24/7 高频高波动市场，4H 级别捕获中短期浪潮的效率远超日线；(3)通过跨标的组合 5D 惩罚扫描，策略成功避免了单标的过拟合陷阱，提炼出了具备跨季度鲁棒性的通用最优参数组合（`Sys1=20/10, Sys2=55/20, ATR=14, Pyramid=0.50N, StopLoss=1.5N`），在获得 `+1811.72%` 的稳健年化回报的同时，将组合回撤平滑控制在 `-59.79%`。
+            <p class="text-sm leading-relaxed text-gray-400">
+                <b>2. 核心发现与成果：</b> 回测表明，(1)<b>渐进平滑加仓法</b>在单兵和组合维度上均展现出了压倒性的统治级期望优势，有效隔离了假突破带来的满仓刚性摩擦；(2)加密货币属于 24/7 高频高波动市场，4H 级别捕获中短期浪潮的效率远超日线；(3)通过跨标的组合 5D 惩罚扫描，策略成功避免了单标的过拟合陷阱，提炼出了具备跨季度鲁棒性的通用最优参数组合（`Sys1=20/10, Sys2=55/20, ATR=14, Pyramid=0.50N, StopLoss=1.5N`），在获得 <b>+1811.72%</b> 的稳健年化回报的同时，将组合回撤平滑控制在 <b>-59.79%</b>。
             </p>
-        </div>
+        </section>
 
         <!-- Section 2: Core Concepts -->
-        <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm mb-8">
-            <h2 class="text-xl font-bold text-slate-900 border-l-4 border-blue-700 pl-3 mb-4">二、 海龟策略核心指标与概念阐释</h2>
-            <div class="space-y-4 text-sm text-slate-600 leading-relaxed">
+        <section id="concepts" class="glass-card rounded-2xl p-6 sm:p-8 space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-indigo-500 bg-indigo-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-gears"></i></span>
+                <span>二、 海龟策略核心指标与概念阐释</span>
+            </h3>
+            <div class="space-y-4 text-sm text-gray-400 leading-relaxed">
                 <p>
-                    • <b>Donchian 价格通道</b>：系统一（20 周期入场，10 周期反出）；系统二（55 周期入场，20 周期反出）。本程序严格对所有指标和通道参数进行完全滞后一期（shift 1）的滚动计算，彻底消除了看涨偏差。
+                    • <b>Donchian 价格通道</b>：系统一（20 周期入场，10 周期反出）；系统二（55 周期入场，20 周期反出）。本程序严格对所有指标和通道参数进行完全滞后一期（shift 1）的滚动计算，彻底消除了看涨偏差（未来函数）。
                 </p>
-                <p>
-                    • <b>平均真实波幅（ATR / N值）</b>：用来量化市场的真实绝对波幅。真实波动幅度（TR）采用 Wilder RMA 平滑平移递归公式进行计算：
-                </p>
-                <!-- Block Equation for ATR -->
-                <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-center text-blue-900 my-2 text-xs">
-                    ATR_t(N) = (1 / N) * TR_t + ((N - 1) / N) * ATR_t-1
+                <div class="space-y-2">
+                    <p class="font-semibold text-white">• <b>平均真实波幅（ATR / N值）公式</b>：</p>
+                    <div class="bg-slate-950/50 border border-gray-800/40 rounded-xl p-4 font-mono text-center text-indigo-300">
+                        $$ATR_t(N) = \frac{1}{N} \times TR_t + \frac{N - 1}{N} \times ATR_{t-1}$$
+                    </div>
                 </div>
+                
                 <p>
                     • <b>头寸规模（Unit）与标的选择优势</b>：海龟的 1 Unit 规模公式为 `账户净值 × 1% / N`。由于低波动期 N 值通常较小，加满 4 个 Units 的名义仓位价值往往会<b>远远大于实际总可用本金</b>。加密货币永续合约原生支持双向交易且具有灵活的杠杆倍数，能完美跑通经典海龟的规模配比，相比散户极难融券做空且缺乏杠杆的 A 股市场更具实操土壤。
                 </p>
-                <p>
-                    • <b>止损平移规则（Trailing Stop）</b>：初始开仓止损设在入场价反向 2*N 位置。
-                </p>
-                <!-- Block Equation for Stop Loss -->
-                <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 font-mono text-center text-blue-900 my-2 text-xs">
-                    Stop_Loss_Price = Latest_Pyramid_Price &nbsp;±&nbsp; (2 × N)
+
+                <div class="space-y-2">
+                    <p class="font-semibold text-white">• <b>止损平移规则（Trailing Stop）公式</b>：</p>
+                    <div class="bg-slate-950/50 border border-gray-800/40 rounded-xl p-4 font-mono text-center text-indigo-300">
+                        $$Stop\_Loss\_Price = Latest\_Pyramid\_Price \pm (2 \times N)$$
+                    </div>
                 </div>
                 <p>
-                    后续价格每向浮盈方向移动 0.5*N（或扫描优化后的加仓乘数），系统追加 1 仓，并将全局止损向浮盈方向推移，使止损线永远钉死在<b>距离入场价格最远的一次加仓点（最后一次实际成交价）</b>反向 2N 的位置，在趋势主升浪中实现利润刚性锁定。
+                    后续价格每向浮盈方向移动 0.5*N（或扫描优化后的加仓乘数），系统追加 1 仓，并将全局止损向浮盈方向推移，使止损线永远钉死在距离入场价格最远的一次加仓点（最后一次实际成交价）反向 2N 的位置，在趋势主升浪中实现利润刚性锁定。
                 </p>
             </div>
-        </div>
+        </section>
 
         <!-- Section 3: Visual Charts -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <section id="charts" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Left Card: Signal Visualization -->
-            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div class="glass-card rounded-2xl p-6 space-y-4 flex flex-col justify-between">
                 <div>
-                    <span class="px-2.5 py-0.5 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">图 1 / 信号与通道</span>
-                    <h3 class="text-lg font-bold text-slate-900 mt-2 mb-3">BTCUSDT 唐奇安通道与盘中触发信号复盘</h3>
+                    <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">图 1 / 信号与通道</span>
+                    <h4 class="text-base font-bold text-white mt-3">BTCUSDT 唐奇安通道与盘中触发信号复盘</h4>
                 </div>
-                <img src="./btc_signals_chart.png" alt="BTC Signals" class="rounded-lg border border-slate-100 my-4 shadow-inner">
-                <p class="text-xs text-slate-500 leading-relaxed font-mono">
+                <div class="bg-slate-950/40 rounded-xl p-4 border border-gray-800/40 my-3 flex justify-center">
+                    <img src="./btc_signals_chart.png" alt="BTC Signals" class="rounded-lg shadow-lg max-h-72">
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed font-mono">
                     * 实证解读：图1精确还原了系统在 Donchian 20 周期上边界触发 Sys1 入场信号（绿色上三角）后，伴随价格拉升在日内平滑追加三个 Units（蓝色十字）的复利闭环，以及最终价格跌穿 10 周期下边界触发止盈出场（红色下三角）的完整生命周期。
                 </p>
             </div>
 
             <!-- Right Card: Equity curves -->
-            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            <div class="glass-card rounded-2xl p-6 space-y-4 flex flex-col justify-between">
                 <div>
-                    <span class="px-2.5 py-0.5 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded-full">图 2 / 净值表现曲线</span>
-                    <h3 class="text-lg font-bold text-slate-900 mt-2 mb-3">四大主流品种 4H 级别渐进加仓资金增长轨迹</h3>
+                    <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">图 2 / 净值表现曲线</span>
+                    <h4 class="text-base font-bold text-white mt-3">四大主流品种 4H 级别渐进加仓资金增长轨迹</h4>
                 </div>
-                <img src="./equity_curve.png" alt="Equity Curves" class="rounded-lg border border-slate-100 my-4 shadow-inner">
-                <p class="text-xs text-slate-500 leading-relaxed font-mono">
-                    * 实证解读：1/N 等权大组合在长趋势中表现出极强的期望收益。ETH 贝塔大、延续性佳，收益最高；SOL 弹性大，但在假突破中损耗较重；BNB 因具有周期性 Launchpool 均值回归而发生失效磨损。而 Combined Portfolio 则成功通过跨标的风险平滑，将最大回撤收紧在合理的安全边际内。
+                <div class="bg-slate-950/40 rounded-xl p-4 border border-gray-800/40 my-3 flex justify-center">
+                    <img src="./equity_curve.png" alt="Equity Curves" class="rounded-lg shadow-lg max-h-72">
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed font-mono">
+                    * 实证解读：1/N 等权大组合在长趋势中表现出极强的期望收益。ETH 贝塔大、延续性佳，收益最高；SOL 弹性大，但在假突破中损耗较重；BNB 因具有周期性 Launchpool 均值回归而发生失效磨损。而 Combined Portfolio 则成功通过跨标的风险平滑，将最大回撤收紧在安全的边际内。
                 </p>
             </div>
-        </div>
+        </section>
 
-        <!-- Section 4: Quantitative Testing Results (Phase 1, 2, 3) -->
-        <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm mb-8">
-            <h2 class="text-xl font-bold text-slate-900 border-l-4 border-blue-700 pl-3 mb-6">三、 核心测试环节与实证结果对比</h2>
+        <!-- Section 4: Quantitative Testing Results -->
+        <section id="results" class="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-emerald-500 bg-emerald-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-chart-line"></i></span>
+                <span>三、 核心测试环节与实证结果对比</span>
+            </h3>
             
             <!-- Phase 1 -->
-            <div class="mb-6">
-                <h3 class="text-base font-bold text-slate-900 mb-2">1. 测试(一)：盘中加仓路径敏感性检验 (BTC 4H)</h3>
-                <p class="text-sm text-slate-600 mb-3">
-                    <b>测试目的与方法：</b>研究单根 K 线内穿透多个加仓线时，不同操作路径的表现分化。对比 Instant（穿透即瞬间开满）、Gradual（单 bar 至多加 1 仓，后续 bar 追补）及 Strict（单 bar 至多加 1 仓，错过作废）三种模式。
+            <div class="space-y-4">
+                <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest block font-mono">[01] 测试(一)：盘中加仓路径敏感性检验 (BTC 4H)</span>
+                <p class="text-sm text-gray-400 leading-relaxed">
+                    <b>测试目的与方法：</b> 研究单根 K 线内穿透多个加仓线时，不同操作路径的表现分化。对比 Instant（穿透即瞬间开满）、Gradual（单 bar 至多加 1 仓，后续 bar 追补）及 Strict（单 bar 至多加 1 仓，错过作废）三种模式。
                 </p>
-                <p class="text-sm text-slate-600 mb-4">
-                    <b>实证发现：</b>如表2所示，Gradual 模式录得了 `683.27%` 的累计回报，大幅超越 Instant（`197.23%`）与 Strict（`71.24%`）。量化表明，Instant 模式极易在日内高频插针的 Bull Trap（多头陷阱）中瞬间满仓，随后遭遇逆势 4 Units 全额为止损，导致本金遭受毁灭性磨损；而 Strict 模式则因为无法在主升浪中“追补”错过的仓位，导致趋势来临时严重“挨饿”。Gradual 模式巧妙引入了<b>时间流速过滤</b>，在风控与利润之间取得了最优的数学期望。
+                <p class="text-sm text-gray-400 leading-relaxed">
+                    <b>实证发现：</b> 如表2所示，Gradual 模式录得了最高 <b>+683.27%</b> 的累计回报，大幅超越 Instant（`+197.23%`）与 Strict（`+71.24%`）。量化表明，Instant 模式极易在日内高频插针的 Bull Trap（多头陷阱）中瞬间满仓，随后遭遇逆势 4 Units 全额为止损，导致本金遭受毁灭性磨损；而 Strict 模式则因为无法在主升浪中“追补”错过的仓位，导致趋势来临时严重“挨饿”。Gradual 模式巧妙引入了<b>时间流速过滤</b>，在风控与利润之间取得了最优的数学期望。
                 </p>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse mb-4">
-                        <tr class="bg-slate-950 text-white text-xs font-mono">
-                            <th class="p-2.5">加仓模式 (BTC 4H)</th>
-                            <th class="p-2.5">累计收益 (%)</th>
-                            <th class="p-2.5">最大回撤 (%)</th>
-                            <th class="p-2.5">年化夏普比率</th>
-                            <th class="p-2.5">总交易次数</th>
-                        </tr>
-                        <tr class="text-xs divide-y divide-slate-200">
-                            <td class="p-2.5 font-bold">渐进平滑 (Gradual - 推荐)</td>
-                            <td class="p-2.5 font-semibold text-red-600">+683.27%</td>
-                            <td class="p-2.5 text-emerald-600">-65.89%</td>
-                            <td class="p-2.5 font-mono">1.0494</td>
-                            <td class="p-2.5">319 次</td>
-                        </tr>
-                        <tr class="text-xs divide-y divide-slate-200 bg-slate-50/50">
-                            <td class="p-2.5">瞬时多级 (Instant)</td>
-                            <td class="p-2.5">+197.23%</td>
-                            <td class="p-2.5 text-emerald-600">-74.45%</td>
-                            <td class="p-2.5 font-mono">0.7895</td>
-                            <td class="p-2.5">328 次</td>
-                        </tr>
-                        <tr class="text-xs divide-y divide-slate-200">
-                            <td class="p-2.5">严格错过 (Strict)</td>
-                            <td class="p-2.5">+71.24%</td>
-                            <td class="p-2.5 text-emerald-600">-77.51%</td>
-                            <td class="p-2.5 font-mono">0.6111</td>
-                            <td class="p-2.5">319 次</td>
-                        </tr>
+                
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-[#161b22]/50 text-gray-400 uppercase tracking-widest border-b border-gray-800">
+                                <th class="p-3">加仓模式 (BTC 4H)</th>
+                                <th class="p-3">累计收益 (%)</th>
+                                <th class="p-3">最大回撤 (%)</th>
+                                <th class="p-3">年化夏普比率</th>
+                                <th class="p-3">总交易次数</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800 text-gray-300 font-medium">
+                            <tr class="hover:bg-[#161b22]/30 transition-colors">
+                                <td class="p-3 font-bold text-indigo-400">渐进平滑 (Gradual - 推荐)</td>
+                                <td class="p-3 font-mono font-bold text-rose-400">+683.27%</td>
+                                <td class="p-3 font-mono text-emerald-400">-65.89%</td>
+                                <td class="p-3 font-mono">1.0494</td>
+                                <td class="p-3 font-mono">319 次</td>
+                            </tr>
+                            <tr class="hover:bg-[#161b22]/30 transition-colors">
+                                <td class="p-3">瞬时多级 (Instant)</td>
+                                <td class="p-3 font-mono">+197.23%</td>
+                                <td class="p-3 font-mono text-emerald-400">-74.45%</td>
+                                <td class="p-3 font-mono">0.7895</td>
+                                <td class="p-3 font-mono">328 次</td>
+                            </tr>
+                            <tr class="hover:bg-[#161b22]/30 transition-colors">
+                                <td class="p-3">严格错过 (Strict)</td>
+                                <td class="p-3 font-mono">+71.24%</td>
+                                <td class="p-3 font-mono text-emerald-400">-77.51%</td>
+                                <td class="p-3 font-mono">0.6111</td>
+                                <td class="p-3 font-mono">319 次</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
 
             <!-- Phase 2 -->
-            <div class="mb-6">
-                <h3 class="text-base font-bold text-slate-900 mb-2">2. 测试(二)：数据频率敏感性检验 (4H vs 1D)</h3>
-                <p class="text-sm text-slate-600 mb-4">
-                    <b>实证发现与心得：</b>在 Gradual 模式下，4H 频率的回报率为 `+683.27%`（夏普 1.0494），而 1D 日线级回报率为 `+141.93%`（夏普 0.8431）。这证明了中等反应时间分辨率在捕捉数字货币趋势上的强劲优势。因为加密市场无休眠运行，日K线的单根 ATR 极其巨大，单次止损对资金池的磨损过于剧烈。4H 线能在更灵敏的滑平止损以及更敏锐的价格窗口中建立非对称优势。
+            <div class="space-y-4 pt-4 border-t border-gray-800/40">
+                <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest block font-mono">[02] 测试(二)：数据频率敏感性检验 (4H vs 1D)</span>
+                <p class="text-sm text-gray-400 leading-relaxed">
+                    <b>实证发现与心得：</b> 在 Gradual 模式下，4H 频率的回报率为 <b>+683.27%</b>（夏普 1.0494），而 1D 日线级回报率为 <b>+141.93%</b>（夏普 0.8431）。这证明了中等反应时间分辨率在捕捉数字货币趋势上的强劲优势。因为加密市场无休眠运行，日K线的单根 ATR 绝对值极其巨大，单次止损对资金池的磨损过于剧烈。4H 线能在更灵敏的滑平止损以及更敏锐的价格窗口中建立非对称优势。
                 </p>
             </div>
 
             <!-- Phase 3 -->
-            <div class="mb-6">
-                <h3 class="text-base font-bold text-slate-900 mb-2">3. 测试(三)：多品种跨样交叉检验</h3>
-                <p class="text-sm text-slate-600 mb-4">
-                    <b>实证发现：</b>在表 4 中，ETHUSDT 4H 渐进模式获得了 `+1562.37%` 的爆发性回报（夏普 1.2644）；SOL 获得 `+444.20%`（夏普 0.9603）；而 BNB 录得 `-83.45%` 的亏损。这深刻提示我们：任何技术系统都不是万能圣杯，BNB 因 Launchpool “公布锁仓挖矿需求飙升 $\rightarrow$ 结束解锁倾销抛售”的规律性行为，导致其价格呈典型的大幅诱多诱空<b>均值回归</b>特征，天然是突破系统的克星。
+            <div class="space-y-4 pt-4 border-t border-gray-800/40">
+                <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest block font-mono">[03] 测试(三)：多品种跨样交叉检验</span>
+                <p class="text-sm text-gray-400 leading-relaxed">
+                    <b>实证发现：</b> 在表 4 中，ETHUSDT 4H 渐进模式获得了 <b>+1562.37%</b> 的爆发性回报（夏普 1.2644）；SOL 获得 <b>+444.20%</b>（夏普 0.9603）；而 BNB 录得 <b>-83.45%</b> 的亏损。这深刻提示我们：任何技术系统都不是万能圣杯，BNB 因 Launchpool “公布锁仓挖矿需求飙升 $\rightarrow$ 结束解锁倾销抛售”的规律性行为，导致其价格呈典型的大幅诱多诱空<b>均值回归</b>特征，天然是突破系统的克星。
                 </p>
             </div>
-        </div>
+        </section>
 
         <!-- Section 5: Optimization Grids (Phase 4 & 5) -->
-        <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm mb-8">
-            <h2 class="text-xl font-bold text-slate-900 border-l-4 border-blue-700 pl-3 mb-6">四、 5D 组合参数寻优与季度夏普平稳性验证</h2>
-            <p class="text-sm text-slate-600 mb-4">
-                <b>测试目的与方法：</b>局部最优容易陷入历史参数的过度拟合（Overfitting）。为了获取具备跨标的生存力、抗拟合的通用中枢参数，我们使用等权组合法（1/N）将四大标的打包，合并成单一综合净值曲线，并引入第五维度——<b>止损步长 ATR 乘数 (Stop-Loss Multiplier)</b>，进行了 5D 组合扫参。组合夏普由日频组合收益率序列计算所得。我们引入了<b>季度夏普稳定性评分 = Mean(季度Sharpe) - 0.5 × Std(季度Sharpe)</b>，惩罚不稳健的业绩漂移型投机参数。
+        <section id="sweep" class="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-indigo-500 bg-indigo-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-magnifying-glass-chart"></i></span>
+                <span>四、 5D 组合参数寻优与季度夏普平稳性验证</span>
+            </h3>
+            
+            <p class="text-sm leading-relaxed text-gray-400">
+                <b>测试目的与方法：</b> 局部最优容易陷入历史参数的过度拟合（Overfitting）。为了获取具备跨标的生存力、抗拟合的通用中枢参数，我们使用等权组合法（1/N）将四个标的打包，合并成单一综合净值曲线，并引入第五维度——<b>止损步长 ATR 乘数 (Stop-Loss Multiplier)</b>，进行了 5D 组合扫参。组合夏普由日频组合收益率序列计算所得。我们引入了<b>季度夏普稳定性评分公式</b>：
             </p>
             
-            <div class="overflow-x-auto mb-6">
-                <table class="w-full text-left border-collapse">
+            <div class="bg-slate-950/50 border border-gray-800/40 rounded-xl p-4 font-mono text-center text-indigo-300 my-2">
+                $$Stability\_Score = Mean(Quarterly\_Sharpe) - 0.5 \times Std(Quarterly\_Sharpe)$$
+            </div>
+            
+            <p class="text-sm leading-relaxed text-gray-400">
+                该函数通过引入标准差权重（0.5×Std），严厉惩罚了那些在特定季度暴利而在其他季度暴亏的业绩漂移型投机参数。
+            </p>
+            
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left text-xs border-collapse">
                     <thead>
-                        <tr class="bg-slate-900 text-white text-xs font-mono">
-                            <th class="p-3">稳定性排名</th>
-                            <th class="p-3">组合 5D 优化参数 (S1, S2, ATR, Pyr, StopLoss)</th>
-                            <th class="p-3">组合累计收益</th>
-                            <th class="p-3">最大回撤</th>
-                            <th class="p-3">季度夏普均值 / 标准差</th>
-                            <th class="p-3">稳定性评分</th>
+                        <tr class="bg-[#161b22]/50 text-gray-400 uppercase tracking-widest border-b border-gray-800">
+                            <th class="p-3.5 font-bold">稳定性排名</th>
+                            <th class="p-3.5 font-bold">组合 5D 优化参数 (S1, S2, ATR, Pyr, StopLoss)</th>
+                            <th class="p-3.5 font-bold">组合累计收益</th>
+                            <th class="p-3.5 font-bold">最大回撤</th>
+                            <th class="p-3.5 font-bold">季度夏普均值 / 标准差</th>
+                            <th class="p-3.5 font-bold">稳定性评分</th>
                         </tr>
                     </thead>
-                    <tbody class="text-xs divide-y divide-slate-200">
-                        <tr class="hover:bg-slate-50">
-                            <td class="p-3 font-bold">Rank 1</td>
-                            <td class="p-3">Sys1: 20 / 10 | Sys2: 55 / 20 | ATR: 14 | Pyr: 0.50N | SL: 1.5N</td>
-                            <td class="p-3 font-bold text-red-600">+1811.72%</td>
-                            <td class="p-3 text-emerald-600">-59.79%</td>
-                            <td class="p-3">Mean: 1.40 | Std: 1.20</td>
-                            <td class="p-3 font-extrabold text-blue-800">0.8025</td>
+                    <tbody class="divide-y divide-gray-800 text-gray-300 font-medium">
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 font-mono text-indigo-400 font-bold">Rank 1</td>
+                            <td class="p-3.5">Sys1: 20 / 10 | Sys2: 55 / 20 | ATR: 14 | Pyr: 0.50N | SL: 1.5N</td>
+                            <td class="p-3.5 font-mono font-bold text-rose-400">+1811.72%</td>
+                            <td class="p-3.5 font-mono text-emerald-400">-59.79%</td>
+                            <td class="p-3.5 font-mono">Mean: 1.40 | Std: 1.20</td>
+                            <td class="p-3.5 font-mono text-blue-400 font-bold">0.8025</td>
                         </tr>
-                        <tr class="hover:bg-slate-50 bg-slate-50/50">
-                            <td class="p-3 font-bold">Rank 2</td>
-                            <td class="p-3">Sys1: 20 / 10 | Sys2: 55 / 20 | ATR: 20 | Pyr: 0.50N | SL: 1.5N</td>
-                            <td class="p-3 font-bold text-red-600">+1691.03%</td>
-                            <td class="p-3 text-emerald-600">-60.38%</td>
-                            <td class="p-3">Mean: 1.40 | Std: 1.24</td>
-                            <td class="p-3 font-extrabold text-blue-800">0.7791</td>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 font-mono text-indigo-400">Rank 2</td>
+                            <td class="p-3.5">Sys1: 20 / 10 | Sys2: 55 / 20 | ATR: 20 | Pyr: 0.50N | SL: 1.5N</td>
+                            <td class="p-3.5 font-mono font-bold text-rose-400">+1691.03%</td>
+                            <td class="p-3.5 font-mono text-emerald-400">-60.38%</td>
+                            <td class="p-3.5 font-mono">Mean: 1.40 | Std: 1.24</td>
+                            <td class="p-3.5 font-mono text-blue-400">0.7791</td>
                         </tr>
-                        <tr class="hover:bg-slate-50">
-                            <td class="p-3 font-bold">Rank 3</td>
-                            <td class="p-3">Sys1: 20 / 10 | Sys2: 45 / 15 | ATR: 14 | Pyr: 0.50N | SL: 1.5N</td>
-                            <td class="p-3 font-bold text-red-600">+1420.80%</td>
-                            <td class="p-3 text-emerald-600">-59.22%</td>
-                            <td class="p-3">Mean: 1.28 | Std: 1.17</td>
-                            <td class="p-3 font-extrabold text-blue-800">0.7009</td>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors">
+                            <td class="p-3.5 font-mono text-indigo-400">Rank 3</td>
+                            <td class="p-3.5">Sys1: 20 / 10 | Sys2: 45 / 15 | ATR: 14 | Pyr: 0.50N | SL: 1.5N</td>
+                            <td class="p-3.5 font-mono font-bold text-rose-400">+1420.80%</td>
+                            <td class="p-3.5 font-mono text-emerald-400">-59.22%</td>
+                            <td class="p-3.5 font-mono">Mean: 1.28 | Std: 1.17</td>
+                            <td class="p-3.5 font-mono text-blue-400">0.7009</td>
                         </tr>
-                        <tr class="hover:bg-slate-50 bg-slate-50/50">
-                            <td class="p-3 font-bold">Rank 4</td>
-                            <td class="p-3">Sys1: 20 / 10 | Sys2: 55 / 20 | ATR: 14 | Pyr: 0.25N | SL: 1.5N</td>
-                            <td class="p-3 font-bold text-red-600">+1465.18%</td>
-                            <td class="p-3 text-emerald-600">-63.69%</td>
-                            <td class="p-3">Mean: 1.23 | Std: 1.19</td>
-                            <td class="p-3 font-extrabold text-blue-800">0.6300</td>
+                        <tr class="hover:bg-[#161b22]/30 transition-colors text-gray-500">
+                            <td class="p-3.5 font-mono">Rank 4</td>
+                            <td class="p-3.5">Sys1: 20 / 10 | Sys2: 55 / 20 | ATR: 14 | Pyr: 0.25N | SL: 1.5N</td>
+                            <td class="p-3.5 font-mono">+1465.18%</td>
+                            <td class="p-3.5 font-mono">-63.69%</td>
+                            <td class="p-3.5 font-mono">Mean: 1.23 | Std: 1.19</td>
+                            <td class="p-3.5 font-mono">0.6300</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Deep Analysis based on metrics -->
-            <div class="space-y-4 text-sm text-slate-600 leading-relaxed">
+            <!-- Deep Analysis -->
+            <div class="space-y-4 text-sm text-gray-400 leading-relaxed pt-4 border-t border-gray-800/40">
                 <p>
-                    <b>1. 止损参数的硬性收紧优势（1.5N 的全胜）</b>：扫参结果惊人地显示，前 5 名优胜组合<b>全部锁定了 1.5N 的紧止损</b>。相比原版松弛的 2.0N 止损，紧止损在加密货币这类高频插针、剧烈洗盘的假突破阶段，能更早、更轻仓地完成斩仓，切断了单笔摩擦亏损的极值，从而起到了极佳的防波堤防护效果。
+                    <b>1. 止损参数的硬性收紧优势（1.5N 的全胜）</b>： 扫参结果惊人地显示，前 5 名优胜组合<b>全部锁定了 1.5N 的紧止损</b>。相比原版松弛的 2.0N 止损，紧止损在加密货币这类高频插针、剧烈洗盘的假突破阶段，能更早、更轻仓地完成斩仓，切断了单笔摩擦亏损的极值，从而对总资金池起到了极其关键的防波堤守护作用。
                 </p>
                 <p>
                     <b>2. 驳斥局部最优：大组合加仓步长回归 0.50N 的学术反思</b>：
                     在局部寻优中，0.25N 紧加仓由于能瞬间满仓而处于统治地位。然而在大组合（Portfolio）维度下，对比 Rank 1（Pyramid=0.50N）与 Rank 4（Pyramid=0.25N），0.25N 紧加仓在波动不连续、多噪标的（如 BNB）的影响下，反而由于过早地开满 4 Units 导致被宽幅震荡拦腰洗掉，拉大了最大回撤（`-63.69%`），使季度稳定性得分从 `0.8025` 跌至 `0.6300`。这客观证明了：<b>原版的 0.50N 加仓步长在大组合中起到了良好的“动能延续缓冲缓冲器”作用</b>，跨标的交叉验证揭示了系统长期生存的鲁棒性。
                 </p>
             </div>
-        </div>
+        </section>
 
         <!-- Section 6: Nomenclature Glossary -->
-        <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm mb-8">
-            <h2 class="text-xl font-bold text-slate-900 border-l-4 border-blue-700 pl-3 mb-4">五、 核心名词学术释义</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-500 font-mono">
-                <div>
-                    <p class="mb-2"><b>1. 影子战役 (Shadow Campaign)</b></p>
+        <section id="glossary" class="glass-card rounded-2xl p-6 sm:p-8 space-y-4">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-3 border-b border-gray-800 pb-3">
+                <span class="text-amber-500 bg-amber-500/10 p-1.5 rounded-lg"><i class="fa-solid fa-graduation-cap"></i></span>
+                <span>五、 核心名词学术释义</span>
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-gray-400 font-mono">
+                <div class="space-y-1">
+                    <p class="font-bold text-white">1. 影子战役 (Shadow Campaign)</p>
                     <p class="leading-relaxed">海龟过滤规则的数学仿真载体，在后台独立运行而不实际配资。其结算盈亏直接作为决定实际账户在下一次突破时是否过滤开仓的布尔输入。</p>
                 </div>
-                <div>
-                    <p class="mb-2"><b>2. 过拟合 (Overfitting)</b></p>
+                <div class="space-y-1">
+                    <p class="font-bold text-white">2. 过拟合 (Overfitting)</p>
                     <p class="leading-relaxed">参数过度迎合历史特定的随机波动特征。在单品种扫参时能获得极高局部高收益（如ETH 76倍），但一旦面临跨标的或外延样本（OOS）检验时，业绩即发生毁灭性漂移。</p>
                 </div>
-                <div>
-                    <p class="mb-2"><b>3. 均值回归 (Mean-Reversion)</b></p>
-                    <p class="leading-relaxed">资产价格偏离中枢后，因供需自我修正或周期性套利而迅速折返均值轨道的特征。是突破系统天然的克星与磨损大本营。</p>
+                <div class="space-y-1">
+                    <p class="font-bold text-white">3. 均值回归 (Mean-Reversion)</p>
+                    <p class="leading-relaxed">资产价格偏离中枢后，因供需自我修正或周期性套利而迅速折返均值轨道的特征。是突破系统天天遭受止损和摩擦的主要成因。</p>
                 </div>
-                <div>
-                    <p class="mb-2"><b>4. 时间流速过滤 (Time-smoothed Filtering)</b></p>
+                <div class="space-y-1">
+                    <p class="font-bold text-white">4. 时间流速过滤 (Time-smoothed Filtering)</p>
                     <p class="leading-relaxed">限制单 bar 的加仓速度，强制要求多条 K 线的时间拉伸来证明大动能的真实性和延续性，极大化解了单 bar 插针所造成的假金叉多头陷阱。</p>
                 </div>
             </div>
-        </div>
+        </section>
+
     </div>
+
+    <footer class="border-t border-slate-900 py-8 text-center text-xs text-slate-600 font-mono mt-10">
+        © 2026 梁一鸣 | BA量化交易. All rights reserved.
+    </footer>
 </body>
 </html>
